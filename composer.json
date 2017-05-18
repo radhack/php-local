@@ -1,0 +1,11 @@
+{
+    "require": {
+        "hellosign/hellosign-php-sdk": "v3.x-dev",
+        "sendgrid/php-http-client": "~3.6",
+        "sendgrid/sendgrid": "5.4.0",
+        "tecnickcom/tcpdf": "dev-master"
+    },
+    "require-dev": {
+        "heroku/heroku-buildpack-php": "*"
+    }
+}
