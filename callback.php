@@ -22,7 +22,10 @@
     if ($data != null) { //only send the response if I'm hit with a POST
         echo 'Hello API Event Received';
     }
-
+    
+    //remove the below comment to test callback actions
+    goto invalid_hash;
+    
     $event_time = $data->event->event_time;
     $event_type = $data->event->event_type;
     $event_hash = $data->event->event_hash;
