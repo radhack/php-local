@@ -82,23 +82,22 @@ if (isset($signature_request_id)) {
     }
 } elseif (isset ($hw_email)) {
 
-//    // Create connection
-//    $conn = new mysqli($servername, $dbadmin, $dbpassword, $dbname);
-//    // Check connection
-//    if ($conn->connect_error) {
-//        die("Connection failed: " . $conn->connect_error);
-//    }
-//    $converted = json_encode($signature_request_object->toArray());
-//    $signature_request_id = $_SESSION['signature_request_id'];
-//
-//    $sql = "INSERT INTO signatureRequestJson VALUES('$signature_request_id','embeddedRequesting','$converted')";
-//
-//    if ($conn->query($sql) === TRUE) {
-//        echo "INSERT to testdb successfull";
-//    } else {
-//        echo "<br />Error INSERTing (lol): " . $conn->error;
-//    }
-//    TODO save helloWorks data
+    // Create connection
+    $conn = new mysqli($servername, $dbadmin, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $sql = "INSERT INTO helloWorks VALUES('$hw_email','$hw_name','$hw_sign_url')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "INSERT to testdb successfull";
+    } else {
+        echo "<br />Error INSERTing (lol): " . $conn->error;
+    }
+//    TODO - setup callback server to save state of request
+//    if same signer comes back to HelloWorks, serve same hw_sign_url
 }
 
 $conn->close();
