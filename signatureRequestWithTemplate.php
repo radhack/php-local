@@ -66,7 +66,7 @@
         
         
         // call the html page with the embedded.js lib and HelloSign.open()
-        include('signerpage.php');
+//        include('signerpage.php');
         ?>
         
     </body>

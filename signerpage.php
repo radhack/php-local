@@ -1,6 +1,7 @@
 
         <div class="comment-form-comment" id="hsembedded">
-            <script type="text/javascript">
+<!--            <script type="text/javascript">-->
+            <script>
                 HelloSign.init("<?php echo $client_id ?>");
                 HelloSign.open({
                     url: "<?php echo $sign_url ?>",
