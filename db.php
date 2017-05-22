@@ -89,10 +89,10 @@ if (isset($signature_request_id)) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "INSERT INTO helloWorks VALUES('$hw_email','$hw_name','$hw_sign_url')";
+    $sql = "INSERT INTO helloWorks VALUES('$hw_instance_id','$hw_name','$hw_email','$hw_sign_url')";
 
     if ($conn->query($sql) === TRUE) {
-        echo "INSERT to testdb successfull";
+        echo "INSERT to helloWorks successfull";
     } else {
         echo "<br />Error INSERTing (lol): " . $conn->error;
     }

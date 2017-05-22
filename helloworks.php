@@ -72,6 +72,7 @@
 
         $parsed_post = json_decode($response_post);
         $hw_sign_url = $parsed_post->object->url;
+        $hw_instance_id = $parsed_post->object->id;
         include('db.php');
 
         echo "<h1>The process has started!</h1><br />";
@@ -79,8 +80,8 @@
 //        echo "Click <a href=$hw_sign_url target=\"_blank\">this link</a> if you're not automatically redirected.";
         ?>
         <script type="text/javascript">
-            var hwurl = "<?php echo $hw_sign_url?>";
-            window.location.href = hwurl;
+//            var hwurl = "<?php echo $hw_sign_url?>";
+//            window.location.href = hwurl;
             </script>
     </body>
 </html>
