@@ -1,7 +1,8 @@
 {
     "require": {
         "hellosign/hellosign-php-sdk": "v3.x-dev",
-        "tecnickcom/tcpdf": "dev-master"
+        "tecnickcom/tcpdf": "dev-master",
+        "sendgrid/sendgrid": "dev-master"
     },
     "require-dev": {
         "heroku/heroku-buildpack-php": "*"

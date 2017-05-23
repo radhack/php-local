@@ -16,7 +16,14 @@
         <?php
         require_once 'vendor/autoload.php';
         include('auth.php');
-              
+
+        if (isset($_SESSION['signature_id'])) {
+            $client = new HelloSign\Client($api_key);
+            $embedded_response = $client->getEmbeddedSignUrl($_SESSION['signature_id']);
+            $sign_url = $embedded_response->getSignUrl();
+            include('signerpage.php');
+        } else {
+
         // Instance of a client for you to use for calls
         $client = new HelloSign\Client($api_key);
         // Example call with logging for embedded requests
@@ -46,16 +53,15 @@
         $response = $client->createEmbeddedSignatureRequest($embedded_request);
 
         // wait for callback with signature_request_sent
-
         // TODO write that in here at some point
-
         // Grab the signature ID for the signature page that will be embedded in the page
         $signature_request_id = $response->signature_request_id;
         $signatures = $response->getSignatures();
         $signature_id = $signatures[0]->getId();
+        $_SESSION['signature_id'] = $signature_id;
         $createdHow = "signatureRequestWithTemplate";
         include('db.php');
-        
+
         // Retrieve the URL to sign the document
         $embedded_response = $client->getEmbeddedSignUrl($signature_id);
 
@@ -63,12 +69,13 @@
 //        $sign_url = $embedded_response->getSignUrl();
         $sign_url = str_replace("/", "\/", $embedded_response->getSignUrl());
         echo ("<br />$sign_url");
-        
-        
+
+
         // call the html page with the embedded.js lib and HelloSign.open()
-//        include('signerpage.php');
+        include('signerpage.php');
+        }
         ?>
-        
+
     </body>
 </html>
 

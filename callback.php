@@ -83,56 +83,28 @@
             echo $response;
         }
 
+//        $path = "downloaded_files/$hw_id.pdf";        
+        $fileName = "$hw_id.pdf";
+        file_put_contents($fileName, $response_pdf);
+        $file_encoded = base64_encode($response_pdf);
+        $to = new SendGrid\Email("HelloWorks Signer", "radhack242@gmail.com");
+        $from = new SendGrid\Email("HelloWorks Platform", "radhack242@gmail.com");
+        $subject = "HelloWorks callback received";
+        $content = new SendGrid\Content("text/html", "<pre>$status</pre> is the status<br /><br />$identity is the email of the signer<br /><pre>$hw_id</pre> is the instance id<br /><pre>$form1_name</pre> is the form name<br /><br /><a href=\"$form1_url\">this</a> is where you can download the form");
+        $attachment = new SendGrid\Attachment();
+        $attachment->setType("application/pdf");
+        $attachment->setDisposition("attachment");
+        $attachment->setFilename($fileName);
+        $attachment->setContent($file_encoded);
+        $email = new SendGrid\Mail($from, $subject, $to, $content);
+        $email->addAttachment($attachment);
 
-        $path = "downloaded_files/$hw_id.pdf";
-        file_put_contents($path, $response_pdf);
-//        $filePath = "Users/alexgriffen/NetBeansProjects/simple_php-example_local_test/downloaded_files";
-        $filePath = "/Users/alexgriffen/NetBeansProjects/simple_php-example_local_test/downloaded_files";
-//        $fileName = "$hw_id.pdf";   
-//        $sendgrid = new SendGrid($sendgrid_api_key);
-//        $url = 'https://api.sendgrid.com/';
-//        $pass = $sendgrid_api_key;
-//
-//        $params = array(
-//            'to' => "radhack242@gmail.com",
-//            'toname' => "helloWorks",
-//            'from' => "radhack242@gmail.com",
-//            'fromname' => "Simple PHP",
-//            'subject' => "HelloWorks callback received",
-////            'files['.$fileName.']' => $filePath.$fileName,
-//            'files['.$fileName.']' => '@'."$filePath".'/'."$fileName",
-//            'html' => "<pre>$status</pre> is the status<br /><br />$identity is the email of the signer<br /><pre>$hw_id</pre> is the instance id<br /><pre>$form1_name</pre> is the form name<br /><br /><a href=\"$form1_url\">this</a> is where you can download the form"
-//        );
-//
-//        $request = $url . 'api/mail.send.json';
-//       
-//// Generate curl request
-//        $session = curl_init($request);
-//// Tell PHP not to use SSLv3 (instead opting for TLS)
-//        curl_setopt($session, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
-//        curl_setopt($session, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $sendgrid_api_key));
-//// Tell curl to use HTTP POST
-//        curl_setopt($session, CURLOPT_POST, true);
-//// Tell curl that this is the body of the POST
-//        curl_setopt_array($session, CURLOPT_POSTFIELDS, $params);
-//// Tell curl not to return headers, but do return the response
-//        curl_setopt($session, CURLOPT_HEADER, false);
-//        curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
-//
-//// obtain response
-//        $response = curl_exec($session);
-//        curl_close($session);
+        $sg = new \SendGrid($sendgrid_api_key);
+        $response = $sg->client->mail()->send()->post($email);
 
-        $sendgrid = new SendGrid($sendgrid_api_key);
-        $email = new SendGrid\Email();
-        $email->
-        $email->addTo("radhack242@gmail.com");
-        $email->setFrom("radhack242@gmail.com");
-        $email->setSubject("HelloWorks callback received");
-        $email->setHtml("<pre>$status</pre> is the status<br /><br />$identity is the email of the signer<br /><pre>$hw_id</pre> is the instance id<br /><pre>$form1_name</pre> is the form name<br /><br /><a href=\"$form1_url\">this</a> is where you can download the form");
-//      $email->addAttachment("$filePath");
-        $email->
-        $response = $sendgrid->send($email);
+        echo $response->statusCode();
+        print_r($response->headers());
+        echo $response->body();
 
 // print everything out
         print_r($response);
@@ -147,7 +119,7 @@
     }
 
     //remove the below comment to test callback actions
-//    goto invalid_hash;
+    goto invalid_hash;
 
     $event_time = $data->event->event_time;
     $event_type = $data->event->event_type;

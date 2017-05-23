@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "867904df990182941f8cded02ee8fac9",
+    "content-hash": "c9aea2c438b077242ef5dccc51341b04",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -274,6 +274,104 @@
             "time": "2016-08-06T14:39:51+00:00"
         },
         {
+            "name": "sendgrid/php-http-client",
+            "version": "3.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sendgrid/php-http-client.git",
+                "reference": "bec48e0e2e41331438ba7872805b86c45387178d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sendgrid/php-http-client/zipball/bec48e0e2e41331438ba7872805b86c45387178d",
+                "reference": "bec48e0e2e41331438ba7872805b86c45387178d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.4",
+                "squizlabs/php_codesniffer": "~2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SendGrid\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Bernier",
+                    "email": "dx@sendgrid.com"
+                },
+                {
+                    "name": "Elmer Thomas",
+                    "email": "elmer@thinkingserious.com"
+                }
+            ],
+            "description": "HTTP REST client, simplified for PHP",
+            "homepage": "http://github.com/sendgrid/php-http-client",
+            "keywords": [
+                "api",
+                "fluent",
+                "http",
+                "rest",
+                "sendgrid"
+            ],
+            "time": "2017-05-05T06:15:41+00:00"
+        },
+        {
+            "name": "sendgrid/sendgrid",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sendgrid/sendgrid-php.git",
+                "reference": "85494a92f3dbf73a0ec164933c202a76b3304e9a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sendgrid/sendgrid-php/zipball/85494a92f3dbf73a0ec164933c202a76b3304e9a",
+                "reference": "85494a92f3dbf73a0ec164933c202a76b3304e9a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6",
+                "sendgrid/php-http-client": "~3.7"
+            },
+            "replace": {
+                "sendgrid/sendgrid-php": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*",
+                "squizlabs/php_codesniffer": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/SendGrid.php",
+                    "lib/helpers/mail/Mail.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "This library allows you to quickly and easily send emails through SendGrid using PHP.",
+            "homepage": "http://github.com/sendgrid/sendgrid-php",
+            "keywords": [
+                "email",
+                "grid",
+                "send",
+                "sendgrid"
+            ],
+            "time": "2017-05-22 19:25:51"
+        },
+        {
             "name": "tecnickcom/tcpdf",
             "version": "dev-master",
             "source": {
@@ -386,7 +484,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "hellosign/hellosign-php-sdk": 20,
-        "tecnickcom/tcpdf": 20
+        "tecnickcom/tcpdf": 20,
+        "sendgrid/sendgrid": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
