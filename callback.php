@@ -83,9 +83,8 @@
             echo $response;
         }
 
-//        $path = "downloaded_files/$hw_id.pdf";        
-        $fileName = "$hw_id.pdf";
-        file_put_contents($fileName, $response_pdf);
+        $target_file = "$hw_id.pdf";
+        file_put_contents("downloaded_files/".$target_file, $response_pdf);
         $file_encoded = base64_encode($response_pdf);
         $to = new SendGrid\Email("HelloWorks Signer", "radhack242@gmail.com");
         $from = new SendGrid\Email("HelloWorks Platform", "radhack242@gmail.com");
@@ -94,7 +93,7 @@
         $attachment = new SendGrid\Attachment();
         $attachment->setType("application/pdf");
         $attachment->setDisposition("attachment");
-        $attachment->setFilename($fileName);
+        $attachment->setFilename($target_file);
         $attachment->setContent($file_encoded);
         $email = new SendGrid\Mail($from, $subject, $to, $content);
         $email->addAttachment($attachment);
