@@ -50,7 +50,7 @@
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "identity%5Btype%5D=email&identity%5Bvalue%5D=$hw_email&identity%5Bfull_name%5D=$hw_name&settings%5Bcallback_url%5D=https%3A%2F%2F9060677a.ngrok.io%2Fcallback.php&identity%5Bverification%5D=link&settings%5Bredirect_url%5D=https%3A%2F%2F9060677a.ngrok.io",
+            CURLOPT_POSTFIELDS => "identity%5Btype%5D=email&identity%5Bvalue%5D=$hw_email&identity%5Bfull_name%5D=$hw_name&settings%5Bcallback_url%5D=https%3A%2F%2F9060677a.ngrok.io%2Fcallback.php&identity%5Bverification%5D=code&settings%5Bredirect_url%5D=https%3A%2F%2F9060677a.ngrok.io",
             CURLOPT_HTTPHEADER => array(
                 "authorization: Bearer $bearer",
                 "cache-control: no-cache",

@@ -51,6 +51,7 @@
             <form action="/helloworks.php" method="post" enctype="multipart/form-data">
                 <fieldset>
                     <p>Enter your name and email address here to try out the W-9 flow</p>
+                    <p><small>Please use false information - this is for demo purposes only</small></p>
                     <input type="text" name="hw_name" id="hw_name" placeholder="First and Last Name"/>
                     <br />
                     <input type="email" name="hw_email" id="hw_email" placeholder="Email Address"/>
