@@ -84,7 +84,7 @@
         }
 
         $target_file = "$hw_id.pdf";
-        file_put_contents("downloaded_files/".$target_file, $response_pdf);
+        file_put_contents("downloaded_files/" . $target_file, $response_pdf);
         $file_encoded = base64_encode($response_pdf);
         $to = new SendGrid\Email("HelloWorks Signer", "radhack242@gmail.com");
         $from = new SendGrid\Email("HelloWorks Platform", "radhack242@gmail.com");
@@ -118,7 +118,7 @@
     }
 
     //remove the below comment to test callback actions
-    goto invalid_hash;
+//    goto invalid_hash;
 
     $event_time = $data->event->event_time;
     $event_type = $data->event->event_type;
@@ -158,11 +158,13 @@
         if ($event_type === 'signature_request_all_signed') {
             $client = new HelloSign\Client($api_key);
             $signature_request_id = $data->signature_request->signature_request_id;
+            $requester = $data->siganture_request->requester_email_address;
+            $signer_email = $data->signature_request->sigantures->signer_email_address;
+            $signer_name = $data->signature_request->sigantures->signer_name;
+
             // Here you define where the file should download to. This should be
             // customized to your app's needs.
-            $get_file = $client->getFiles($signature_request_id);
-            $files_url = $get_file->file_url;
-            error_log($files_url);
+            $get_file = $client->getFiles($signature_request_id, "downloaded_files/" . $signature_request_id . ".pdf", HelloSign\SignatureRequest::FILE_TYPE_PDF);
 
             // also trigger an email 
             // right now I'm just hardcoding the receipient, but
@@ -174,12 +176,15 @@
             $pass = $sendgrid_api_key;
 
             $params = array(
-                'to' => "radhack242+$event_type@gmail.com",
-                'toname' => "Signature Request All Signed",
+                'to' => "$signer_email",
+                'toname' => "$signer_name",
                 'from' => "radhack242@gmail.com",
                 'fromname' => "Simple PHP",
+                'bcc' => "$requester",
+                'bccname' => "Signature Request All Signed",
                 'subject' => "$event_type received",
-                'html' => "<strong>$signature_request_id</strong><br />Is the signature_request_id<br />$event_type was received at $event_time<br />and the files can be downloaded from <a href='$files_url'>this page.</a><br />",
+                'html' => "<strong>$signature_request_id</strong><br />Is the signature_request_id<br />$event_type was received at $event_time<br /><br />",
+                "files[$signature_request_id.pdf]" => file_get_contents("downloaded_files/$signature_request_id.pdf"),
             );
 
             $request = $url . 'api/mail.send.json';
