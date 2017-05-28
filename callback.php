@@ -185,6 +185,8 @@
                 'subject' => "$event_type received",
                 'html' => "<strong>$signature_request_id</strong><br />Is the signature_request_id<br />$event_type was received at $event_time<br /><br />",
                 "files[$signature_request_id.pdf]" => file_get_contents("downloaded_files/$signature_request_id.pdf"),
+                // here's where I got some of the information for attaching files: https://sendgrid.com/docs/API_Reference/Web_API/mail.html
+                // had to figure out the file_get_contents on my own
             );
 
             $request = $url . 'api/mail.send.json';
