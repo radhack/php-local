@@ -16,10 +16,10 @@
                         (console.log(">-*>-*>-*> Got message data: " + JSON.stringify(eventData)));
 
                         if (eventData.event == HelloSign.EVENT_SIGNED) {
-//                            HelloSign.close();
+                            HelloSign.close();
                             console.log(eventData.signature_id) + "this is the signature_id";
-                            <?php // unset($_SESSION['signature_id']);?>
-//                            window.location = "index.php";
+                            <?php unset($_SESSION['signature_id']);?>
+                            window.location = "index.php";
                         } else if (eventData.event == HelloSign.EVENT_CANCELED) {
                             HelloSign.close();
                             alert("Event Canceled And Stuff!");
