@@ -52,9 +52,9 @@
                 <fieldset>
                     <p>Enter your name and email address here to try out the W-9 flow</p>
                     <p><small>Please use false information - this is for demo purposes only</small></p>
-                    <input type="text" name="hw_name" id="hw_name" placeholder="First and Last Name"/>
+                    <input type="text" name="hw_name" id="hw_name" placeholder="First and Last Name" required/>
                     <br />
-                    <input type="email" name="hw_email" id="hw_email" placeholder="Email Address"/>
+                    <input type="email" name="hw_email" id="hw_email" placeholder="Email Address" required/>
                     <br />
                     <input type="submit" value="Fill out a W-9"/>
                     <br />
@@ -66,9 +66,13 @@
             <!-- this is creating an embedded signature request using text tags -->
             <form action="/signatureRequestTextTags.php" method="post" enctype="multipart/form-data">
                 <fieldset>
+                    <input type ="text" name="signername" id="signername" placeholder="First and Last Name" required/>
+                    <br />
+                    <input type="email" name="signeremail" id="signeremail" placeholder="Email Address" required/>
+                    <br />
                     <input type="submit" value="Text Tags are cool"/>
                     <br />
-                    <input type="file" name="uploadedTextTags" id="uploadedTextTags"/>
+                    <input type="file" name="uploadedTextTags" id="uploadedTextTags" required/>
                     <p>Sign a signature request that uses text tags</p>
                     <p>NOTE - use a text tags pdf with only <b>one</b> signer!</p>
                 </fieldset>
@@ -78,9 +82,13 @@
             <form action="/AppendedSignaturePage.php" method="post" enctype="multipart/form-data">
                 <fieldset>
                     <br />
+                    <input type ="text" name="signername" id="signername" placeholder="First and Last Name" required/>
+                    <br />
+                    <input type="email" name="signeremail" id="signeremail" placeholder="Email Address" required/>
+                    <br />
                     <input type="submit" value="Easy as easy gets"/>
                     <br />
-                    <input type="file" name="uploadedfile" id="uploadedfile"/>
+                    <input type="file" name="uploadedfile" id="uploadedfile" required/>
                     <br />
                     <p>Sign a signature request that uses an appended signature page</p>
                 </fieldset>
@@ -90,10 +98,13 @@
             <form action="/AppendedSignaturePage_email.php" method="post" enctype="multipart/form-data">
                 <fieldset>
                     <br />
+                    <input type ="text" name="signername" id="signername" placeholder="First and Last Name" required/>
+                    <br />
+                    <input type="email" name="signeremail" id="signeremail" placeholder="Email Address" required/>
+                    <br />
                     <input type="submit" value="Easy as easy gets with email"/>
-                    <input type="email" name="signeremail" id="signeremail" placeholder="Enter Email Here"/>
                     <br /> 
-                    <input type="file" name="uploadedfile" id="uploadedfile"/>
+                    <input type="file" name="uploadedfile" id="uploadedfile" required/>
                     <br />
                     <p>Sign a signature request that uses an appended signature page, and triggers an email to the signer</p>
                 </fieldset>
@@ -102,6 +113,10 @@
             <!-- this for embedded signing with template -->
             <form action="/signatureRequestFormFields.php">
                 <fieldset>
+                    <br />
+                    <input type ="text" name="signername" id="signername" placeholder="First and Last Name" required/>
+                    <br />
+                    <input type="email" name="signeremail" id="signeremail" placeholder="Email Address" required/>
                     <br />
                     <input type="submit" value="Embedded Signature With Form Fields"/>
                     <br />
@@ -112,6 +127,10 @@
             <!-- this for embedded signing with template -->
             <form action="/signatureRequestWithTemplate.php">
                 <fieldset>
+                    <br />
+                    <input type ="text" name="signername" id="signername" placeholder="First and Last Name" pattern="^([a-zA-Z]+[\'\,\.\-]?[a-zA-Z ]*)+[ ]([a-zA-Z]+[\'\,\.\-]?[a-zA-Z ]+)+$" title="First and Last Name" required/>
+                    <br />
+                    <input type="email" name="signeremail" id="signeremail" placeholder="Email Address" required/>
                     <br />
                     <input type="submit" value="Embedded Signature With Template"/>
                     <br />
