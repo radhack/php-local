@@ -167,8 +167,8 @@
             $get_file = $client->getFiles($signature_request_id, "downloaded_files/" . $signature_request_id . ".pdf", HelloSign\SignatureRequest::FILE_TYPE_PDF);
 
             // also trigger an email 
-            // right now I'm just hardcoding the receipient, but
-            // this could be updated to work with a database
+            // right now I'm just hardcoding the receipient in the signature request,
+            // but this could be updated to work with a database
             // to make the receipient smart
             $event_time = $data->event->event_time;
             $sendgrid = new SendGrid($sendgrid_api_key);
