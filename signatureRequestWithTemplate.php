@@ -24,9 +24,10 @@
             include('signerpage.php');
             } catch (Exception $e) {
                 if ($e->getMessage() == "This request has already been signed") {
+                    $filename = "downloaded_files/".$_SESSION['signature_request_id'].".pdf";
                     $client = new HelloSign\Client($api_key);
-                    $client->getFiles($_SESSION['signature_request_id'], "downloaded_files/".$_SESSION['signature_request_id'].".pdf", HelloSign\SignatureRequest::FILE_TYPE_PDF);
-                    //serve the file as needed
+                    $file = $client->getFiles($_SESSION['signature_request_id'], $filename , HelloSign\SignatureRequest::FILE_TYPE_PDF);
+                    echo "<iframe src=\"$filename\" width=\"100%\" style=\"height:880px\"></iframe>";
                 } else {
                     echo "there was a different value";
                 }
