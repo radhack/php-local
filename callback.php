@@ -126,7 +126,7 @@
     $hash_check_failed = 0;
 
     //check for hash validity
-//    $hash_check = hash_hmac("sha256", $event_time . $event_type, $api_key);
+    $hash_check = hash_hmac("sha256", $event_time . $event_type, $api_key);
 //    if ($hash_check != $event_hash) {
 //        $hash_check_failed = 1;
 //        goto invalid_hash;
