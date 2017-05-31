@@ -17,7 +17,7 @@
         require_once 'vendor/autoload.php';
         include('auth.php');
         
-        if (isset($_SESSION['sign_id'])) {
+        if (isset($_SESSION['signature_id'])) {
             try {// Instance of a client for you to use for calls
             $client = new HelloSign\Client($api_key);
             // Retrieve the URL to sign the document
@@ -27,14 +27,7 @@
             $sign_url = $embedded_response->getSignUrl();
             include('signerpage.php');
             } catch (Exception $e) {
-                if (!isNull($e->getMessage())) {
-                    $filename = "downloaded_files/".$_SESSION['signature_request_id'].".pdf";
-                    $client = new HelloSign\Client($api_key);
-                    $file = $client->getFiles($_SESSION['signature_request_id'], $filename , HelloSign\SignatureRequest::FILE_TYPE_PDF);
-                    echo "<iframe src=\"$filename\" width=\"100%\" style=\"height:880px\"></iframe>";
-                } else {
-                    echo "there was a different value";
-                }
+                echo "$e is the error - you'll have to go <a href=\"index.php\">here</a> to get home and try again";  
             }
         } else {
             // Instance of a client for you to use for calls
@@ -100,7 +93,7 @@
             $signature_request_id = $response->signature_request_id;
             $signatures = $response->getSignatures();
             $signature_id = $signatures[0]->getId();
-            $_SESSION['sign_id'] = $signature_id;
+            $_SESSION['signature_id'] = $signature_id;
 
             // Retrieve the URL to sign the document
             $embedded_response = $client->getEmbeddedSignUrl($signature_id);
