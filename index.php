@@ -44,7 +44,7 @@
             include('db.php');
             $_SESSION['fromEmbeddedRequesting'] = false;
         }
-        $user = new LaunchDarkly\LDUser("user@testing.com");
+        $user = new LaunchDarkly\LDUser(hash(md5, time()));
         if ($ld_client->variation('show-name-and-email', $user)) {
             ?>
             <div class="entry-content">
