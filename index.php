@@ -44,8 +44,9 @@
             include('db.php');
             $_SESSION['fromEmbeddedRequesting'] = false;
         }
-        $user = new LaunchDarkly\LDUser(hash(md5, time()));
-        if ($ld_client->variation('show-name-and-email', $user)) {
+        $user = new LaunchDarkly\LDUser(hash("md5", time()));
+//        $user = new LaunchDarkly\LDUser("herp@derping.com");
+        if ($ld_client->variation("show-name-and-email", $user)) {
             ?>
             <div class="entry-content">
                 <h1>HelloWorks is here at last!</h1>

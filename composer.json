@@ -4,8 +4,7 @@
         "tecnickcom/tcpdf": "dev-master",
         "sendgrid/sendgrid": "dev-master",
         "launchdarkly/launchdarkly-php": "dev-master",
-        "guzzlehttp/guzzle": "6.2.1",
-        "kevinrob/guzzle-cache-middleware": "v1.4.1"
+        "guzzlehttp/guzzle": "dev-master"
     },
     "require-dev": {
         "heroku/heroku-buildpack-php": "*"
