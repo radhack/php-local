@@ -28,7 +28,7 @@ $time = time();
 
 if (isset($signature_request_id)) {
 
-    // Create connection
+    // Create connection to save to sigantureRequest table
     $conn = new mysqli($servername, $dbadmin, $dbpassword, $dbname);
     // Check connection
     if ($conn->connect_error) {
@@ -46,6 +46,25 @@ if (isset($signature_request_id)) {
     } else {
         echo "<br />Error INSERTing (lol): " . $conn->error;
     }
+
+    // Create connection to save to sigantureId table
+    if (isset($signature_id)) {
+        
+        $conn1 = new mysqli($servername, $dbadmin, $dbpassword, $dbname);
+        // Check connection
+        if ($conn1->connect_error) {
+            die("Connection failed: " . $conn1->connect_error);
+        }
+
+        $sql = "INSERT INTO signatureId VALUES('$signature_request_id','$signature_id','$event_sent_bool')";
+
+        if ($conn1->query($sql) === TRUE) {
+            echo "INSERT to testdb successfull";
+        } else {
+            echo "<br />Error INSERTing (lol): " . $conn1->error;
+        }
+    }
+
 } elseif (isset($template_id)) {
 
     // Create connection
@@ -62,14 +81,16 @@ if (isset($signature_request_id)) {
     } else {
         echo "<br />Error INSERTing (lol): " . $conn->error;
     }
+
 } elseif (isset($_SESSION['fromEmbeddedRequesting']) && $_SESSION['fromEmbeddedRequesting'] == true) {
-    
+
     // Create connection
     $conn = new mysqli($servername, $dbadmin, $dbpassword, $dbname);
     // Check connection
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
+
     $converted = json_encode($signature_request_object->toArray());
     $signature_request_id = $_SESSION['signature_request_id'];
 
@@ -80,7 +101,8 @@ if (isset($signature_request_id)) {
     } else {
         echo "<br />Error INSERTing (lol): " . $conn->error;
     }
-} elseif (isset ($hw_email)) {
+
+} elseif (isset($hw_email)) {
 
     // Create connection
     $conn = new mysqli($servername, $dbadmin, $dbpassword, $dbname);
