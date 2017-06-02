@@ -51,6 +51,9 @@
         //$request->setHideTextTags(true);
         //$request->setUseTextTags(true);
         $request->addFile("$target_file");
+//        $request->setSigningRedirectUrl("http://9060677a.ngrok.io");
+//        $request->addSigner("alex+signer1@hellosign.com", "Alex Signer 1", 0);
+//        $request->addSigner("alex+signer2@hellosign.com", "Alex Signer 2", 1);
         // $request->setAllowDecline(true); //uncomment this when allowDecline is built into the PHP SDK
         $draft_request = new HelloSign\UnclaimedDraft($request, $client_id);
         $response = $client->createUnclaimedDraft($draft_request);
