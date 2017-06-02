@@ -16,7 +16,7 @@
         <?php
         require_once 'vendor/autoload.php';
         include('auth.php');
-        
+
         $target_dir = "uploads/";
         $target_file = $target_dir . basename($_FILES["requestingFileEmbSig"]["name"]);
         $uploadOk = 1; //this is used if the other if statements are used
@@ -41,50 +41,50 @@
                 goto skip;
             }
         }
-         
+
         // Instance of a client for you to use for calls
         $client = new HelloSign\Client($api_key);
 
-//        $request = new HelloSign\SignatureRequest;
-//        $request->enableTestMode();
-//        $request->setRequesterEmail('phpexample@example.com');
-//        //$request->setHideTextTags(true);
-//        //$request->setUseTextTags(true);
-//        $request->addFile("$target_file");
-//        $draft_request = new HelloSign\UnclaimedDraft($request, $client_id);
-//        $draft_request->setIsForEmbeddedSigning(true);
-//        $response = $client->createUnclaimedDraft($draft_request);
-//        $sign_url = $draft_request->getClaimUrl();
+        $request = new HelloSign\SignatureRequest;
+        $request->enableTestMode();
+        $request->setRequesterEmail('phpexample@example.com');
+        //$request->setHideTextTags(true);
+        //$request->setUseTextTags(true);
+        $request->addFile("$target_file");
+        $draft_request = new HelloSign\UnclaimedDraft($request, $client_id);
+        $draft_request->setIsForEmbeddedSigning(true);
+        $response = $client->createUnclaimedDraft($draft_request);
+        $sign_url = $draft_request->getClaimUrl();
 
 
-        $baseReq = new HelloSign\TemplateSignatureRequest();
-        $baseReq->setTemplateId("5f5650f1cbfd497393cfa426d7d8d81e2a62a1f4");
-        $baseReq->setSigner('Role1', 'radhack242@gmail.com', 'Jack');
-//        $request->setSigner('Role2', 'jack@example.com', 'and Jill');
-//        $request->setSigner('Role3', 'jack@example.com', 'Went');
-//        $request->setSigner('Role4', 'jack@example.com', 'Up The');
-//        $request->setSigner('Role5', 'jack@example.com', 'Hill');
-//        $request->setCustomFieldValue('Cost', '$100,000,000                                             ', "Role1");
-//        $request->setCustomFieldValue('Amount', "There's not much", "Role1");
-//        $request->setCustomFieldValue("Applicant", "Bobs's the name", "Role1");
-        $baseReq->setCustomFieldValue('Cost', '$100,000,000');
-        $baseReq->setCustomFieldValue('Amount', "There's not much");
-        $baseReq->setCustomFieldValue("Applicant", "Bobs's the name");
-        $baseReq->setRequesterEmailAddress('alex@hellosign.com');
-        $baseReq->addMetadata('custom_id', '1234');
-        $baseReq->enableTestMode(); //this is a documentation bug at the very least
-
-        $request = new HelloSign\EmbeddedSignatureRequest($baseReq);
-        $request->setClientId($_SESSION['client_id']);
+//        $baseReq = new HelloSign\TemplateSignatureRequest();
+//        $baseReq->setTemplateId("5f5650f1cbfd497393cfa426d7d8d81e2a62a1f4");
+//        $baseReq->setSigner('Role1', 'radhack242@gmail.com', 'Jack');
+////        $request->setSigner('Role2', 'jack@example.com', 'and Jill');
+////        $request->setSigner('Role3', 'jack@example.com', 'Went');
+////        $request->setSigner('Role4', 'jack@example.com', 'Up The');
+////        $request->setSigner('Role5', 'jack@example.com', 'Hill');
+////        $request->setCustomFieldValue('Cost', '$100,000,000                                             ', "Role1");
+////        $request->setCustomFieldValue('Amount', "There's not much", "Role1");
+////        $request->setCustomFieldValue("Applicant", "Bobs's the name", "Role1");
+//        $baseReq->setCustomFieldValue('Cost', '$100,000,000');
+//        $baseReq->setCustomFieldValue('Amount', "There's not much");
+//        $baseReq->setCustomFieldValue("Applicant", "Bobs's the name");
+//        $baseReq->setRequesterEmailAddress('alex@hellosign.com');
+//        $baseReq->addMetadata('custom_id', '1234');
+//        $baseReq->enableTestMode(); //this is a documentation bug at the very least
+//
+//        $request = new HelloSign\EmbeddedSignatureRequest($baseReq);
+//        $request->setClientId($client_id);
+//        $request->setClientId($_SESSION['client_id']);
 //        $request->isUsingTemplate(true);
 //        $request->setEmbeddedSigning();
+//                $sign_url = $response->getClaimUrl();
 
-        $response = $client->createUnclaimedDraftEmbeddedWithTemplate($request);
+//        $response = $client->createUnclaimedDraftEmbeddedWithTemplate($request);
         $signature_request_id = $response->signature_request_id;
         $createdHow = "embeddedRequestingWithEmbeddedSigning";
         include('db.php');
-
-        $sign_url = $draft_request->getClaimUrl();
 
         // call the html page with the embedded.js lib and HelloSign.open()
         include('signerpage.php');
