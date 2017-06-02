@@ -71,15 +71,17 @@
         $signature_id = $signatures[0]->getId();
         $_SESSION['signature_id'] = $signature_id;
         $createdHow = "signatureRequestWithTemplate";
+        
+        $event_sent_bool = 0; // set the db to false for signature_request_sent event
         include('db.php');
 
         // Retrieve the URL to sign the document
         $embedded_response = $client->getEmbeddedSignUrl($signature_id);
 
         // Store it to use with the embedded.js HelloSign.open() call
-//        $sign_url = $embedded_response->getSignUrl();
-        $sign_url = str_replace("/", "\/", $embedded_response->getSignUrl());
-        echo ("<br />$sign_url");
+        $sign_url = $embedded_response->getSignUrl();
+//        $sign_url = str_replace("/", "\/", $embedded_response->getSignUrl());
+//        echo ("<br />$sign_url");
 
 
         // call the html page with the embedded.js lib and HelloSign.open()
