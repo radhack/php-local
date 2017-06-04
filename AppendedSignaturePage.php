@@ -16,7 +16,7 @@
         <?php
         require_once 'vendor/autoload.php';
         include('auth.php');
-        
+
         $target_dir = "uploads/";
         $target_file = $target_dir . basename($_FILES["uploadedfile"]["name"]);
         $uploadOk = 1; //this is used if the other if statements are used
@@ -50,7 +50,7 @@
         $request->setTitle("Testing");
         $request->setSubject('My First embedded signature request');
         $request->setMessage('Awesome, right?');
-        $request->addSigner('testing@testing.com', 'Something');
+        $request->addSigner($_POST['signeremail'], $_POST['signername']);
         // $request->setAllowDecline(true); // uncomment this when allowDecline is built into the PHP SDK
         $request->addFile("$target_file");
 
@@ -66,16 +66,44 @@
         $signatures = $response->getSignatures();
         $signature_id = $signatures[0]->getId();
         $createdHow = "appendedSignaturePage";
+        $event_sent_bool = 0; // this is used to setup responsive design, where I wait for the signature_request_sent callback event before bringing up the iframe
         include('db.php');
-        
+
         // Retrieve the URL to sign the document
         $response = $client->getEmbeddedSignUrl($signature_id);
 
         // Store it to use with the embedded.js HelloSign.open() call
         $sign_url = $response->getSignUrl();
 
+        // check for the callback
+        // Create connection
+        $conn = new mysqli($servername, $dbadmin, $dbpassword, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        
         include('signerpage.php');
         
+        checkLoop:
+        $sql = "SELECT event_sent_bool from signatureId WHERE signature_id = $signature_id";
+        
+        if ($sql == 1) {
+            
+        } elseif ($sql == 0) {
+            ?><h2>Loading - please wait...</h2>
+            <img src="triangle.gif" alt="Loading...">
+            <?php
+                sleep(2);
+                goto checkLoop;
+        } else {
+            echo "<h1>There was an error communicating with the server, please try again</h1><br />";
+            echo "<a href=\"index.php\">Click here to go home</a>";
+        }
+
+        
+        
+
         skip:
         // skip loop so this doesn't run when skip isn't used
         if ($uploadOk === 0) {
