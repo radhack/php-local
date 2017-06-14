@@ -47,9 +47,9 @@
         $request->enableTestMode();
         $request->setClientId($client_id);
         $request->addFile("$target_file");
-        $request->setTitle("things here are...");
-        $request->setSubject("and here are other things");
-        $request->setMessage("exactly what they seem");
+//        $request->setTitle("things here are...");
+//        $request->setSubject("and here are other things");
+//        $request->setMessage("exactly what they seem");
 //        $request->setTitle('Test Title');
 //        $request->setSubject('Test Subject');
 //        $request->setMessage('Test Message');
@@ -58,16 +58,16 @@
 //$request->addSignerRole('Role2', 2);
 //$request->addSignerRole('Role3', 3);
         $request->addSignerRole('Role0');
-        $request->addSignerRole('Role1');
-        $request->addSignerRole('Role2');
-        $request->addSignerRole('Role3');
+//        $request->addSignerRole('Role1');
+//        $request->addSignerRole('Role2');
+//        $request->addSignerRole('Role3');
 //$request->addCCRole('Test CC Role');
-        $request->addMergeField('Test Merge', 'text');
-        $request->addMergeField('Test Merge 1', 'text');
-        $request->addMergeField('Test Merge 3', 'text');
-        $request->addMergeField('Test Merge 4', 'text');
-        $request->addMergeField('Test Merge 5', 'text');
-        $request->addMergeField('Test Merge 2', 'checkbox');
+//        $request->addMergeField('Test Merge', 'text');
+//        $request->addMergeField('Test Merge 1', 'text');
+//        $request->addMergeField('Test Merge 3', 'text');
+//        $request->addMergeField('Test Merge 4', 'text');
+//        $request->addMergeField('Test Merge 5', 'text');
+//        $request->addMergeField('Test Merge 2', 'checkbox');
 
         $response = $client->createEmbeddedDraft($request);
 

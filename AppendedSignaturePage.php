@@ -11,8 +11,76 @@
         <link rel="icon" type="image/png" href="/favicon-16x16.png"/>
         <link rel="manifest" href="/manifest.json" />
         <link rel="mask-icon" href="/safari-pinned-tab.svg"/>
+        <style> 
+            #myImg {
+                border-radius: 5px;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+            #myImg:hover {opacity: 0.7;}
+
+            /* The Modal (background) */
+            .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                padding-top: 100px; /* Location of the box */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+            }
+            /* Modal Content (image) */
+            .modal-content {
+                margin: auto;
+                display: block;
+                width: 80%;
+                max-width: 700px;
+            }
+
+            /* Caption of Modal Image */
+            #caption {
+                margin: auto;
+                display: block;
+                width: 80%;
+                max-width: 700px;
+                text-align: center;
+                color: #ccc;
+                padding: 10px 0;
+                height: 150px;
+            }
+
+            /* Add Animation */
+            .modal-content, #caption {    
+                -webkit-animation-name: zoom;
+                -webkit-animation-duration: 0.6s;
+                animation-name: zoom;
+                animation-duration: 0.6s;
+            }
+
+            @-webkit-keyframes zoom {
+                from {-webkit-transform:scale(0)} 
+                to {-webkit-transform:scale(1)}
+            }
+
+            @keyframes zoom {
+                from {transform:scale(0)} 
+                to {transform:scale(1)}
+            }
+            /* 100% Image Width on Smaller Screens */
+            @media only screen and (max-width: 700px){
+                .modal-content {
+                    width: 100%;
+                }
+            }
+        </style>
     </head>
     <body>
+        Hi there - thanks for visiting my page
         <?php
         require_once 'vendor/autoload.php';
         include('auth.php');
@@ -50,7 +118,8 @@
         $request->setTitle("Testing");
         $request->setSubject('My First embedded signature request');
         $request->setMessage('Awesome, right?');
-        $request->addSigner($_POST['signeremail'], $_POST['signername']);
+//        $request->addSigner($_POST['signeremail'], $_POST['signername']);
+        $request->addSigner("radhack242+signersandthings@gmail.com", "Bob The Signer");
         // $request->setAllowDecline(true); // uncomment this when allowDecline is built into the PHP SDK
         $request->addFile("$target_file");
 
@@ -68,7 +137,13 @@
         $createdHow = "appendedSignaturePage";
         $event_sent_bool = 0; // this is used to setup responsive design, where I wait for the signature_request_sent callback event before bringing up the iframe
         include('db.php');
-
+        ?>
+        <script>
+            console.log("WHAT THE FUCK YO");
+            setTimeout(function () { alert('Loading - please wait');
+            }, 3000);
+        </script>
+        <?php
         // Retrieve the URL to sign the document
         $response = $client->getEmbeddedSignUrl($signature_id);
 
@@ -82,34 +157,35 @@
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-        
+
+        //TODO move this to signerpage so that loading gif will load
+        while (1 == 1){
+        $result = mysqli_query($conn, "SELECT event_sent_bool FROM signatureId WHERE signature_id = '$signature_id'");
+        $sent_event_received = mysqli_fetch_row($result);
+
+        echo "<br /><br />$sent_event_received[0]";
+
+            if ($sent_event_received[0] == 1) {
+                break;
+            } else {
+                ?>
+                <script>
+                    console.log("still loading...");
+                    setTimeout(function () {
+                    }, 5000);
+                </script>
+                <?php
+            }
+        }
         include('signerpage.php');
-        
-        checkLoop:
-        $sql = "SELECT event_sent_bool from signatureId WHERE signature_id = $signature_id";
-        
-        if ($sql == 1) {
-            
-        } elseif ($sql == 0) {
-            ?><h2>Loading - please wait...</h2>
-            <img src="triangle.gif" alt="Loading...">
-            <?php
-                sleep(2);
-                goto checkLoop;
-        } else {
-            echo "<h1>There was an error communicating with the server, please try again</h1><br />";
-            echo "<a href=\"index.php\">Click here to go home</a>";
-        }
+$conn->close();
 
-        
-        
-
-        skip:
-        // skip loop so this doesn't run when skip isn't used
-        if ($uploadOk === 0) {
-            echo '<br />';
-            echo '<a href="index.php">GO HOME YOU ARE DRUNK</a>';
-        }
-        ?>
+skip:
+// skip loop so this doesn't run when skip isn't used
+if ($uploadOk === 0) {
+    echo '<br />';
+    echo '<a href="index.php">GO HOME YOU ARE DRUNK</a>';
+}
+?>
     </body>
 </html>

@@ -42,7 +42,7 @@ if (isset($signature_request_id)) {
     }
 
     if ($conn->query($sql) === TRUE) {
-        echo "INSERT to testdb successfull";
+        echo "INSERT INTO signatureRequest testdb successfull";
     } else {
         echo "<br />Error INSERTing (lol): " . $conn->error;
     }
@@ -59,7 +59,7 @@ if (isset($signature_request_id)) {
         $sql = "INSERT INTO signatureId VALUES('$signature_request_id','$signature_id','$event_sent_bool')";
 
         if ($conn1->query($sql) === TRUE) {
-            echo "INSERT to testdb successfull";
+            echo "INSERT INTO signatureId testdb successfull";
         } else {
             echo "<br />Error INSERTing (lol): " . $conn1->error;
         }
@@ -122,4 +122,4 @@ if (isset($signature_request_id)) {
 //    if same signer comes back to HelloWorks, serve same hw_sign_url
 }
 
-$conn->close();
+//$conn->close();

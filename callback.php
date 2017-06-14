@@ -185,8 +185,8 @@
                 'subject' => "$event_type received",
                 'html' => "<strong>$signature_request_id</strong><br />Is the signature_request_id<br />$event_type was received at $event_time<br /><br />",
                 "files[$signature_request_id.pdf]" => file_get_contents("downloaded_files/$signature_request_id.pdf"),
-                // here's where I got some of the information for attaching files: https://sendgrid.com/docs/API_Reference/Web_API/mail.html
-                // had to figure out the file_get_contents on my own
+                    // here's where I got some of the information for attaching files: https://sendgrid.com/docs/API_Reference/Web_API/mail.html
+                    // had to figure out the file_get_contents on my own
             );
 
             $request = $url . 'api/mail.send.json';
@@ -253,41 +253,94 @@
             print_r($response);
         } elseif ($event_type === 'signature_request_sent') {
             $signature_request_id = $data->signature_request->signature_request_id;
-            $event_time = $data->event->event_time;
-            $sendgrid = new SendGrid($sendgrid_api_key);
-            $url = 'https://api.sendgrid.com/';
-            $pass = $sendgrid_api_key;
+            $dbadmin = getenv('DB_ADMIN');
+            $dbpassword = getenv('DB_PASSWORD');
+            $servername = "localhost";
+            $dbname = "testdb";
+            // Create connection
+            $conn = new mysqli($servername, $dbadmin, $dbpassword, $dbname);
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
 
-            $params = array(
-                'to' => "radhack242+$event_type@gmail.com",
-                'toname' => "Signature Request Sent",
-                'from' => "radhack242@gmail.com",
-                'fromname' => "Simple PHP",
-                'subject' => "$event_type received",
-                'html' => "<strong>$signature_request_id</strong><br />Is the signature_request_id<br />$event_type was received at $event_time<br />",
-            );
+            $sql = "UPDATE signatureId SET event_sent_bool='1' WHERE signature_request_id='$signature_request_id'";
 
-            $request = $url . 'api/mail.send.json';
+            if ($conn->query($sql) === TRUE) {
+                $event_time = $data->event->event_time;
+                $sendgrid = new SendGrid($sendgrid_api_key);
+                $url = 'https://api.sendgrid.com/';
+                $pass = $sendgrid_api_key;
+
+                $params = array(
+                    'to' => "radhack242+$event_type@gmail.com",
+                    'toname' => "Signature Request Sent",
+                    'from' => "radhack242@gmail.com",
+                    'fromname' => "Simple PHP",
+                    'subject' => "$event_type received",
+                    'html' => "<strong>$signature_request_id</strong> has been updated and <br />Is the signature_request_id<br />$event_type was received at $event_time<br />",
+                );
+
+                $request = $url . 'api/mail.send.json';
 
 // Generate curl request
-            $session = curl_init($request);
+                $session = curl_init($request);
 // Tell PHP not to use SSLv3 (instead opting for TLS)
-            curl_setopt($session, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
-            curl_setopt($session, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $sendgrid_api_key));
+                curl_setopt($session, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
+                curl_setopt($session, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $sendgrid_api_key));
 // Tell curl to use HTTP POST
-            curl_setopt($session, CURLOPT_POST, true);
+                curl_setopt($session, CURLOPT_POST, true);
 // Tell curl that this is the body of the POST
-            curl_setopt($session, CURLOPT_POSTFIELDS, $params);
+                curl_setopt($session, CURLOPT_POSTFIELDS, $params);
 // Tell curl not to return headers, but do return the response
-            curl_setopt($session, CURLOPT_HEADER, false);
-            curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($session, CURLOPT_HEADER, false);
+                curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 
 // obtain response
-            $response = curl_exec($session);
-            curl_close($session);
+                $response = curl_exec($session);
+                curl_close($session);
 
 // print everything out
-            print_r($response);
+                print_r($response);
+            } else {
+
+                $event_time = $data->event->event_time;
+                $sendgrid = new SendGrid($sendgrid_api_key);
+                $url = 'https://api.sendgrid.com/';
+                $pass = $sendgrid_api_key;
+
+                $params = array(
+                    'to' => "radhack242+$event_type@gmail.com",
+                    'toname' => "Signature Request Sent",
+                    'from' => "radhack242@gmail.com",
+                    'fromname' => "Simple PHP",
+                    'subject' => "$event_type received",
+                    'html' => "<strong>$signature_request_id</strong> Error INSERTing (lol): $conn->error <br />Is the signature_request_id<br />$event_type was received at $event_time<br />",
+                );
+
+                $request = $url . 'api/mail.send.json';
+
+// Generate curl request
+                $session = curl_init($request);
+// Tell PHP not to use SSLv3 (instead opting for TLS)
+                curl_setopt($session, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
+                curl_setopt($session, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $sendgrid_api_key));
+// Tell curl to use HTTP POST
+                curl_setopt($session, CURLOPT_POST, true);
+// Tell curl that this is the body of the POST
+                curl_setopt($session, CURLOPT_POSTFIELDS, $params);
+// Tell curl not to return headers, but do return the response
+                curl_setopt($session, CURLOPT_HEADER, false);
+                curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+
+// obtain response
+                $response = curl_exec($session);
+                curl_close($session);
+
+// print everything out
+                print_r($response);
+            }
+            $conn->close();
         } elseif ($event_type === 'file_error') {
             $signature_request_id = $data->signature_request->signature_request_id;
             $event_time = $data->event->event_time;

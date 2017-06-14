@@ -5,15 +5,24 @@
                 HelloSign.init("<?php echo $client_id ?>");
                 HelloSign.open({
                     url: "<?php echo $sign_url ?>",
-                    uxVersion: 2,
-                    allowCancel: true,
-//                    skipDomainVerification: true,
-//                    container: document.getElementById('hsembedded'),
+//                    uxVersion: 1,
 //                    test_mode : 1,
-                    debug: true,
 //                    hideHeader: true,
+                    allowCancel: true,
+                    skipDomainVerification: true,
+                    uxVersion: 2,
+//                    container: document.getElementById('hsembedded'),
+                    debug: true,
                     messageListener: function (eventData) {
                         (console.log(">-*>-*>-*> Got message data: " + JSON.stringify(eventData)));
+                        
+                        if (eventData.signature_id == null) {
+                            alert("SIGNATURE_ID MISSING");
+                        }
+                        
+                        if (eventData.signature_request_id == null) {
+                            alert("SIGNATURE_REQUEST_ID MISSING");
+                        }
 
                         if (eventData.event == HelloSign.EVENT_SIGNED) {
                             HelloSign.close();

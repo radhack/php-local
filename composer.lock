@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "1739e8b94e058421d4da8b66887c52ee523f7d45"
+                "reference": "065287bc14f3e606fe6aec6ecfeac9616afbd3cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/1739e8b94e058421d4da8b66887c52ee523f7d45",
-                "reference": "1739e8b94e058421d4da8b66887c52ee523f7d45",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/065287bc14f3e606fe6aec6ecfeac9616afbd3cb",
+                "reference": "065287bc14f3e606fe6aec6ecfeac9616afbd3cb",
                 "shasum": ""
             },
             "require": {
@@ -69,7 +69,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2017-05-15 08:45:24"
+            "time": "2017-06-10 14:17:14"
         },
         {
             "name": "guzzlehttp/promises",
@@ -310,12 +310,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/launchdarkly/php-client.git",
-                "reference": "4e7022aafe04726ce550ff504a7efdaa2f8a334a"
+                "reference": "630f575d789cdfbd0e58718423c82bff085efa16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/launchdarkly/php-client/zipball/4e7022aafe04726ce550ff504a7efdaa2f8a334a",
-                "reference": "4e7022aafe04726ce550ff504a7efdaa2f8a334a",
+                "url": "https://api.github.com/repos/launchdarkly/php-client/zipball/630f575d789cdfbd0e58718423c82bff085efa16",
+                "reference": "630f575d789cdfbd0e58718423c82bff085efa16",
                 "shasum": ""
             },
             "require": {
@@ -332,7 +332,7 @@
                 "zendframework/zend-serializer": "^2.7"
             },
             "suggest": {
-                "guzzlehttp/guzzle": "(^6.2.1) Required when using the default FeatureRequester",
+                "guzzlehttp/guzzle": "(^6.2.1) Required when using GuzzleEventPublisher or the default FeatureRequester",
                 "kevinrob/guzzle-cache-middleware": "(^1.4.1) Recommended for performance when using the default FeatureRequester",
                 "predis/predis": "(^1.0) Required when using LDDFeatureRequester"
             },
@@ -358,7 +358,7 @@
                 "launchdarkly",
                 "launchdarkly php"
             ],
-            "time": "2017-05-25 22:08:18"
+            "time": "2017-06-06 17:34:02"
         },
         {
             "name": "monolog/monolog",
