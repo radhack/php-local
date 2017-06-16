@@ -154,7 +154,12 @@
     // request is completely signed by all signees, HelloSign has processed
     // the document and has it available for download.
     // if ($reported_app === 'afedad951b68dc42bfbd930e81d97175') {
-    if ($reported_app === '3e3f283135002d1993a92124341193df') {
+    
+    
+//    if ($reported_app === '3e3f283135002d1993a92124341193df') {
+    
+    
+    if ($reported_app === 'xxx') { //stop emails from being sent for now
         if ($event_type === 'signature_request_all_signed') {
             $client = new HelloSign\Client($api_key);
             $signature_request_id = $data->signature_request->signature_request_id;

@@ -14,17 +14,9 @@
     </head>
     <body>
         Hi there - thanks for visiting my page
-        <script>
-            function waitSomeTime() {
-                setTimeout(function(){ console.log("************"); }, 3000);
-            }
-        </script>
         <?php
         require_once 'vendor/autoload.php';
         include('auth.php');
-        if ($not_received !== FALSE) {
-            goto check;
-        }
 
         $target_dir = "uploads/";
         $target_file = $target_dir . basename($_FILES["uploadedfile"]["name"]);
@@ -93,9 +85,9 @@
             die("Connection failed: " . $conn->connect_error);
         }
 
-        check:
         //TODO move this to signerpage so that loading gif will load
-        $result = mysqli_query($conn, "SELECT event_sent_bool FROM signatureId WHERE signature_id = '$signature_id'");
+        $query = mysqli_query($conn, "SELECT event_sent_bool FROM signatureId WHERE signature_id = '$signature_id'");
+        
         $sent_event_received = mysqli_fetch_row($result);
         
         if ($sent_event_received[0] == 0) {
