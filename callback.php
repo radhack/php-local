@@ -116,6 +116,8 @@
 
     if ($data != null) { //only send the response if I'm hit with a POST
         echo 'Hello API Event Received';
+    } else {
+        goto invalid_hash;
     }
 
     //remove the below comment to test callback actions
@@ -128,7 +130,7 @@
 
     //check for hash validity
     $hash_check = hash_hmac("sha256", $event_time . $event_type, $api_key);
-    echo ("*****HASH CHECK<br />$hash_check<br />");
+//    echo ("*****HASH CHECK<br />$hash_check<br />");
 
     $callback_event = new HelloSign\Event($data);
     print_r($callback_event);
@@ -576,7 +578,7 @@
         }
         
         $escaped_data = mysqli_real_escape_string($conn, $json_data);
-        print_r($escaped_data . "<br />*&^ *&^");
+//        print_r($escaped_data . "<br />*&^ *&^");
 
         $sql = "INSERT INTO callback (event_time, event_type, event_hash, hash_check, server_time, data) VALUES('$event_time', "
                 . "'$event_type', "
