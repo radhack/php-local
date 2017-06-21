@@ -113,6 +113,7 @@
 
     $data = json_decode($_POST['json']);
 
+
     if ($data != null) { //only send the response if I'm hit with a POST
         echo 'Hello API Event Received';
     }
@@ -127,12 +128,10 @@
 
     //check for hash validity
     $hash_check = hash_hmac("sha256", $event_time . $event_type, $api_key);
-//    if ($hash_check != $event_hash) {
-//        $hash_check_failed = 1;
-//        goto invalid_hash;
-//    }
-//    
+    echo ("*****HASH CHECK<br />$hash_check<br />");
+
     $callback_event = new HelloSign\Event($data);
+    print_r($callback_event);
     if ($callback_event->isValid($api_key) == FALSE) {
         $hash_check_failed = 1;
         goto invalid_hash;
@@ -154,11 +153,9 @@
     // request is completely signed by all signees, HelloSign has processed
     // the document and has it available for download.
     // if ($reported_app === 'afedad951b68dc42bfbd930e81d97175') {
-    
-    
 //    if ($reported_app === '3e3f283135002d1993a92124341193df') {
-    
-    
+
+
     if ($reported_app === 'xxx') { //stop emails from being sent for now
         if ($event_type === 'signature_request_all_signed') {
             $client = new HelloSign\Client($api_key);
@@ -556,40 +553,106 @@
     }
     invalid_hash:
     if ($hash_check_failed == 1) {
+
+        $dbadmin = getenv('DB_ADMIN');
+        $dbpassword = getenv('DB_PASSWORD');
+        $servername = "localhost";
+        $dbname = "testdb";
+        $server_time = time();
+        $json_data = $_POST['json'];
+        $data_encoded = json_encode($data);
+        $data_serialized = serialize($data);
+        
         $sendgrid = new SendGrid($sendgrid_api_key);
         $url = 'https://api.sendgrid.com/';
         $pass = $sendgrid_api_key;
 
-        $params = array(
-            'to' => "radhack242@gmail.com",
-            'toname' => "Hash Failed",
-            'from' => "radhack242@gmail.com",
-            'fromname' => "Simple PHP",
-            'subject' => "Hash Check Failed",
-            'html' => "$hash_check is the value from my calculation, but $event_hash is hash in the object.<br />$event_time is the event time, and<br />$event_type is the event type.",
-        );
 
-        $request = $url . 'api/mail.send.json';
+        // Create connection to save to sigantureRequest table
+        $conn = new mysqli($servername, $dbadmin, $dbpassword, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        
+        $escaped_data = mysqli_real_escape_string($conn, $json_data);
+        print_r($escaped_data . "<br />*&^ *&^");
+
+        $sql = "INSERT INTO callback (event_time, event_type, event_hash, hash_check, server_time, data) VALUES('$event_time', "
+                . "'$event_type', "
+                . "'$event_hash', "
+                . "'$hash_check', "
+                . "'$server_time', "
+                . "'$escaped_data')";
+//        $sql = $conn-> real_escape_string($sql);
+
+        if ($conn->query($sql) === TRUE) {
+            echo "INSERT INTO callback testdb successfull";
+            $params = array(
+                'to' => "radhack242@gmail.com",
+                'toname' => "Hash Failed Recorded",
+                'from' => "radhack242@gmail.com",
+                'fromname' => "Simple PHP",
+                'subject' => "Hash Check Failed and Recorded",
+                'html' => "$hash_check is the value from my calculation, but $event_hash is hash in the object.<br />$event_time is the event time, and<br />$event_type is the event type.",
+            );
+
+            $request = $url . 'api/mail.send.json';
 
 // Generate curl request
-        $session = curl_init($request);
+            $session = curl_init($request);
 // Tell PHP not to use SSLv3 (instead opting for TLS)
-        curl_setopt($session, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
-        curl_setopt($session, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $sendgrid_api_key));
+            curl_setopt($session, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
+            curl_setopt($session, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $sendgrid_api_key));
 // Tell curl to use HTTP POST
-        curl_setopt($session, CURLOPT_POST, true);
+            curl_setopt($session, CURLOPT_POST, true);
 // Tell curl that this is the body of the POST
-        curl_setopt($session, CURLOPT_POSTFIELDS, $params);
+            curl_setopt($session, CURLOPT_POSTFIELDS, $params);
 // Tell curl not to return headers, but do return the response
-        curl_setopt($session, CURLOPT_HEADER, false);
-        curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($session, CURLOPT_HEADER, false);
+            curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 
 // obtain response
-        $response = curl_exec($session);
-        curl_close($session);
+            $response = curl_exec($session);
+            curl_close($session);
 
 // print everything out
-        print_r($response);
+            print_r($response);
+        } else {
+//            $error = "<br />Error INSERTing (lol): " . $conn->error;
+            echo "<br />Error INSERTing (lol): " . $conn->error;
+//            $params = array(
+//                'to' => "radhack242@gmail.com",
+//                'toname' => "Hash Failed NOT Recorded",
+//                'from' => "radhack242@gmail.com",
+//                'fromname' => "Simple PHP",
+//                'subject' => "Hash Check Failed NOT recorded",
+//                'html' => "$error is the sql error, and $hash_check is the value from my calculation, but $event_hash is hash in the object.<br />$event_time is the event time, and<br />$event_type is the event type.",
+//            );
+//
+//            $request = $url . 'api/mail.send.json';
+//
+//// Generate curl request
+//            $session = curl_init($request);
+//// Tell PHP not to use SSLv3 (instead opting for TLS)
+//            curl_setopt($session, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
+//            curl_setopt($session, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $sendgrid_api_key));
+//// Tell curl to use HTTP POST
+//            curl_setopt($session, CURLOPT_POST, true);
+//// Tell curl that this is the body of the POST
+//            curl_setopt($session, CURLOPT_POSTFIELDS, $params);
+//// Tell curl not to return headers, but do return the response
+//            curl_setopt($session, CURLOPT_HEADER, false);
+//            curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+//
+//// obtain response
+//            $response = curl_exec($session);
+//            curl_close($session);
+//
+//// print everything out
+//            print_r($response);
+        }
+        $conn->close();
     }
     ?>
 </body>
