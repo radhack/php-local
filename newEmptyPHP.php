@@ -1,4 +1,6 @@
 <?php
+require_once 'vendor/autoload.php';
+include('auth.php');
 /*
  * Copyright (C) 2017 alexgriffen
  *
@@ -432,14 +434,61 @@
 ////============================================================+
 //// END OF FILE
 ////============================================================+
+//$token = 'MmQ5ZTVjYmM1ZDg4OGJlZjMyNTNjMDQ4OWQ2ODUxZjVlZmJhZDEyMTg2ZmU5YmEwZWI4NjJmNjY3ZGI3ZjI1YjA1YWY3MDcxMjFlODk5MjNmOWIzZDBiMjc2YjFhMzZhMjEzNDFmODU=';
+
+//$client = new HelloSign\Client($api_key);
+//$oauth_request = new HelloSign\OAuthTokenRequest(array(
+//    'code' => '43e57313f54f4f2d',
+//    'state' => 'somethingrandom',
+//    'client_id' => '2d9e5cbc5d888bef3253c0489d6851f5',
+//    'client_secret' => '249046db0fd92da7ddcbd1487feb7246'
+//        ));
+//
+//
+//
+//// Request OAuth token for the first time
+//$token1 = $client->requestOAuthToken($oauth_request);
+//
+//// Export token to array, store it to use later
+//$hellosign_oauth = $token1->toArray($options);
+//
+//print_r($hellosign_oauth);
+//
+//echo "<br />you got here";
+//
+//// Populate token from array
+//$token = new HelloSign\OAuthToken($hellosign_oauth);
+//
+//print_r($token);//
+//
+//// Provide the user's OAuth access token to the client
+//$client = new HelloSign\Client($token);
+//
+////$signature_requests = $client->getSignatureRequests(1);
+//$response = $client->getAccount();
+//print_r($response->getWarnings());
+//echo "<br />you got more here";
+////echo("$signature_requests");
+
+$client = new HelloSign\Client($api_key);
+$pages = $client->getSignatureRequests()->getNumPages();
+
+fopen('all_signature_requests.log', "w");
+$page = 1;
+$signature_requests = fopen('all_signature_requests.log', "a");
+while ($page <= $pages) {
+    $siganture_requests_object = print_r($client->getSignatureRequests($page), 1);
+    fwrite($signature_requests, $siganture_requests_object);
+    $page++;
+}
 ?>
 
 <!-- this send a signature request using GET parameters in a POST somehow -->
 <form action="https://02b35105d83ab3170140283bd44ff05c958c87fa5a7c7346de1eb83d07f3715f:@api.hellosign.com/v3/signature_request/send?test_mode=1&signers[0][email_address]=alex%2Bsigner@hellosign.com&signers[0][name]=bob+swanson&file_url%5B0%5D=https%3A%2F%2Fcodifysignapi.blob.core.windows.net%2Fpdfs2%2FFreelancerAgreement%2CSchedule.pdf&form_fields_per_document%3D%5B%5B%7B%22api_id%22%3A%20%22e3f6ff_9%22%2C%20%22name%22%3A%20%22%22%2C%20%22type%22%3A%20%22signature%22%2C%20%22x%22%3A%20102%2C%20%22y%22%3A%20217%2C%20%22width%22%3A%20120%2C%20%22height%22%3A%2030%2C%20%22required%22%3A%20true%2C%20%22signer%22%3A%200%2C%20%22page%22%3A%203%7D%2C%7B%22api_id%22%3A%20%22fb001f_9%22%2C%20%22name%22%3A%20%22%22%2C%20%22type%22%3A%20%22signature%22%2C%20%22x%22%3A%20375%2C%20%22y%22%3A%20217%2C%20%22width%22%3A%20120%2C%20%22height%22%3A%2030%2C%20%22required%22%3A%20true%2C%20%22signer%22%3A%201%2C%20%22page%22%3A%203%7D%2C%7B%22api_id%22%3A%20%22f78b4f_9%22%2C%20%22name%22%3A%20%22%22%2C%20%22type%22%3A%20%22signature%22%2C%20%22x%22%3A%20375%2C%20%22y%22%3A%20550%2C%20%22width%22%3A%20120%2C%20%22height%22%3A%2030%2C%20%22required%22%3A%20true%2C%20%22signer%22%3A%201%2C%20%22page%22%3A%204%5D%5D%7D" method="post" enctype="multipart/form-data">        
     <fieldset>
         <input type="submit" value="Template Creation"/>
-<!--        <br />
-        <input type="file" name="uploadedTemplateFile" id="uploadedTemplateFile"/>-->
+        <!--        <br />
+                <input type="file" name="uploadedTemplateFile" id="uploadedTemplateFile"/>-->
         <p>Create a template</p>
     </fieldset>
 </form>
