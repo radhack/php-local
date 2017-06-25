@@ -1,6 +1,25 @@
-
-        <div class="comment-form-comment" id="hsembedded">
-<!--            <script type="text/javascript">-->
+<?php
+        if (isset($check_for_callback) || $check_for_callback == 1){
+            $conn = new mysqli($servername, $dbadmin, $dbpassword, $dbname);
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+            retry:
+            $link1 = mysqli_query($conn, "SELECT event_sent_bool FROM signatureId WHERE signature_id = '$signature_id'");
+            $row = mysqli_fetch_array($link1);
+//            print_r($row['event_sent_bool']);
+            if ($row['event_sent_bool'] == 0){
+                sleep(1);
+                goto retry;
+                echo "sleeping 1<br />";
+            } else {
+                echo "<h1>SHIT'S WORKING YO</h1>";                
+            }
+        }
+        ?>
+<!--        <div class="comment-form-comment" id="hsembedded">
+            <script type="text/javascript">
             <script>
                 HelloSign.init("<?php echo $client_id ?>");
                 HelloSign.open({
@@ -61,4 +80,4 @@
                     }
                 });
             </script>
-        </div>
+        </div>-->
