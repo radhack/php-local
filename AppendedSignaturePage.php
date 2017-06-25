@@ -4,7 +4,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Appended Signature Page</title>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-        <script type="text/javascript" src="//s3.amazonaws.com/cdn.hellosign.com/public/js/hellosign-embedded.LATEST.min.js"></script>
+        <!--<script type="text/javascript" src="//s3.amazonaws.com/cdn.hellosign.com/public/js/hellosign-embedded.LATEST.min.js"></script>-->
+        <script type="text/javascript" src="//s3.amazonaws.com/cdn.hellofax.com/js/embedded.js"></script>
         <link rel="stylesheet" type="text/css" href="newcss.css" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" href="/favicon-32x32.png"/>
@@ -52,7 +53,7 @@
         $request->setSubject('My First embedded signature request');
         $request->setMessage('Awesome, right?');
 //        $request->addSigner($_POST['signeremail'], $_POST['signername']);
-        $request->addSigner("radhack242+signersandthings@gmail.com", "Bob The Signer");
+        $request->addSigner("radhack242+signersandthings@gmail.com", "Bob The Signer.");
         // $request->setAllowDecline(true); // uncomment this when allowDecline is built into the PHP SDK
         $request->addFile("$target_file");
 
@@ -70,12 +71,13 @@
         $createdHow = "appendedSignaturePage";
         $event_sent_bool = 0; // this is used to setup responsive design, where I wait for the signature_request_sent callback event before bringing up the iframe
         include('db.php');
-//        sleep(3);
+        $check_for_callback = 1; //set to zero to skip callback check
+
         // Retrieve the URL to sign the document
-        $response = $client->getEmbeddedSignUrl($signature_id);
+//        $response = $client->getEmbeddedSignUrl($signature_id);
 
         // Store it to use with the embedded.js HelloSign.open() call
-        $sign_url = $response->getSignUrl();
+//        $sign_url = $response->getSignUrl();
 
         // check for the callback
         // Create connection
@@ -85,22 +87,30 @@
             die("Connection failed: " . $conn->connect_error);
         }
 
-        //TODO move this to signerpage so that loading gif will load
-        $query = mysqli_query($conn, "SELECT event_sent_bool FROM signatureId WHERE signature_id = '$signature_id'");
-        
-        $sent_event_received = mysqli_fetch_row($result);
-        
-        if ($sent_event_received[0] == 0) {
-            $not_received = TRUE;
-            ?>
-            <script>
-                waitSomeTime();
-                location.reload();
-            </script>
-            <?php
-        }
-        $not_received = FALSE;
+//        $link1 = mysqli_query($conn, "SELECT event_sent_bool FROM signatureId WHERE signature_id = '$signature_id'");
+//        $all_links = array($link1);
+//        $error = $reject = [];
+//        //TODO try mysqli_poll to check for the sent event
+//        $query = mysqli_query($conn, "SELECT event_sent_bool FROM signatureId WHERE signature_id = '$signature_id'");
+//        $poll = mysqli_poll($all_links, $error, $reject, 2);
 
+//        $link = mysqli_connect();
+//        $sql = "SELECT event_sent_bool FROM signatureId WHERE signature_id = '$signature_id'";
+//        mysqli_query($link, $sql, MYSQLI_ASYNC);
+
+//        $links = array($link);
+//        $begin = microtime(true);
+//        $i = 0;
+//        do {
+//            printf("start i=%d @ T+%.f\n", $i, (microtime(true) - $begin));
+//            $read = $error = $reject = $links;
+//            mysqli_poll($read, $error, $reject, 1, 500000);
+//            printf(
+//                    "finish i=%d, count(read, error, reject)=(%d, %d, %d) @ T+%f\n\n", $i++, count($read), count($error), count($reject), (microtime(true) - $begin)
+//            );
+//        } while (count($links) !== count($read) + count($error) + count($reject));
+//        $sent_event_received = mysqli_fetch_row($result);
+//        
         include('signerpage.php');
 
         $conn->close();
