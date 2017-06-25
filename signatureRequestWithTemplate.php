@@ -42,7 +42,7 @@
         $request->setTitle("Testing");
         $request->setSubject('Embedded Signing With Template');
         $request->setMessage('Awesome, right?');
-        $request->setSigner('Role1', 'jack@example.com', 'Johnny');
+        $request->setSigner('Role1', 'jack@example.com', 'Johnny Mc.Dotty and Mc-Dashy');
 //        $request->setSigner('Role2', 'jack@example.com', 'and Jill');
 //        $request->setSigner('Role3', 'jack@example.com', 'Went');
 //        $request->setSigner('Role4', 'jack@example.com', 'Up The');
