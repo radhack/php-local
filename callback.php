@@ -155,10 +155,8 @@
     // request is completely signed by all signees, HelloSign has processed
     // the document and has it available for download.
     // if ($reported_app === 'afedad951b68dc42bfbd930e81d97175') {
-//    if ($reported_app === '3e3f283135002d1993a92124341193df') {
-
-
-    if ($reported_app === 'xxx') { //stop emails from being sent for now
+    if ($reported_app === '3e3f283135002d1993a92124341193df') {
+//    if ($reported_app === 'xxx') { //stop processing callbacks for now
         if ($event_type === 'signature_request_all_signed') {
             $client = new HelloSign\Client($api_key);
             $signature_request_id = $data->signature_request->signature_request_id;
@@ -255,7 +253,7 @@
 
 // print everything out
             print_r($response);
-        } elseif ($event_type === 'signature_request_sent') {
+        } elseif ($event_type === 'signature_request_sent') {           
             $signature_request_id = $data->signature_request->signature_request_id;
             $dbadmin = getenv('DB_ADMIN');
             $dbpassword = getenv('DB_PASSWORD');
@@ -270,7 +268,8 @@
 
             $sql = "UPDATE signatureId SET event_sent_bool='1' WHERE signature_request_id='$signature_request_id'";
 
-            if ($conn->query($sql) === TRUE) {
+//            if ($conn->query($sql) === TRUE) {
+            if ($conn->query($sql) == "DERP") {
                 $event_time = $data->event->event_time;
                 $sendgrid = new SendGrid($sendgrid_api_key);
                 $url = 'https://api.sendgrid.com/';
