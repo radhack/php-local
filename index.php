@@ -46,7 +46,8 @@
         }
         $user = new LaunchDarkly\LDUser(hash("md5", time()));
 //        $user = new LaunchDarkly\LDUser("herp@derping.com");
-        if ($ld_client->variation("show-name-and-email", $user)) {
+//        if ($ld_client->variation("show-name-and-email", $user)) {
+        if (1 ==1 ) { //invalidate if you want to remove the requirement for name and email
             ?>
         <div class="entry-content">
             <h1>HelloWorks is here at last!</h1>
