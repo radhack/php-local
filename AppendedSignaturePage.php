@@ -56,16 +56,18 @@
         $request->addSigner("radhack242+signersandthings@gmail.com", "Bob The Signer.");
         // $request->setAllowDecline(true); // uncomment this when allowDecline is built into the PHP SDK
         $request->addFile("$target_file");
-
+//        $request->addFile("./nda.pdf");
         rename($target_file, "$target_file.embSigReq");
         // Turn it into an embedded request
         $embedded_request = new HelloSign\EmbeddedSignatureRequest($request, $client_id);
 
         // Send it to HelloSign
-        $response = $client->createEmbeddedSignatureRequest($embedded_request);
-
-        // Grab the signature ID for the signature page that will be embedded in the page
+        $response = $client->createEmbeddedSignatureRequest($embedded_request); 
+       // Grab the signature ID for the signature page that will be embedded in the page
         $signature_request_id = $response->signature_request_id;
+        echo "<br />";
+        print_r($response);
+        echo "<br />";
         $signatures = $response->getSignatures();
         $signature_id = $signatures[0]->getId();
         $createdHow = "appendedSignaturePage";
@@ -74,18 +76,19 @@
         $check_for_callback = 1; //set to zero to skip callback check
 
         // Retrieve the URL to sign the document
-//        $response = $client->getEmbeddedSignUrl($signature_id);
+        $response = $client->getEmbeddedSignUrl($signature_id);
 
         // Store it to use with the embedded.js HelloSign.open() call
-//        $sign_url = $response->getSignUrl();
-
+        $sign_url = $response->getSignUrl();
+        echo "<br />";
+        
         // check for the callback
         // Create connection
-        $conn = new mysqli($servername, $dbadmin, $dbpassword, $dbname);
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
+//        $conn = new mysqli($servername, $dbadmin, $dbpassword, $dbname);
+//        // Check connection
+//        if ($conn->connect_error) {
+//            die("Connection failed: " . $conn->connect_error);
+//        }
 
 //        $link1 = mysqli_query($conn, "SELECT event_sent_bool FROM signatureId WHERE signature_id = '$signature_id'");
 //        $all_links = array($link1);
@@ -113,7 +116,7 @@
 //        
         include('signerpage.php');
 
-        $conn->close();
+//        $conn->close();
 
         skip:
 // skip loop so this doesn't run when skip isn't used

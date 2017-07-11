@@ -48,8 +48,8 @@
         $request->setClientId($client_id);
         $request->addFile("$target_file");
 //        $request->setTitle("things here are...");
-//        $request->setSubject("and here are other things");
-//        $request->setMessage("exactly what they seem");
+        $request->setSubject("and here are other things");
+        $request->setMessage("exactly what they seem");
 //        $request->setTitle('Test Title');
 //        $request->setSubject('Test Subject');
 //        $request->setMessage('Test Message');

@@ -47,9 +47,9 @@
 
         $request = new HelloSign\SignatureRequest;
         $request->enableTestMode();
-        $request->setRequesterEmail('phptest@example.com');
+        $request->setRequesterEmail('alex@hellosign.com');
         //$request->setHideTextTags(true);
-        //$request->setUseTextTags(true);
+        $request->setUseTextTags(FALSE);
         $request->addFile("$target_file");
 //        $request->setSigningRedirectUrl("http://9060677a.ngrok.io");
 //        $request->addSigner("alex+signer1@hellosign.com", "Alex Signer 1", 0);
