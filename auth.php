@@ -3,6 +3,7 @@
 $a = session_id();
 if (empty($a)) {
     session_start();
+    echo 'session started successfully';
 }
 $api_key = getenv('HS_APIKEY_PROD') ? getenv('HS_APIKEY_PROD') : '';
 $client_id = getenv('HS_CLIENT_ID_LOCAL') ? getenv('HS_CLIENT_ID_LOCAL') : '';

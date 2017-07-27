@@ -114,10 +114,20 @@
     $data = json_decode($_POST['json']);
 
 
-    if ($data != null) { //only send the response if I'm hit with a POST
+    if ($data != null) { //only send the response if I'm hit with a POST that has an object called 'json'
         echo 'Hello API Event Received';
     } else {
-        goto invalid_hash;
+        goto invalid_hash; // basically skip everything
+    }
+
+    if (isset($_GET['type'])) {
+        if (htmlspecialchars($_GET['type'])== "outbound") {
+        $hf_callback = true;
+        goto hf_callback;
+        //just to get rid of the php warning that $_GET['type'] isn't set
+        } else {
+            goto hf_callback; 
+        }
     }
 
     //remove the below comment to test callback actions
@@ -154,8 +164,8 @@
     // request is completely signed by all signees, HelloSign has processed
     // the document and has it available for download.
     // if ($reported_app === 'afedad951b68dc42bfbd930e81d97175') {
-//    if ($reported_app === '3e3f283135002d1993a92124341193df') {
-    if ($reported_app === 'xxx') { //stop processing callbacks for now
+    if ($reported_app === '3e3f283135002d1993a92124341193df') {
+//    if ($reported_app === 'xxx') { //stop processing callbacks for now
         if ($event_type === 'signature_request_all_signed') {
             $client = new HelloSign\Client($api_key);
             $signature_request_id = $data->signature_request->signature_request_id;
@@ -252,7 +262,7 @@
 
 // print everything out
             print_r($response);
-        } elseif ($event_type === 'signature_request_sent') {           
+        } elseif ($event_type === 'signature_request_sent') {
             $signature_request_id = $data->signature_request->signature_request_id;
             $dbadmin = getenv('DB_ADMIN');
             $dbpassword = getenv('DB_PASSWORD');
@@ -552,7 +562,7 @@
         }
     }
     invalid_hash:
-    if ($hash_check_failed == 1) {
+    if ($hash_check_failed == 1 & $event_type != "transmission_received") {
 
         $dbadmin = getenv('DB_ADMIN');
         $dbpassword = getenv('DB_PASSWORD');
@@ -562,7 +572,7 @@
         $json_data = $_POST['json'];
         $data_encoded = json_encode($data);
         $data_serialized = serialize($data);
-        
+
         $sendgrid = new SendGrid($sendgrid_api_key);
         $url = 'https://api.sendgrid.com/';
         $pass = $sendgrid_api_key;
@@ -574,7 +584,7 @@
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-        
+
         $escaped_data = mysqli_real_escape_string($conn, $json_data);
 //        print_r($escaped_data . "<br />*&^ *&^");
 
@@ -599,24 +609,24 @@
 
             $request = $url . 'api/mail.send.json';
 
-// Generate curl request
+            // Generate curl request
             $session = curl_init($request);
-// Tell PHP not to use SSLv3 (instead opting for TLS)
+            // Tell PHP not to use SSLv3 (instead opting for TLS)
             curl_setopt($session, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
             curl_setopt($session, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $sendgrid_api_key));
-// Tell curl to use HTTP POST
+            // Tell curl to use HTTP POST
             curl_setopt($session, CURLOPT_POST, true);
-// Tell curl that this is the body of the POST
+            // Tell curl that this is the body of the POST
             curl_setopt($session, CURLOPT_POSTFIELDS, $params);
-// Tell curl not to return headers, but do return the response
+            // Tell curl not to return headers, but do return the response
             curl_setopt($session, CURLOPT_HEADER, false);
             curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 
-// obtain response
+            // obtain response
             $response = curl_exec($session);
             curl_close($session);
 
-// print everything out
+            // print everything out
             print_r($response);
         } else {
 //            $error = "<br />Error INSERTing (lol): " . $conn->error;
@@ -653,6 +663,107 @@
 //            print_r($response);
         }
         $conn->close();
+    }
+    
+    hf_callback:
+    if ($hf_callback = true) {
+        $sendgrid = new SendGrid($sendgrid_api_key);
+        $url = 'https://api.sendgrid.com/';
+        $pass = $sendgrid_api_key;
+
+        if (htmlspecialchars($_GET["type"] == "inbound")) {
+            $event_time = $data->event->event_time;
+            $from = $data->transmission->from;
+            $recipient = $data->transmission->transmissions->recipient;
+            $tranmission_id = $data->transmission->transmissions->transmission_id;
+
+            $params = array(
+                'to' => "radhack242@gmail.com",
+                'toname' => "HelloFax Fax Inbound",
+                'from' => "radhack242@gmail.com",
+                'fromname' => "Simple PHP",
+                'subject' => "Hash Check Failed and Recorded",
+                'html' => "<h1>You've Received A Fax!</h1><p>$event_time is the time I received the fax</p><p>$from is who it's from</p><p>$recipient is who it was sent to</p><p>$tranmission_id is the ID of the transmission</p>",
+            );
+
+            $request = $url . 'api/mail.send.json';
+
+            // Generate curl request
+            $session = curl_init($request);
+            // Tell PHP not to use SSLv3 (instead opting for TLS)
+            curl_setopt($session, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
+            curl_setopt($session, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $sendgrid_api_key));
+            // Tell curl to use HTTP POST
+            curl_setopt($session, CURLOPT_POST, true);
+            // Tell curl that this is the body of the POST
+            curl_setopt($session, CURLOPT_POSTFIELDS, $params);
+            // Tell curl not to return headers, but do return the response
+            curl_setopt($session, CURLOPT_HEADER, false);
+            curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+
+            // obtain response
+            $response = curl_exec($session);
+            curl_close($session);
+
+            // print everything out
+            print_r($response);
+        } elseif (htmlspecialchars($_GET["type"] == "outbound")) {
+            date_default_timezone_set('Etc/GMT');
+            $type_code = $data->Transaction->TypeCode;
+            $status_code = $data->Transaction->StatusCode;
+            $error_code = $data->Transaction->ErrorCode;
+            if ($error_code == null) {
+                $error_code = "(there was no error code)";
+            }
+            $created_at = date('Y-m-d\TH:i:s', strtotime(gmdate("Y-m-d\TH:i:s\Z", $data->Transaction->CreatedAt)."- 7 hours"));
+            $updated_at = date('Y-m-d\TH:i:s', strtotime(gmdate("Y-m-d\TH:i:s\Z", $data->Transaction->UpdatedAt)."- 7 hours"));
+            $recipient =  $data->Transaction->To;
+            $from = $data->Transaction->From;
+            $tranmission_id = $data->Transaction->Guid;
+            $num_pages_billed = $data->Transaction->NumPagesBilled;
+
+            $params = array(
+                'to' => "radhack242@gmail.com",
+                'toname' => "HelloFax Fax Sent",
+                'from' => "radhack242@gmail.com",
+                'fromname' => "Simple PHP",
+                'subject' => "Fax Sent!",
+                'html' => "<h1>You've Sent A Fax!</h1>"
+                . "<p>$created_at is the time/date I sent the fax</p>"
+                    . "<p>$updated_at is the time/date I received this</p>"
+                    . "<p>$from is who it's from</p>"
+                    . "<p>$recipient is who it was sent to</p>"
+                    . "<p>$tranmission_id is the ID of the transmission</p>"
+                    . "<p>$type_code is the type of Transaction</p>"
+                    . "<p>$status_code is the status of the Transaction</p>"
+                    . "<p>$error_code is the error code</p>"
+                    . "",
+            );
+
+            $request = $url . 'api/mail.send.json';
+
+            // Generate curl request
+            $session = curl_init($request);
+            // Tell PHP not to use SSLv3 (instead opting for TLS)
+            curl_setopt($session, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
+            curl_setopt($session, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $sendgrid_api_key));
+            // Tell curl to use HTTP POST
+            curl_setopt($session, CURLOPT_POST, true);
+            // Tell curl that this is the body of the POST
+            curl_setopt($session, CURLOPT_POSTFIELDS, $params);
+            // Tell curl not to return headers, but do return the response
+            curl_setopt($session, CURLOPT_HEADER, false);
+            curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+
+            // obtain response
+            $response = curl_exec($session);
+            curl_close($session);
+
+            // print everything out
+            print_r($response);
+        }
+    } else {
+        // ignore it (this DEFINITELY won't come back to bite me in the ass...)
     }
     ?>
 </body>

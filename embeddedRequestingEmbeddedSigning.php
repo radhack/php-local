@@ -48,6 +48,10 @@
         $request = new HelloSign\SignatureRequest;
         $request->enableTestMode();
         $request->setRequesterEmail('phpexample@example.com');
+        $request->setTitle("title here");
+        $request->setSubject("subject here");
+        $request->setMessage("message here");
+        $request->addSigner("radhack242@gmail.com", "alex");
         //$request->setHideTextTags(true);
         //$request->setUseTextTags(true);
         $request->addFile("$target_file");
@@ -89,7 +93,7 @@
         // call the html page with the embedded.js lib and HelloSign.open()
         include('signerpage.php');
 
-        $signature_request_object = $client->getSignatureRequest($signature_request_id);
+$signature_request_object = $client->getSignatureRequest($signature_request_id);
         include('db.php');
 
         skip:

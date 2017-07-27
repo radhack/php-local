@@ -4,8 +4,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Appended Signature Page</title>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-        <!--<script type="text/javascript" src="//s3.amazonaws.com/cdn.hellosign.com/public/js/hellosign-embedded.LATEST.min.js"></script>-->
-        <script type="text/javascript" src="//s3.amazonaws.com/cdn.hellofax.com/js/embedded.js"></script>
+<!--        <script type="text/javascript" src="//s3.amazonaws.com/cdn.hellosign.com/public/js/hellosign-embedded.LATEST.min.js"></script>-->
+        <!--<script type="text/javascript" src="//s3.amazonaws.com/cdn.hellofax.com/js/embedded.js"></script>-->
         <link rel="stylesheet" type="text/css" href="newcss.css" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" href="/favicon-32x32.png"/>
@@ -53,7 +53,7 @@
         $request->setSubject('My First embedded signature request');
         $request->setMessage('Awesome, right?');
 //        $request->addSigner($_POST['signeremail'], $_POST['signername']);
-        $request->addSigner("radhack242+signersandthings@gmail.com", "Bob The Signer.");
+        $request->addSigner("testing@testing.com", "Something Name");
         // $request->setAllowDecline(true); // uncomment this when allowDecline is built into the PHP SDK
         $request->addFile("$target_file");
 //        $request->addFile("./nda.pdf");
@@ -62,11 +62,11 @@
         $embedded_request = new HelloSign\EmbeddedSignatureRequest($request, $client_id);
 
         // Send it to HelloSign
-        $response = $client->createEmbeddedSignatureRequest($embedded_request); 
-       // Grab the signature ID for the signature page that will be embedded in the page
+        $response = $client->createEmbeddedSignatureRequest($embedded_request);
+        // Grab the signature ID for the signature page that will be embedded in the page
         $signature_request_id = $response->signature_request_id;
         echo "<br />";
-        print_r($response);
+//        print_r($response);
         echo "<br />";
         $signatures = $response->getSignatures();
         $signature_id = $signatures[0]->getId();
@@ -74,56 +74,79 @@
         $event_sent_bool = 0; // this is used to setup responsive design, where I wait for the signature_request_sent callback event before bringing up the iframe
         include('db.php');
         $check_for_callback = 1; //set to zero to skip callback check
-
         // Retrieve the URL to sign the document
         $response = $client->getEmbeddedSignUrl($signature_id);
 
         // Store it to use with the embedded.js HelloSign.open() call
         $sign_url = $response->getSignUrl();
         echo "<br />";
-        
+        include('signerpage.php');
+        ?>
+<!--        <div id='loadingmessage' style='display:none'>
+            <img src='triangle.gif' alt="loading"/>
+        </div>
+         add these to ajax call:
+        <script>
+            $('#loadingmessage').show();  // show the loading message.
+            // 
+            // $('#loadingmessage').hide(); // hide the loading message
+        </script>-->
+        <?php
         // check for the callback
-        // Create connection
-//        $conn = new mysqli($servername, $dbadmin, $dbpassword, $dbname);
-//        // Check connection
-//        if ($conn->connect_error) {
-//            die("Connection failed: " . $conn->connect_error);
+
+//        function eventSentYet($signature_id) {
+//            include('db.php');
+//            // Create connection
+//            $conn = new mysqli($servername, $dbadmin, $dbpassword, $dbname);
+//            // Check connection
+//            if ($conn->connect_error) {
+//                die("Connection failed: " . $conn->connect_error);
+//            }
+////            echo "$signature_id is the signature id<br />";
+//
+//            $query = mysqli_query($conn, "SELECT event_sent_bool FROM signatureId WHERE signature_id = '723da26f51fcf0d4594834ad339e62cd'");
+////            print_r ($query);
+////            echo " that's the query <br />";
+//            $sent_event_received = json_encode(mysqli_fetch_row($query));
+////            if ($sent_event_received[0] == 1){
+//////            print_r($sent_event_received);
+//////            echo "that's the sent_event_recieved<br />";
+////            }
+//            $row = mysqli_fetch_assoc($query);
+////            print_r($row["event_sent_bool"]);
+////            echo " row zero<br />";
+//
+////            print_r($sent_event_received);
+//            if ($row["event_sent_bool"] == 1) {
+//                include('signerpage.php');
+//            }
 //        }
 
-//        $link1 = mysqli_query($conn, "SELECT event_sent_bool FROM signatureId WHERE signature_id = '$signature_id'");
-//        $all_links = array($link1);
-//        $error = $reject = [];
-//        //TODO try mysqli_poll to check for the sent event
-//        $query = mysqli_query($conn, "SELECT event_sent_bool FROM signatureId WHERE signature_id = '$signature_id'");
-//        $poll = mysqli_poll($all_links, $error, $reject, 2);
-
-//        $link = mysqli_connect();
-//        $sql = "SELECT event_sent_bool FROM signatureId WHERE signature_id = '$signature_id'";
-//        mysqli_query($link, $sql, MYSQLI_ASYNC);
-
-//        $links = array($link);
-//        $begin = microtime(true);
-//        $i = 0;
-//        do {
-//            printf("start i=%d @ T+%.f\n", $i, (microtime(true) - $begin));
-//            $read = $error = $reject = $links;
-//            mysqli_poll($read, $error, $reject, 1, 500000);
-//            printf(
-//                    "finish i=%d, count(read, error, reject)=(%d, %d, %d) @ T+%f\n\n", $i++, count($read), count($error), count($reject), (microtime(true) - $begin)
-//            );
-//        } while (count($links) !== count($read) + count($error) + count($reject));
-//        $sent_event_received = mysqli_fetch_row($result);
-//        
-        include('signerpage.php');
-
-//        $conn->close();
-
-        skip:
-// skip loop so this doesn't run when skip isn't used
-        if ($uploadOk === 0) {
-            echo '<br />';
-            echo '<a href="index.php">GO HOME YOU ARE DRUNK</a>';
-        }
         ?>
+<!--        <script>
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            async function demo() {
+                console.log('Taking a break...');
+                sleep(5000);
+                console.log('five seconds later');
+                <?php eventSentYet($signature_id); ?>
+            }
+
+            demo();
+
+
+        </script>-->
+        <?php
+
+skip:
+// skip loop so this doesn't run when skip isn't used
+if ($uploadOk === 0) {
+    echo '<br />';
+    echo '<a href="index.php">GO HOME YOU ARE DRUNK</a>';
+}
+?>
     </body>
 </html>
