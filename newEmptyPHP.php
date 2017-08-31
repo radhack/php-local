@@ -1,161 +1,823 @@
-<?php
-require_once 'vendor/autoload.php';
-include('auth.php');
-echo "<html><head><script type=\"text/javascript\" src=\"//s3.amazonaws.com/cdn.hellosign.com/public/js/hellosign-embedded.LATEST.min.js\"></script><title>Embedded Signing</title></head>";
-
-//if (isset($_SESSION['hellosign_oauth'])) {
-//    goto skip;
+<?php // session_start();
+//header('Content-Type: application/json');
+//require_once 'vendor/autoload.php';
+//$client = new HelloSign\Client('5b96fc261226d93acfd641dcf7fa04cedc6d87aeeec9d987ec0eb2b8f9a1fbd2');
+//if (isset($_SESSION['signature_id'])) {
+//	try {
+////              $client = new HelloSign\Client('5b96fc261226d93acfd641dcf7fa04cedc6d87aeeec9d987ec0eb2b8f9a1fbd2');
+////		$client = new HelloSign\Client($api_key);
+//		$embedded_response = $client->getEmbeddedSignUrl($_SESSION['signature_id']);
+//		$sign_url = $embedded_response->getSignUrl();
+//		echo json_encode($sign_url);
+//	} catch (Exception $e) {
+//		if ($e->getMessage() == "This request has already been signed") {
+//			$filename = "downloaded_files/".$_SESSION['signature_request_id'].".pdf";
+//			$client = new HelloSign\Client($api_key);
+//			$file = $client->getFiles($_SESSION['signature_request_id'], $filename , HelloSign\SignatureRequest::FILE_TYPE_PDF);
+//			echo "<iframe src=\"$filename\" width=\"100%\" style=\"height:880px\"></iframe>";
+//		} else {
+//                    print_r($e->getMessage());
+//		}
+//	}
+//} else {
+////	$client = new HelloSign\Client('5b96fc261226d93acfd641dcf7fa04cedc6d87aeeec9d987ec0eb2b8f9a1fbd2');
+//
+////	$account = $client->getAccount();
+////	//echo '<pre>';
+////	//print_r($account);
+////	//echo '</pre>';
+////
+////	$templates = $client->getTemplates($page_number);
+////	foreach ($templates as $template) {
+////	//	echo $template->getTitle() . "<br>";
+////	//        echo $template->getId() . "<br>";
+////	}
+//
+//	//$name = $_GET['name'];
+//	//$email = $_GET['email'];
+////	$name = $_POST['name'];
+////	$email = $_POST['email'];
+//        $name = "Alex Testing";
+//        $email = "alex@hellosign.com";
+//	$client_id = "4c14dad36f89f85c130fb2f7f3857bbc";
+//
+//	$request = new HelloSign\TemplateSignatureRequest;
+//	//$request->enableTestMode();
+//	$request->setTemplateId('978790c06a70faeda2cfc7a61815ffc9162cdac2');
+//	$request->setSubject('Fiduciary Oath  and Fee Only Agreement');
+//	$request->setMessage('');
+//	$request->setSigner('Advisor', $email, $name);
+//
+//	//$response = $client->sendTemplateSignatureRequest($request);
+//
+//
+//	// Turn it into an embedded request
+//	$embedded_request = new HelloSign\EmbeddedSignatureRequest($request, $client_id);
+//
+//	// Send it to HelloSign
+//	$response = $client->createEmbeddedSignatureRequest($embedded_request);
+//
+//	// Get the id for a session
+//	$signature_request_id = $response->signature_request_id;
+//	$_SESSION['signature_request_id'] = $signature_request_id;
+//
+//	// Grab the signature ID for the signature page that will be embedded in the
+//	// page (for the demo, we'll just use the first one)
+//	$signatures   = $response->getSignatures();
+//	$signature_id = $signatures[0]->getId();
+//
+//	$_SESSION['signature_id'] = $signature_id;
+//
+//	// Retrieve the URL to sign the document
+//	$response = $client->getEmbeddedSignUrl($signature_id);
+//
+//	// Store it to use with the embedded.js HelloSign.open() call
+//	$sign_url = $response->getSignUrl();
+//
+//	//echo 'sign url:', $sign_url;
+//
+//	//echo json_encode(array($email, $name, $sign_url));
+//	echo json_encode($sign_url);
 //}
-//$client = new HelloSign\Client($api_key);
-//$oauth_request = new HelloSign\OAuthTokenRequest(array(
-//    'code' => 'c79944967b2f6ad1',
-//    'state' => 'somethingrandom',
-//    'client_id' => '2d9e5cbc5d888bef3253c0489d6851f5',
-//    'client_secret' => '249046db0fd92da7ddcbd1487feb7246'
-//        ));
-//
-//// Request OAuth token for the first time
-//$token1 = $client->requestOAuthToken($oauth_request);
-//
-//// Export token to array, store it to use later
-////$hellosign_oauth = $token1->toArray($options);
-//$_SESSION['hellosign_oauth'] = $token1;
-//print_r($token1);
-//
-//echo "<br />you got here <br />";
-//
-//skip:
-//$token1 = $_SESSION['hellosign_oauth'];
-//// Populate token from array
-//$token_response = new HelloSign\OAuthToken($token1);
-//
-//$token = $token_response->getAccessToken();
-//
-//
-//print_r($token);
-//
-//echo "<br />you got here too <br />";
-//// Provide the user's OAuth access token to the client
-//$client_oauth = new HelloSign\Client($token_response);
-//
-////$signature_requests = $client->getSignatureRequests(1);
-//$response = $client_oauth->getAccount();
-//print_r($response);
-//echo "<br />";
-//print_r($response->getWarnings());
-//echo "<br />you got more here";
-
-$client = new HelloSign\Client($api_key);
-$request = new HelloSign\SignatureRequest;
-$request->enableTestMode();
-
-$request->setTitle('NDA with Acme Co.');
-$request->setSubject('The NDA we talked about');
-$request->setMessage('Please sign this NDA and then we can discuss more. Let me know if you have any questions.');
-
-//$request->addSigner(new HelloSign\Signer(array(
-//    'name' => 'Alex',
-//    'email_address' => 'alex+email@hellosign.com',
-//    'order' => 0
-//)));
-//
-//$request->addSigner(new HelloSign\Signer(array(
-//    'name' => 'Charmy',
-//    'email_address' => 'alex+signer1@hellosign.com',
-//    'order' => 1
-//)));
-
-$request->addSigner("alex+signer1@hellosign.com", "Alex Signer 1");
-$request->addSigner("alex+signer2@hellosign.com", "Alex Signer 2");
-
-$request->setRequesterEmail("alex@hellosign.com");
-$request->addFile("./nda.pdf");
-
-$request->setFormFieldsPerDocument([[
-[
-    "api_id" => "api_id_1",
-    "name" => "For Alex",
-    "type" => "text",
-    "x" => 5,
-    "y" => 10,
-    "width" => 100,
-    "height" => 20,
-    "required" => true,
-    "signer" => 0,
-    "page" => 1
-],
- [
-    "api_id" => "api_id_2",
-    "name" => "Sign Alex",
-    "type" => "signature",
-    "x" => 5,
-    "y" => 30,
-    "width" => 100,
-    "height" => 16,
-    "required" => true,
-    "signer" => 0,
-    "page" => 1
-],
- [
-    "api_id" => "api_id_3",
-    "name" => "For Charmy",
-    "type" => "text",
-    "x" => 120,
-    "y" => 10,
-    "width" => 120,
-    "height" => 20,
-    "required" => true,
-    "signer" => 1,
-    "page" => 1
-],
- [
-    "api_id" => "api_id_4",
-    "name" => "Sign Charmy",
-    "type" => "signature",
-    "x" => 120,
-    "y" => 30,
-    "width" => 120,
-    "height" => 20,
-    "required" => true,
-    "signer" => 1,
-    "page" => 1
-],
-    ]
-]);
-
-$draft_request = new HelloSign\UnclaimedDraft($request, $client_id);
-$draft_request->setIsForEmbeddedSigning(true);
-$response = $client->createUnclaimedDraft($draft_request);
-
-$edit_url = $draft_request->getClaimUrl();
-
-//$edit_url .= "&client_id=" . $client_id . "&skip_domain_verification=1&redirect_url=" . urlencode($scriptUrlBase . "complete.php");
-//
-//$new_template_id = "test";
-//
-//echo "<pre><b>URL:</b> ";
-//echo $edit_url;
-//echo "</pre>";
-//
-//echo "<iframe id='" . $new_template_id . "' src='" . $edit_url . "'></iframe>";
-
-$sign_url = $edit_url;
-
-include('signerpage.php');
 ?>
-<!--<script>
-//    var url = 'https://02b35105d83ab3170140283bd44ff05c958c87fa5a7c7346de1eb83d07f3715f:@api.hellosign.com/v3/signature_request/files/148405c73b6f150ad9e4c2555d51c0c02208e153';
-var url = 'https://hstests.ngrok.io/callback.php';
 
-var xhttp = new XMLHttpRequest();
+<!DOCTYPE html>
+<html>
+<head>	<!-- start : ocom/common/global/components/head -->
+	<title>Oracle WebCenter Portal - Portal and Composite Applications Solution | Oracle</title>
+	<meta name="Title" content="Oracle WebCenter Portal - Portal and Composite Applications Solution | Oracle">
+	<meta name="Description" content="Find out how Oracle WebCenter Portal allows organizations to easily create intranets, extranets, composite applications, and self-service portals.">
+	<meta name="Keywords" content="portal, mashups, composite applications, webcenter, oracle, portals, portlets, fusion applications, oracle applications">
+	<meta name="robots" content="index, follow">
+	<meta name="country" content="United States">
+	<meta name="Language" content="en">
+	<meta name="Updated Date" content="2014-07-03T20:31:38Z">
+	<!-- start : ocom/common/global/components/social-media-meta-tags -->
+<!-- end : ocom/common/global/components/social-media-meta-tags -->
+<!-- start : common/global/components/seo-hreflang-meta-tags -->
+				<link rel="alternate" hreflang="de-DE" href="https://www.oracle.com/de/middleware/webcenter/portal/" />
+				
+				<link rel="alternate" hreflang="en-US" href="https://www.oracle.com/middleware/webcenter/portal/" />
+				
+				<link rel="alternate" hreflang="nl-NL" href="https://www.oracle.com/nl/middleware/webcenter/portal/" />
+				
+				<link rel="alternate" hreflang="en-GB" href="https://www.oracle.com/uk/middleware/webcenter/portal/" />
+				<!-- end : common/global/components/seo-hreflang-meta-tags -->
 
-xhttp.open("GET", url, true);
+<!-- end : ocom/common/global/components/head -->
 
-xhttp.setRequestHeader("Content-type", "application/json");
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+		<link href='//www.oracle.com/asset/web/css/compass.css' media="print, screen" rel="Stylesheet" type="text/css"/>
+		<script language="JavaScript" src='//www.oracle.com/asset/web/js/jquery.js' type="text/javascript"></script>
+		<script type="text/javascript" src='//www.oracle.com/asset/web/js/compass.js'></script>
+		<!-- start : ocom/common/global/components/truste-language-code -->
+<script async="async" type="text/javascript" src='//consent.truste.com/notice?domain=oracle.com&c=teconsent&js=bb&noticeType=bb&text=true' crossorigin></script>
+<!-- end : ocom/common/global/components/truste-language-code -->
 
-xhttp.send();
+	<!-- Dispatcher:null -->
+	
+<!-- BEGIN: oWidget_C/_Raw-Text/Display -->
+<!-- www-us HeadAdminContainer -->
+<style>
+#oReactiveChatContainer1 { display:none;}
+</style>
+<!--DTM embed code - Header -->
+<script src="//assets.adobedtm.com/6f37a0dc9cdbe818dc4979828b58b88e3f060ea4/satelliteLib-e598c5b61e39a10b402e048e87dd27b0f1cd2d4c.js"></script>
+<!--End-->
 
-var response = xhttp.response;
 
-console.log(response);
-</script>-->
+
+<!-- END: oWidget_C/_Raw-Text/Display -->
+
+</head><!-- end : ocom/common/global/components/compass/head -->
+	<body class="f11 f11v0">
+		
+	<!-- Dispatcher:null -->
+	
+<!-- BEGIN: oWidget_C/_Raw-Text/Display -->
+<!-- www-us StartBodyAdminContainer -->
+
+
+
+<!-- END: oWidget_C/_Raw-Text/Display -->
+
+		<div class="f11w1">
+			<!-- start : ocom/common/global/components/u01-header -->
+	<!-- Dispatcher:null -->
+	
+<!-- BEGIN: oWidget_C/_Raw-Text/Display -->
+<!-- U02v0 -->
+<nav class="u02nav">
+<div class="u02" id="u02">
+
+	<div id="u02skip2content" tabindex="-1" data-skiptxtprepend="Skip"  data-skiptxtappend="">
+		<ul>
+			<li><a href="/">Home</a></li>
+			<li><a id="u02skip2c" href="#maincontent">Skip to Content</a></li>
+			<li><a id="u02skip2s" href="#skip_to_search_form">Skip to Search</a></li>
+		</ul>
+	</div>
+
+	<div class="u02w1">
+
+		<!-- logo -->
+		<div class="u02logo" data-trackas="header"><div class="u02logow1"><a href="https://www.oracle.com/index.html" data-trackas="header" data-lbl="logo" class="o_icon"><span>Oracle</span></a></div></div>
+
+		<!-- menu -->
+		<div class="u02menu" data-trackas="menu">
+			<div id="u02main" class="u02mlink">
+				<div class="u02mlinkw1">
+					<a href="/mosaic-menu/index.html" id="u02menulink" data-lbl="menu">
+						<div class="u02mlinkw2">Menu</div>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<!-- search -->
+		<div id="u02search" class="u02search" data-trackas="header">
+			<form class="u02searchform" name="searchForm" method="get" action="https://www.oracle.com/search/results">
+				<input type="hidden" name="Nty" value="1">
+				<input type="hidden" name="Ntk" value="S3">
+				<input id="txtSearch" class="textcnt autoclear" name="Ntt" value="">
+				<input class="u02searchbttn" type="submit" value="Submit Search" />
+			</form>
+		</div>
+
+		<div class="u02tools" data-trackas="header">
+			<ul>
+				<!-- user tools -->
+				<li class="u02mtool u02toolsloggedout">
+					<a href="#usermenu" class="u02ticon u02user" data-lbl="profile:sign-in-account">
+						<span class="u02signin">Sign In</span>
+						<span class="u02signout">Account</span>
+					</a>
+					
+					<div class="u02user u02toolpop" data-lbl="profile">
+						<div class="u02userin">
+							<div class="u02userinw1 u02userloggedin" data-lbl="oracle-account">
+								<h5>Oracle Account</h5>
+								<p id="u02userinfo"></p>
+								<a data-lbl="sign-out" href="javascript:sso_sign_out();" id="u02pfile-sout" class="u02bttn">Sign Out</a>
+								<ul id="u02usertools">
+									<li><a data-lbl="account" id="u02pfile-acct" href="https://profile.oracle.com/myprofile/account/secure/update-account.jspx?nexturl=">Account</a></li>
+									<li><a data-lbl="help" href="http://www.oracle.com/us/corporate/contact/about-your-account-070507.html">Help</a></li>
+								</ul>
+
+
+							</div>
+							<div class="u02userinw1 u02userloggedout" data-lbl="oracle-account">
+								<h5>Oracle Account</h5>
+								<p>Manage your account and access personalized content.</p>
+								<a href="http://www.oracle.com/webapps/redirect/signon?nexturl=" id="u02pfile-regs" data-lbl="signin" class="u02bttn">Sign in</a>
+								<ul id="u02usertools">
+									<li><a href="https://profile.oracle.com/myprofile/account/create-account.jspx" data-lbl="createaccount">Create an account</a></li>
+									<li><a data-lbl="help" href="http://www.oracle.com/us/corporate/contact/about-your-account-070507.html">Help</a></li>
+</ul>
+							</div>
+							<div class="u02userinw2" data-lbl="cloud-account">
+								<h5>Cloud Account</h5>
+								<p>Access your cloud dashboard, manage orders, and more.</p>
+								<a href="https://cloud.oracle.com/sign-in" data-lbl="signin" class="u02bttn">Sign in</a>
+							</div>
+						</div>
+					</div>
+
+				</li>
+
+
+				<!-- country select -->
+				<li class="u02mtool" id="u02cmenu">
+					<a href="/mosaic-menu/index.html#u02countrymenu" class="u02ticon u02regn"><span>Country</span></a>
+				</li>
+				<!-- call -->
+				<li class="u02mbttn" id="u02call">
+					<a data-lbl="call" href="#callOracle" class="u02ticon u02call o-call"><span>Call</span></a>
+				</li>
+				<!-- chat -->
+				<!--<li class="u02mbttn" id="u02chat">
+					<a data-lbl="chat" href="#chat" class="u02ticon u02chat"><span>Chat</span></a>
+				</li>-->
+			</ul>
+		</div>
+	</div>
+	<a id="maincontent">&nbsp;</a>
+</div>
+</nav>
+<!-- /U02v0 -->
+
+
+
+<!-- END: oWidget_C/_Raw-Text/Display -->
+
+<!-- end : ocom/common/global/components/u01-header -->
+<!-- start : ocom/common/global/components/u03-breadcrumb -->
+	<!-- U03v0 -->
+	<div class="u03 u03v0" data-trackas="breadcrumb">
+		<div class="u03w1">
+			<ul>
+				
+						<li class="u03first"><a href="/products/index.html">Products and Services</a></li>
+						
+						<li><a href="/middleware/index.html">Oracle Fusion Middleware</a></li>
+						
+						<li><a href="/middleware/webcenter/index.html">WebCenter</a></li>
+						
+						<li><a href="/middleware/webcenter/portal/index.html">WebCenter Portal</a></li>
+						
+						<li>Overview</li>
+						
+
+			</ul>
+		</div>
+	</div>
+	<!-- /U03v0 -->
+	<!-- start : ocom/common/global/components/u03-breadcrumb -->
+<!-- start : ocom/common/global/components/banner -->
+	<!-- Dispatcher:null -->
+	
+		<!-- BEGIN: oWidget_C/Raw-HTML/Display -->
+		<!-- C83v0 -->
+<div class="c83 c83v0 cwidth">
+	<div class="c83pgtitle">
+		<h1>
+			<span>Oracle</span> WebCenter Portal</h1>
+	</div>
+	<div class="c83w1">
+		<div class="c83-heading">
+			Streamline Access to Information, Data, Processes, and Applications</div>
+		<p>
+			A web platform that allows organizations to quickly and easily create intranets, extranets, composite applications, and self-service portals, providing users a more secure and efficient way of consuming information and interacting with applications, processes, and other users.</p>
+		<div class="cmps-bttns">
+			<div>
+				<a href="http://www.oracle.com/store/oraclewebcenterportal?intcmp=ocom_webcenterportal" target="_blank">Price and buy</a></div>
+		</div>
+		<ul class="icn-list">
+			<li class="icn-report">
+				<a href="http://www.oracle.com/technetwork/middleware/webcenter/portal/overview/webcenter-portal-datasheet-427750.pdf" target="_blank"><strong>Data sheet</strong> (PDF)</a></li>
+		</ul>
+	</div>
+	<div class="c83w2">
+		<div class="cw20 cw20v1">
+			<div class="cw20w5">
+				<div class="cw20slider">
+					<ul class="cw20slides cw20imgslides">
+						<li>
+							<img alt="Modern Responsive User Experiences" data-thumbsrc="//www.oracle.com/us/assets/cw20v1-thumb-avi-home-2786289.jpg" src="//www.oracle.com/us/assets/cw20v1-avi-home-2786291.jpg">
+							<div class="cw20w1">
+								
+								<p>
+									Deliver intuitive, responsive, and mobile-friendly user experiences.</p>
+							</div>
+						</li>
+						<li>
+							<img alt="Quickly Create Dynamic and Engaging Portals" data-thumbsrc="//www.oracle.com/us/assets/cw20v1-thumb-avi-dashboard-2786287.jpg" src="//www.oracle.com/us/assets/cw20v1-avi-dashboard-2786293.jpg">
+							<div class="cw20w1">
+								
+								<p>
+									Quickly create personalized dashboards to build business communities that engage and connect users.</p>
+							</div>
+						</li>
+						<li>
+							<img alt="Easily mashup information from various internal and external sources without writing code." data-thumbsrc="//www.oracle.com/us/assets/cw20v1-thumb-avi-intranet-2786276.jpg" src="//www.oracle.com/us/assets/cw20v1-avi-intranet-2786302.jpg">
+							<div class="cw20w1">
+								
+								<p>
+									Choose from a variety of options for building components and integrating applications data.</p>
+							</div>
+						</li>
+						<li>
+							<img alt="Complete Enterprise Content Management Capabilities" data-thumbsrc="//www.oracle.com/us/assets/cw20v1-thumb-avi-partner-2786279.jpg" src="//www.oracle.com/us/assets/cw20v1-avi-partner-2786298.jpg">
+							<div class="cw20w1">
+								
+								<p>
+									Leverage enterprise content management capabilities from Oracle WebCenter Content to capture and manage the entire content lifecycle.</p>
+							</div>
+						</li>
+						<li>
+							<img alt="Flexible Deployment Options" data-thumbsrc="//www.oracle.com/us/assets/cw20v1-thumb-avi-portal-browser-2786285.jpg" src="//www.oracle.com/us/assets/cw20v1-avi-portal-browser-2786297.jpg">
+							<div class="cw20w1">
+								
+								<p>
+									Flexible deployment options enable you to reduce costs and increase business agility with a cloud-based approach.</p>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /C83v0 -->
+
+		<!-- END: oWidget_C/Raw-HTML/Display -->
+	
+<!-- end : ocom/common/global/components/banner -->
+<!--  Start : ocom/common/global/components/ct06-content-tabs -->
+	<div class="ct06 ct06v0">
+		<div class="ct06w1">
+			<ul>
+				
+							<li class="ct06selected">Overview</li>
+							<li><a href="/middleware/webcenter/portal/resources.html">Resources</a></li>
+			</ul>	
+		</div>
+	</div>
+	<!--  end : ocom/common/global/components/ct06-content-tabs -->
+<!-- start : ocom/common/global/components/compass/related-widgets -->
+	<!-- Dispatcher:null -->
+	
+		<!-- BEGIN: oWidget_C/Raw-HTML/Display -->
+		<div class="c84 c84v1 cwidth">
+	<div class="c84w2">
+		<img alt="Oracle WebCenter Portal Overview" class="c84bgimg" src="//www.oracle.com/us/assets/c84-webcenter-portal-overview-2563772.jpg">
+		<div class="c84w3">
+			<ul class="obullets">
+				<li>
+					Create and manage role-based portal experiences using powerful and intuitive browser-based tools</li>
+				<li>
+					Easily create and manage client device specific portal experiences for desktop browsers, smartphones, tablets, and kiosks</li>
+				<li>
+					Accelerate integration of content, information, business processes, and applications through a prebuilt library of reusable components</li>
+				<li>
+					Comprehensive yet flexible set of development tools for building and deploying custom-built components</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+		<!-- END: oWidget_C/Raw-HTML/Display -->
+	
+	<!-- Dispatcher:null -->
+	
+		<!-- BEGIN: oWidget_C/Raw-HTML/Display -->
+		<div class="cw22v0 cw22medium cw22inpage">
+	<div class="cw22slidew1">
+		<div class="cw22slides">
+			<div class="cw22 cw22v2">
+				<div>
+					<img alt="Panduit Improves Digital Experience with Oracle WebCenter" class="cw22bgimg" src="//www.oracle.com/us/assets/cw22-panduit-2563686.jpg"></div>
+				<div class="cw22w1">
+					<div class="cw22w3">
+						<div class="cw22-heading">
+							Panduit Improves Digital Experience with Oracle WebCenter</div>
+						<div class="cw22media">
+							<div class="responsiveVidWrap" id="vid1">
+								<script type="text/javascript">
+						embedBrightcove('100px100p', false, 'single', '3223072781001');
+					</script></div>
+						</div>
+						<div class="cw22content">
+							<p>
+								Using Oracle WebCenter, Panduit Corporation has improved the online experience of its customers and business partners while saving $600,000 in the first year alone and realizing a 58% ROI. (2:36)</p>
+							<img alt="Panduit logo" class="cw22logo" src="//www.oracle.com/us/assets/cw22-logo-panduit-2563685.png"></div>
+					</div>
+				</div>
+			</div>
+			<!-- CW22v2 -->
+			<div class="cw22 cw22v2">
+				<img alt="Trex Streamlines Deck-Product Manufacturing and Keeps More Than 400-Million Pounds of Plastic and Wood Scrap Out of Landfills Annually" class="cw22bgimg" src="//www.oracle.com/us/assets/cw22-trex-2563776.jpg">
+				<div class="cw22w1">
+					<div class="cw22w3">
+						<div class="cw22-heading">
+							Trex Streamlines Deck-Product Manufacturing and Keeps More Than 400-Million Pounds of Plastic and Wood Scrap Out of Landfills Annually</div>
+						<blockquote>
+							<span class="cw22lq">“</span>We are a pioneer and green leader in our industry and are driven by a commitment to set the standard to create eco-friendly outdoor-living products. Our culture fosters respect for the environment and manufacturing processes that help preserve the outdoors, and we can directly attribute a portion of our growth over the last five years to our implementation and use of Oracle solutions.<span class="cw22rq">”</span> <img class="cw22logo" alt="Trex logo" src="//www.oracle.com/us/assets/cw22-logo-trex-2563777.png"></blockquote>
+						<div class="cw22qtattr">
+							-- Mary Ann Murphy, Director of Information Technology, Trex Company, Inc.</div>
+						<ul class="cw22linklist">
+							<li>
+								<a href="http://www.oracle.com/us/corporate/customers/customersearch/trex-1-crm-ss-2415149.html">Read the story</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- /CW22v2 --><!-- CW22v2 -->
+			<div class="cw22 cw22v2">
+				<img alt="Ministry of Agriculture Delivers Transparent End-to-End e-Services to Customers within Hours to Support Saudi Arabia’s Thriving Agricultural Sector" class="cw22bgimg" src="//www.oracle.com/us/assets/cw22-ministry-of-agriculture-2585794.jpg">
+				<div class="cw22w1">
+					<div class="cw22w3">
+						<div class="cw22-heading">
+							Ministry of Agriculture Delivers Transparent End-to-End e-Services to Customers within Hours to Support Saudi Arabia’s Thriving Agricultural Sector</div>
+						<blockquote>
+							<span class="cw22lq">“</span>The new e-government platform which the Ministry of Agriculture uses to offer online services to the public eliminates the need for companies and citizens to go to offices, stand in line, and fill in paper forms. It helped the ministry deliver an outstanding user experience while freeing specialized staff for field inspections. The average approval rate for applications submitted through the e-services portal is above 95%, which demonstrates its ease of use.<span class="cw22rq">”</span> <img class="cw22logo" alt="Ministry of Agriculture logo" src="//www.oracle.com/us/assets/cw22-logo-ministry-of-agriculture-2585785.png"></blockquote>
+						<div class="cw22qtattr">
+							-- Fahad Alomani, Director of Information Systems, Ministry of Agriculture</div>
+						<ul class="cw22linklist">
+							<li>
+								<a href="http://www.oracle.com/us/corporate/customers/customersearch/ministry-of-agriculture-1-soa-ss-2540057.html">Read the story</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- /CW22v2 --><!-- CW22v2 -->
+			<div class="cw22 cw22v2">
+				<img alt="Abu Dhabi Systems &amp; Information Centre Empowers E-Government by Integrating and Consolidating Systems and Applications Across Agencies" class="cw22bgimg" src="//www.oracle.com/us/assets/cw22-abu-dhabi-systems-2585793.jpg">
+				<div class="cw22w1">
+					<div class="cw22w3">
+						<div class="cw22-heading">
+							Abu Dhabi Systems &amp; Information Centre Empowers E-Government by Integrating and Consolidating Systems and Applications Across Agencies</div>
+						<blockquote>
+							<span class="cw22lq">“</span>Oracle technology enables us to deliver services that meet public expectations for increased mobility and reduced bureaucracy while safeguarding citizens, businesses, and sensitive information in the online environment. Oracle’s value proposition—a one-stop shop for the portal and all the back-end components—was the most appealing to us.<span class="cw22rq">”</span> <img class="cw22logo" alt="Abu Dhabi Systems logo" src="//www.oracle.com/us/assets/ci08t1-logo-abu-dhabi-systems-2585787.png"></blockquote>
+						<div class="cw22qtattr">
+							-- Hammad Abdulla Al Hammadi, Section Head</div>
+						<ul class="cw22linklist">
+							<li>
+								<a href="http://www.oracle.com/us/corporate/customers/customersearch/adsic-1-webcenter-ss-2509437.html">Read the story</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- /CW22v2 -->
+			<div class="cw22 cw22v2">
+				<img alt="Superior Self-Service Portal Solutions" class="cw22bgimg" src="//www.oracle.com/us/assets/cw22-self-service-portal-2585792.jpg">
+				<div class="cw22w1">
+					<div class="cw22w3">
+						<div class="cw22-heading">
+							Superior Self-Service Portal Solutions</div>
+						<div class="cw22media">
+							<div class="responsiveVidWrap" id="vid1">
+								<script type="text/javascript">
+						embedBrightcove('100px100p', false, 'single', '3637969657001');
+					</script></div>
+						</div>
+						<div class="cw22content">
+							<p>
+								Would you like to deliver a superior multi-channel self-service experience to your employees, customers, citizens, and partners? Oracle WebCenter Portal streamlines access to info, data, processes, and applications to better engage your end users. (1:48)</p>
+							<img alt="Oracle logo" class="cw22logo" src="//www.oracle.com/us/assets/cw22-logo-self-service-portal-2585789.png"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+		<!-- END: oWidget_C/Raw-HTML/Display -->
+	
+	<!-- Dispatcher:null -->
+	
+		<!-- BEGIN: oWidget_C/Raw-HTML/Display -->
+		<div class="c86 c86v2">
+	<div class="c86w1 cwidth">
+		<h5>
+			Tools for Evaluating</h5>
+		<div class="c86w2">
+			<ul class="icn-list">
+
+<li class="icn-asessment">
+		<a href="http://www.oracle.com/us/media/survey/webcntr4.html" target="_blank">Laggard or Leader? How Does Your Self-Service Portal Strategy Measure Up?</a></li>
+	<li class="icn-arrow">
+		<a href="https://www.oracle.com/us/products/middleware/webcenter/portal/self-service/index.html">Resource Center: Integrated Self-Service Portals</a></li>
+	
+			</ul>
+		</div>
+		<div class="c86w3">
+			<ul class="icn-list">
+<li class="icn-demo">
+		<a href="http://www.oracle.com/technetwork/middleware/webcenter/overview/webcenterportal-428089.wmv" target="_blank">Demo: Oracle WebCenter Portal</a></li>
+	<li class="icn-whitepaper">
+		<a href="http://www.oracle.com/us/products/middleware/webcenter-next-gen-digital-exp-wp-2418954.pdf" target="_blank">White paper: Delivering Next-Gen Digital Experiences (PDF)</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+		<!-- END: oWidget_C/Raw-HTML/Display -->
+	
+	<!-- Dispatcher:null -->
+	
+		<!-- BEGIN: oWidget_C/Raw-HTML/Display -->
+		
+<hr class="rulesmall" />
+
+
+		<!-- END: oWidget_C/Raw-HTML/Display -->
+	
+	<!-- Dispatcher:null -->
+	
+		<!-- BEGIN: oWidget_C/Raw-HTML/Display -->
+		<div class="c85 cwidth">
+	<h3>
+		Related Products</h3>
+	<div class="c85left">
+		<ul class="cta-list">
+			<li>
+				<a href="/middleware/webcenter/index.html">Oracle WebCenter</a></li>
+			<li>
+				<a href="/middleware/webcenter/sites/index.html">Oracle WebCenter Sites</a></li>
+		</ul>
+	</div>
+	<div class="c85right">
+		<ul class="cta-list">
+			<li>
+				<a href="/middleware/webcenter/content/index.html">Oracle WebCenter Content</a></li>
+			<li>
+				<a href="http://www.oracle.com/us/technologies/mobile/overview/index.html">Oracle Mobile Platform</a></li>
+		</ul>
+	</div>
+</div>
+
+		<!-- END: oWidget_C/Raw-HTML/Display -->
+	
+	<!-- Dispatcher:null -->
+	
+		<!-- BEGIN: oWidget_C/Raw-HTML/Display -->
+		<hr class="rulebig">
+<div class="cn11 cn11v0">
+	<h3>
+		Get Started</h3>
+	<div class="cn11w1">
+		<div class="cmps-bttns">
+			<div>
+				<a href="http://event.on24.com/r.htm?e=787171&amp;s=1&amp;k=C0DEAF7877171587A6FFDF1AB2677B7D&amp;partnerref=TLA_David_Gray_OD_Webcast_TLA_Ocom" target="_blank">Webcast: Digital Experience</a></div>
+			<div>
+				<a href="http://event.on24.com/r.htm?e=764944&amp;s=1&amp;k=8940F7249B2FED258DDC95941167260D&amp;partnerref=banner" target="_blank">Webcast: Delivering Moments of Engagement</a></div>
+			<div>
+				<a href="/middleware/webcenter/webcenter-in-action.html" target="_blank">Webcast: WebCenter in Action</a></div>
+		</div>
+	</div>
+</div>
+
+		<!-- END: oWidget_C/Raw-HTML/Display -->
+	
+	<!-- Dispatcher:null -->
+	
+<!-- BEGIN: oWidget_C/_Raw-Text/Display -->
+<!-- CW21v0 -->
+<div class="cw21 cw21v0">
+  <div class="cw21slideout">
+
+    <div class="cw21handle">
+      <ul class="cw21navigation">
+        <li class="cw21help"><a href="#cw21-calltab">Contact</a></li>
+	<li class="cw21chat"><div data-lbl="chat-widget" id="atgchat-flyout"><!--— spacer —--></div></li>
+	<li class="cw21social"><a href="#cw21-socialtab">Social</a></li>
+	<li class="cw21signup"><a href="#cw21-signtab">Sign Up</a></li>
+      </ul>
+    </div>
+
+    <div class="cw21w1">
+
+      <div class="cw21w2" id="cw21-calltab">
+        <h4>We're here to help</h4>
+        <p>Engage a Sales Expert</>
+        <ul>
+		<li class="cw21phone">1-800-633-0738 (US)</li>
+		<li><a href="javascript:startCallback('0i2wzK12842','customer data')" onclick="navTrack('ocom','en','rhs-contact','callmenow-oracle');">Have Oracle Call You</a></li>
+		<li class="cw21global"><a href="/corporate/contact/global.html" target="_blank">Global Contacts</a></li>
+		<li class="cw21partners"><a href="https://solutions.oracle.com/scwar/scr/index.html" target="_blank">Find a Partner</a></li>
+		<li class="cw21support"><a href="http://www.oracle.com/us/support/contact/index.html" target="_blank">Support Directory</a></li>
+        </ul>
+      </div>
+
+      <div class="cw21w2" id="cw21-socialtab">
+        <p>Follow</p>
+        <ul class="cw21-iconfont">
+          <li><a target="_blank" href="http://www.facebook.com/webcenter"><i class="icnf-facebook"></i> <span class="screen-reader">Facebook</span></a></li>
+	  <li><a target="_blank" href="http://twitter.com/oraclewebcenter"><i class="icnf-twitter"></i> <span class="screen-reader">Twitter</span></a></li>
+          <li><a target="_blank" href="http://linkd.in/lVaEOQ"><i class="icnf-linkedin"></i> <span class="screen-reader">LinkedIn</span></a></li>
+          <li><a target="_blank" href="http://www.youtube.com/oraclewebcenter"><i class="icnf-youtube"></i> <span class="screen-reader">Youtube</span></a></li>
+          <li><a target="_blank" href="https://blogs.oracle.com/webcenter/"><i class="icnf-blog"></i> <span class="screen-reader">Blog</span></a></li>
+	  <li><a target="_blank" href="http://www.oracle.com/us/corporate/newsletter/samples/oracle-webcenter-432555.html"><i class="icnf-newsletter"></i> <span class="screen-reader">Newsletter</span></a></li>
+        </ul>
+
+        <p>Follow Oracle Corporate</p>
+        <ul class="cw21-iconfont">
+          <li><a target="_blank" href="http://www.oracle.com/us/social-media/facebook/index.html"><i class="icnf-facebook"></i> <span class="screen-reader">Facebook</span></a></li>
+	  <li><a target="_blank" href="http://www.oracle.com/us/social-media/twitter/index.html"><i class="icnf-twitter"></i> <span class="screen-reader">Twitter</span></a></li>
+          <li><a target="_blank" href="http://www.oracle.com/us/social-media/linkedin/index.html"><i class="icnf-linkedin"></i> <span class="screen-reader">LinkedIn</span></a></li>
+          <li><a target="_blank" href="https://plus.google.com/u/0/115607918987921226255"><i class="icnf-gplus2"></i> <span class="screen-reader">Google Plus</span></a></li>
+          <li><a target="_blank" href="http://www.youtube.com/oracle/"><i class="icnf-youtube"></i> <span class="screen-reader">Youtube</span></a></li>
+        </ul>
+
+        <ul>
+	  <li><a target="_blank" href="http://www.oracle.com/us/social-media/twitter/index.html">Oracle Social Media Directory</a></li>
+	  <li><a target="_blank" href="http://www.oracle.com/us/syndication/feeds/index.html">Oracle RSS Directory</a></li>
+        </ul>
+      </div>
+
+			<div class="cw21w2" id="cw21-signtab">
+				<h4>
+					Sign up by topic</h4>
+				<ul>
+					<li>
+						<a href="https://go.oracle.com/subscriptions?l_code=en-us&src1=OW:O:SW" target="_blank">Subscription Center</a></li>
+				</ul>
+			</div>
+    </div>
+  </div>
+</div>
+<!-- /CW21v0 -->
+
+
+
+<!-- END: oWidget_C/_Raw-Text/Display -->
+
+	<!-- Dispatcher:null -->
+	
+<!-- BEGIN: oWidget_C/_Raw-Text/Display -->
+<!---- Spacer ---->
+
+
+
+<!-- END: oWidget_C/_Raw-Text/Display -->
+
+<!-- end : ocom/common/global/components/compass/related-widgets -->
+<!-- start : ocom/common/global/components/g03-footer -->
+	<!-- Dispatcher:null -->
+	
+<!-- BEGIN: oWidget_C/_Raw-Text/Display -->
+<!-- U10v0 -->
+<div id="u10" class="u10v0" data-trackas="ffooter">
+<div class="u10w1">
+<div class="u10w2">
+<div class="u10w3">
+<h5>Contact Us</h5>
+<ul>
+<li>US Sales: +1.800.633.0738</li>
+<li><a data-lbl="contact-us:have-oracle-call-you" href="javascript:startCallback('0i2wzK12842','customer data')" onclick="navTrack('ocom','en','rhs-contact','callmenow-oracle');">Have Oracle Call You</a></li>
+<li><a data-lbl="contact-us:global-contacts" href="/corporate/contact/global.html">Global Contacts</a></li>
+<li><a data-lbl="contact-us:support-directory" href="/support/contact.html">Support Directory</a></li>
+</ul>
+</div>
+
+<div class="u10w3">
+<h5>About Oracle</h5>
+<ul>
+<li><a data-lbl="about-oracle:company-information" href="/corporate/index.html">Company Information</a></li>
+<li><a data-lbl="about-oracle:communities" href="https://community.oracle.com/welcome">Communities</a></li>
+<li><a data-lbl="about-oracle:careers" href="/corporate/careers/index.html">Careers</a></li>
+</ul>
+
+</div>
+</div>
+
+<div class="u10w2">
+<div class="u10w3">
+<h5>Cloud</h5>
+<ul>
+<li><a data-lbl="cloud:overview-of-cloud-solutions" href="/cloud/index.html">Overview of Cloud Solutions</a></li>
+<li><a data-lbl="cloud:software(saas)" href="https://cloud.oracle.com/saas?intcmp=ocom-ft">Software (SaaS)</a></li>
+<li><a data-lbl="cloud:platform(paas)" href="https://cloud.oracle.com/paas?intcmp=ocom-ft">Platform (PaaS)</a></li>
+<li><a data-lbl="cloud:infrastructure(iaas)" href="https://cloud.oracle.com/iaas?intcmp=ocom-ft">Infrastructure (IaaS)</a></li>
+<li><a data-lbl="cloud:data(daas)" href="https://cloud.oracle.com/data-cloud?intcmp=ocom-ft">Data (DaaS)</a></li>
+<li><a data-lbl="cloud:free-cloud-trial" href="https://cloud.oracle.com/tryit?intcmp=ocom-ft">Free Cloud Trial</a></li>						
+</ul>
+</div>
+<div class="u10w3">
+<h5>Events</h5>
+<ul>
+<li><a data-lbl="events:oracle-openworld" href="/openworld/index.html">Oracle OpenWorld</a></li>
+<li><a data-lbl="events:oracle-code" href="https://developer.oracle.com/code">Oracle Code</a></li>
+<li><a data-lbl="events:javaone" href="/javaone/index.html">JavaOne</a></li>
+<li><a data-lbl="events:all-oracle-events" href="/search/events">All Oracle Events</a></li>
+</ul>
+</div>
+</div>
+
+
+<div class="u10w2">
+<div class="u10w3">
+<h5>Top Actions</h5>
+<ul>
+<li><a data-lbl="top-actions:download-java" href="https://www.java.com/download/">Download Java</a></li>
+<li><a data-lbl="top-actions:download-java-for-developers" href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Download Java for Developers</a></li>
+<li><a data-lbl="top-actions:try-oracle-cloud" href="https://cloud.oracle.com/tryit?intcmp=ocom-ft">Try Oracle Cloud</a></li>
+<li><a data-lbl="top-actions:subscribe-to-emails" href="https://go.oracle.com/subscriptions?l_code=en-us&src1=OW:O:FO">Subscribe to Emails</a></li>
+</ul>
+</div>
+<div class="u10w3">
+<h5>News</h5>
+<ul>
+<li><a data-lbl="news:newsroom" href="/corporate/press/index.html">Newsroom</a></li>
+<li><a data-lbl="news:magazines" href="http://www.oracle.com/us/corporate/publishing/index.html">Magazines</a></li>
+<li><a data-lbl="news:customer-success-stories" href="/search/customers">Customer Success Stories</a></li>
+<li><a data-lbl="news:blogs" href="https://blogs.oracle.com/">Blogs</a></li>
+</ul>
+</div>
+</div>
+<div class="u10w2">
+<div class="u10w3">
+<h5>Key Topics</h5>
+<ul>
+<li><a data-lbl="key-topics:erp-erm(finance)" href="/applications/erp/index.html">ERP, EPM (Finance)</a></li>
+<li><a data-lbl="key-topics:hcm(hr-talent)" href="/applications/human-capital-management/index.html">HCM (HR, Talent)</a></li>
+<li><a data-lbl="key-topics:marketing" href="/marketingcloud/index.html">Marketing</a></li>
+<li><a data-lbl="key-topics:cx(sales-service-commerce)" href="/applications/customer-experience/index.html">CX (Sales, Service, Commerce)</a></li>
+<li><a data-lbl="key-topics:supply-chain" href="/applications/supply-chain-management/index.html">Supply Chain</a></li>
+<li><a data-lbl="key-topics:industry-solutions" href="/industries/index.html">Industry Solutions</a></li>
+<li><a data-lbl="key-topics:database" href="/database/index.html">Database</a></li>
+<li><a data-lbl="key-topics:mysql" href="/mysql/index.html">MySQL</a></li>
+<li><a data-lbl="key-topics:middleware" href="/middleware/index.html">Middleware</a></li>
+<li><a data-lbl="key-topics:java" href="/java/index.html">Java</a></li>
+<li><a data-lbl="key-topics:engineered-systems" href="/engineered-systems/index.html">Engineered Systems</a></li>
+</ul>
+</div>
+</div>
+
+<div class="u10w4">
+<hr />
+</div>
+<div class="u10w5" data-trackas="footer">
+
+<ul class="scl-icons">
+<li class="scl-facebook"><a data-lbl="scl-icon:facebook" href="http://www.oracle.com/us/social-media/facebook/index.html" title="Oracle on Facebook">Facebook</a></li>
+<li class="scl-twitter"><a data-lbl="scl-icon:twitter" href="http://www.oracle.com/us/social-media/twitter/index.html" title="Follow Oracle on Twitter">Twitter</a></li>
+<li class="scl-linkedin"><a data-lbl="scl-icon:linkedin" href="http://www.oracle.com/us/social-media/linkedin/index.html" title="Oracle on LinkedIn">LinkedIn</a></li>
+<li class="scl-googleplus"><a data-lbl="scl-icon:google-plus" href="https://plus.google.com/115607918987921226255" title="Follow Oracle on Google+">Google+</a></li>
+<li class="scl-youtube"><a data-lbl="scl-icon:you-tube" href="http://www.youtube.com/oracle/" title="Watch Oracle on YouTube">YouTube</a></li>
+<li class="scl-feed"><a data-lbl="scl-icon:rss" href="http://www.oracle.com/us/syndication/feeds/index.html" title="Oracle RSS Feeds">Oracle RSS Feed</a></li>
+</ul>
+
+<div class="u10-ologo"><a data-lbl="integrated-cloud-applications-and-platform-services" href="/index.html">Oracle</a></div>
+<h3>Integrated Cloud Applications &amp; Platform Services</h3>
+
+<ul class="u10-links">
+<li><a data-lbl="copyright" href="/legal/copyright.html">&copy; Oracle</a></li>
+<li><a data-lbl="site-map" href="/sitemap.html">Site Map</a></li>
+<li><a data-lbl="terms-of-use-and-privacy" href="/legal/privacy/index.html">Terms of Use and Privacy</a></li>
+<li><div id="teconsent"></div></li>
+<li class="u10last"><a data-lbl="ad-choices" href="/legal/privacy/privacy-policy.html#advertising">Ad Choices</a></li>
+</ul>
+
+</div>
+</div>
+</div>
+<!-- /U10v0 -->
+
+
+
+<!-- END: oWidget_C/_Raw-Text/Display -->
+
+	<!-- Dispatcher:null -->
+	
+<!-- BEGIN: oWidget_C/_Raw-Text/Display -->
+<!-- Start SiteCatalyst code -->
+<script language="JavaScript" src="https://www.oracleimg.com/us/assets/metrics/ora_ocom.js"></script>
+<!-- End SiteCatalyst code -->
+
+
+
+<!-- END: oWidget_C/_Raw-Text/Display -->
+
+<!-- end : ocom/common/global/components/g03-footer -->
+
+		</div>
+		
+	<!-- Dispatcher:null -->
+	
+<!-- BEGIN: oWidget_C/_Raw-Text/Display -->
+<!-- www-us EndBodyAdminContainer -->
+<!--DTM embed code - Footer -->
+<script type="text/javascript">_satellite.pageBottom();</script>
+<!--End-->
+
+
+
+<!-- END: oWidget_C/_Raw-Text/Display -->
+
+	</body>
+	<!-- end : Compass/Generic -->
+</html>

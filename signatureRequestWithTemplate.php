@@ -15,6 +15,7 @@
     <body>
         <?php
         require_once 'vendor/autoload.php';
+        $hfapi = 1; //set to zero for standard, 1 for hfapi subscription
         include('auth.php');
         if (isset($_SESSION['signature_id'])) {
             try {
@@ -33,30 +34,53 @@
                 }
             }
         } else {
+            if ($hfapi == 0) {
 
         // Instance of a client for you to use for calls
-        $client = new HelloSign\Client($api_key);
-        // Example call with logging for embedded requests
-        $request = new HelloSign\TemplateSignatureRequest;
-        $request->enableTestMode();
-        $request->setTitle("Testing");
-        $request->setSubject('Embedded Signing With Template');
-        $request->setMessage('Awesome, right?');
-        $request->setSigner('Role1', 'jack@example.com', 'Johnny Mc.Dotty and Mc-Dashy');
-//        $request->setSigner('Role2', 'jack@example.com', 'and Jill');
-//        $request->setSigner('Role3', 'jack@example.com', 'Went');
-//        $request->setSigner('Role4', 'jack@example.com', 'Up The');
-//        $request->setSigner('Role5', 'jack@example.com', 'Hill');
-        $request->setCustomFieldValue('Cost', "$100,000,000 and all of the things that go along with things like this are too much for lorem ipsum to handle and all that it represents and all that accounts for all the things in Maui and Thailand.");
-        $request->setCustomFieldValue('Amount', "There's not much", "Role1");
-        $request->setCustomFieldValue("Applicant", "Bobs's the name", "Role1");
-//        $request->setCustomFieldValue('Test Merge', '$100,000,000');
-//        $request->setCustomFieldValue('Test Merge 1', "There's not much here because of lorum ipsum and all that it represents and all that accounts for all the things in Maui and Thailand, which are all mostly connected through wormholes and zombies.");
-//        $request->setCustomFieldValue("Test Merge 3", "Bobs's the name");
-//        $request->setCustomFieldValue("Test Merge 2", true);
-        $request->setTemplateId('5eafe0c773034d3d1e5dffda2580ae3b46014b44');
+                $client = new HelloSign\Client($api_key);
+                // Example call with logging for embedded requests
+                $request = new HelloSign\TemplateSignatureRequest;
+                $request->enableTestMode();
+                $request->setTitle("Testing");
+                $request->setSubject('Embedded Signing With Template');
+                $request->setMessage('Awesome, right?');
+                $request->setSigner('Role1', 'jack@example.com', 'Johnny Mc.Dotty and Mc-Dashy');
+        //        $request->setSigner('Role2', 'jack@example.com', 'and Jill');
+        //        $request->setSigner('Role3', 'jack@example.com', 'Went');
+        //        $request->setSigner('Role4', 'jack@example.com', 'Up The');
+        //        $request->setSigner('Role5', 'jack@example.com', 'Hill');
+                $request->setCustomFieldValue('Cost', "$100,000,000 and all of the things that go along with things like this are too much for lorem ipsum to handle and all that it represents and all that accounts for all the things in Maui and Thailand.");
+                $request->setCustomFieldValue('Amount', "There's not much", "Role1");
+                $request->setCustomFieldValue("Applicant", "Bobs's the name", "Role1");
+        //        $request->setCustomFieldValue('Test Merge', '$100,000,000');
+        //        $request->setCustomFieldValue('Test Merge 1', "There's not much here because of lorum ipsum and all that it represents and all that accounts for all the things in Maui and Thailand, which are all mostly connected through wormholes and zombies.");
+        //        $request->setCustomFieldValue("Test Merge 3", "Bobs's the name");
+        //        $request->setCustomFieldValue("Test Merge 2", true);
+                $request->setTemplateId('5eafe0c773034d3d1e5dffda2580ae3b46014b44');
 
-        // Turn it into an embedded request
+            } elseif ($hfapi == 1) {
+                $client = new HelloSign\Client($api_key);
+                // Example call with logging for embedded requests
+                $request = new HelloSign\TemplateSignatureRequest;
+//                $request->enableTestMode();
+                $request->setTitle("Testing");
+                $request->setSubject('Embedded Signing With Template');
+                $request->setMessage('Awesome, right?');
+                $request->setSigner('Role1', 'jack@example.com', 'Johnny Mc.Dotty and Mc-Dashy');
+                $request->setSigner('Role2', 'jack@example.com', 'and Jill');
+                $request->setSigner('Role3', 'jack@example.com', 'Went');
+                $request->setSigner('Role4', 'jack@example.com', 'Up The');
+                $request->setSigner('Role5', 'jack@example.com', 'Hill');
+                $request->setCustomFieldValue('Cost', "$100,000,000 and all of the things that go along with things like this are too much for lorem ipsum to handle and all that it represents and all that accounts for all the things in Maui and Thailand.");
+                $request->setCustomFieldValue('Amount', "There's not much", "Role1");
+                $request->setCustomFieldValue("Applicant", "Bobs's the name", "Role1");
+        //        $request->setCustomFieldValue('Test Merge', '$100,000,000');
+        //        $request->setCustomFieldValue('Test Merge 1', "There's not much here because of lorum ipsum and all that it represents and all that accounts for all the things in Maui and Thailand, which are all mostly connected through wormholes and zombies.");
+        //        $request->setCustomFieldValue("Test Merge 3", "Bobs's the name");
+        //        $request->setCustomFieldValue("Test Merge 2", true);            
+                $request->setTemplateId('36a971d06bb162a00f26bf4177f65a9f957f264f');
+            }
+                        // Turn it into an embedded request
         $embedded_request = new HelloSign\EmbeddedSignatureRequest($request, $client_id);
 
         // Send it to HelloSign
@@ -71,7 +95,7 @@
         $signature_id = $signatures[0]->getId();
         $_SESSION['signature_id'] = $signature_id;
         $createdHow = "signatureRequestWithTemplate";
-        
+
         $event_sent_bool = 0; // set the db to false for signature_request_sent event
         include('db.php');
 

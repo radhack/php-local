@@ -1,10 +1,9 @@
 
         <div class="comment-form-comment" id="hsembedded">
 <!--            <script type="text/javascript">-->
-            <script type="text/javascript" src="//s3.amazonaws.com/cdn.hellosign.com/public/js/hellosign-embedded.LATEST.min.js"></script>
             <script>
-                console.log("waiting three seconds");
-                setTimeout(function(){
+//                console.log("waiting three seconds");
+//                setTimeout(function(){
                     HelloSign.init("<?php echo $client_id ?>");
                     HelloSign.open({
                         url: "<?php echo $sign_url ?>",
@@ -12,22 +11,16 @@
     //                    test_mode : 1,
     //                    hideHeader: true,
                         allowCancel: true,
-    //                    skipDomain Verification: true,
+//                        skipDomainVerification: true,
                         uxVersion: 2,
     //                    container: document.getElementById('hsembedded'),
     //                    debug: true,
                         messageListener: function (eventData) {
                             (console.log(">-*>-*>-*> Got message data: " + JSON.stringify(eventData)));
-
-                            if (eventData.signature_id == null) {
-                                alert("SIGNATURE_ID MISSING");
-                            }
-
-                            if (eventData.signature_request_id == null) {
-                                alert("SIGNATURE_REQUEST_ID MISSING");
-                            }
-
                             if (eventData.event == HelloSign.EVENT_SIGNED) {
+                                if (eventData.signature_id == null) {
+                                alert("SIGNATURE_ID MISSING");
+                                }
                                 HelloSign.close();
                                 console.log(eventData.signature_id + " here's some information that's useful...*&^^&**&^^&**&^^&**&^^&*");
                                 console.log("This is the signature_request_id...");
@@ -44,6 +37,9 @@
                                 console.log(eventData);
                                 window.location = "index.php";
                             } else if (eventData.event == HelloSign.EVENT_SENT) {
+                                if (eventData.signature_request_id == null) {
+                                alert("SIGNATURE_REQUEST_ID MISSING");
+                                }
                                 HelloSign.close();
     //                            alert("Signature Request Sent And Stuff!");
                                 console.log(eventData);
@@ -64,7 +60,7 @@
                             }
                         }
                     });
-                }, 3000);
+//                }, 3000);
                 ;
             </script>
         </div>
