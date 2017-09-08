@@ -15,8 +15,9 @@
     <body>
         <?php
         require_once 'vendor/autoload.php';
-        $hfapi = 1; //set to zero for standard, 1 for hfapi subscription
+        $hfapi = 0; //set to zero for standard, 1 for hfapi subscription
         include('auth.php');
+        $client_id = '3e3f283135002d1993a92124341193df';
         if (isset($_SESSION['signature_id'])) {
             try {
             $client = new HelloSign\Client($api_key);
@@ -40,7 +41,7 @@
                 $client = new HelloSign\Client($api_key);
                 // Example call with logging for embedded requests
                 $request = new HelloSign\TemplateSignatureRequest;
-                $request->enableTestMode();
+//                $request->enableTestMode();
                 $request->setTitle("Testing");
                 $request->setSubject('Embedded Signing With Template');
                 $request->setMessage('Awesome, right?');
@@ -57,7 +58,9 @@
         //        $request->setCustomFieldValue("Test Merge 3", "Bobs's the name");
         //        $request->setCustomFieldValue("Test Merge 2", true);
                 $request->setTemplateId('5eafe0c773034d3d1e5dffda2580ae3b46014b44');
-
+                $request->addMetadata("herp", "derp");
+                $request->addMetadata("derp1", "herp1");
+                
             } elseif ($hfapi == 1) {
                 $client = new HelloSign\Client($api_key);
                 // Example call with logging for embedded requests
