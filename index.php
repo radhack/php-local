@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Simple PHP Example</title>
+        <title>HelloSign API with PHP</title>
         <link rel="stylesheet" type="text/css" href="newcss.css" />
         <style type="text/css">
             body {
@@ -45,12 +45,15 @@
             include('db.php');
             $_SESSION['fromEmbeddedRequesting'] = false;
         }
-        $user = new LaunchDarkly\LDUser(hash("md5", time()));
+        
+        // no longer using LaunchDarkly
+        // $user = new LaunchDarkly\LDUser(hash("md5", time()));
         // the selector will match all input controls of type :checkbox
         // and attach a click event handler 
 //        $user = new LaunchDarkly\LDUser("herp@derping.com");
 //        if ($ld_client->variation("show-name-and-email", $user)) {
-        if (1 == 0) { //invalidate if you want to remove the requirement for name and email
+        
+        if (1 == 1) { //invalidate if you want to remove the requirement for name and email
             ?>
             <div class="entry-content">
                 <h1>HelloWorks is here at last!</h1>
