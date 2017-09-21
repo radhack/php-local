@@ -43,6 +43,7 @@
             }
         }
 
+//        $oauth
         // Instance of a client for you to use for calls
         $client = new HelloSign\Client($api_key);
 
