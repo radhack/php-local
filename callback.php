@@ -21,12 +21,16 @@
         $status = $json->status;
         $identity = $json->identity;
         $hw_id = $json->id;
-        $form1_name = $json->forms[0]->name;
-        $form1_url = $json->forms[0]->document->url;
-        $form2_name = $json->forms[1]->name;
-        $form2_url = $json->forms[1]->document->url;
-        $form3_name = $json->forms[2]->name;
-        $form3_url = $json->forms[2]->document->url;
+        $form0_name = $json->forms[0]->name;
+        $form0_url = $json->forms[0]->document->url;
+        $form1_name = $json->forms[1]->name;
+        $form1_url = $json->forms[1]->document->url;
+        $form2_name = $json->forms[2]->name;
+        $form2_url = $json->forms[2]->document->url;
+        $form3_name = $json->forms[3]->name;
+        $form3_url = $json->forms[3]->document->url;
+        $form4_name = $json->forms[4]->name;
+        $form4_url = $json->forms[4]->document->url;
         
        // GET the JWT
         $curl = curl_init();
@@ -60,10 +64,38 @@
 
         $bearer = $parsed->object->value;
 
-//        form1 section
-        $curl = curl_init();
+//        form0 section
+        $curl0 = curl_init();
 
-        curl_setopt_array($curl, array(
+        curl_setopt_array($curl0, array(
+            CURLOPT_URL => "$form0_url",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "authorization: Bearer $bearer",
+                "cache-control: no-cache"
+            ),
+        ));
+
+        $response_pdf0 = curl_exec($curl0);
+        $err = curl_error($curl0);
+
+        curl_close($curl0);
+
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        } else {
+            echo $response_pdf0;
+        }
+        
+//        form1 section
+        $curl1 = curl_init();
+
+        curl_setopt_array($curl1, array(
             CURLOPT_URL => "$form1_url",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
@@ -77,21 +109,21 @@
             ),
         ));
 
-        $response_pdf = curl_exec($curl);
-        $err = curl_error($curl);
+        $response_pdf1 = curl_exec($curl1);
+        $err = curl_error($curl1);
 
-        curl_close($curl);
+        curl_close($curl1);
 
         if ($err) {
             echo "cURL Error #:" . $err;
         } else {
-            echo $response_pdf;
+            echo $response_pdf1;
         }
         
-//        form2 section
-        $curl1 = curl_init();
+        //        form2 section
+        $curl2 = curl_init();
 
-        curl_setopt_array($curl1, array(
+        curl_setopt_array($curl2, array(
             CURLOPT_URL => "$form2_url",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
@@ -105,10 +137,10 @@
             ),
         ));
 
-        $response_pdf2 = curl_exec($curl1);
-        $err = curl_error($curl1);
+        $response_pdf2 = curl_exec($curl2);
+        $err = curl_error($curl2);
 
-        curl_close($curl1);
+        curl_close($curl2);
 
         if ($err) {
             echo "cURL Error #:" . $err;
@@ -117,9 +149,9 @@
         }
         
         //        form3 section
-        $curl2 = curl_init();
+        $curl3 = curl_init();
 
-        curl_setopt_array($curl2, array(
+        curl_setopt_array($curl3, array(
             CURLOPT_URL => "$form3_url",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
@@ -133,35 +165,74 @@
             ),
         ));
 
-        $response_pdf3 = curl_exec($curl2);
-        $err = curl_error($curl2);
+        $response_pdf3 = curl_exec($curl3);
+        $err = curl_error($curl3);
 
-        curl_close($curl2);
+        curl_close($curl3);
 
         if ($err) {
             echo "cURL Error #:" . $err;
         } else {
             echo $response_pdf3;
         }
+        
+        //        form4 section
+        $curl4 = curl_init();
 
+        curl_setopt_array($curl4, array(
+            CURLOPT_URL => "$form4_url",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "authorization: Bearer $bearer",
+                "cache-control: no-cache"
+            ),
+        ));
+
+        $response_pdf4 = curl_exec($curl4);
+        $err = curl_error($curl4);
+
+        curl_close($curl4);
+
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        } else {
+            echo $response_pdf4;
+        }
+
+        $target_file0 = "$hw_id 0.pdf";
+        file_put_contents("downloaded_files/" . $target_file0, $response_pdf0);
         $target_file1 = "$hw_id 1.pdf";
-        file_put_contents("downloaded_files/" . $target_file1, $response_pdf);
+        file_put_contents("downloaded_files/" . $target_file1, $response_pdf1);
         $target_file2 = "$hw_id 2.pdf";
         file_put_contents("downloaded_files/" . $target_file2, $response_pdf2);
         $target_file3 = "$hw_id 3.pdf";
         file_put_contents("downloaded_files/" . $target_file3, $response_pdf3);
-        $file1_encoded = base64_encode($response_pdf);
+        $target_file4 = "$hw_id 4.pdf";
+        file_put_contents("downloaded_files/" . $target_file4, $response_pdf4);
+        $file0_encoded = base64_encode($response_pdf0);
+        $file1_encoded = base64_encode($response_pdf1);
         $file2_encoded = base64_encode($response_pdf2);
         $file3_encoded = base64_encode($response_pdf3);
+        $file4_encoded = base64_encode($response_pdf4);
         $to = new SendGrid\Email("HelloWorks Signer", "radhack242@gmail.com");
         $from = new SendGrid\Email("HelloWorks Platform", "radhack242@gmail.com");
         $subject = "HelloWorks callback received";
-        $content = new SendGrid\Content("text/html", "<pre>$status</pre> is the status<br /><br />$identity is the email of the signer<br /><pre>$hw_id</pre> is the instance id<br /><pre>$form1_name</pre> is the form name<br /><br /><a href=\"$form1_url\">this</a> is where you can download the form");
-        $attachment = new SendGrid\Attachment();
-        $attachment->setType("application/pdf");
-        $attachment->setDisposition("attachment");
-        $attachment->setFilename($target_file1);
-        $attachment->setContent($file1_encoded);
+        $content = new SendGrid\Content("text/html", "<pre>$status</pre> is the status<br /><br />$identity is the email of the signer<br /><pre>$hw_id</pre> is the instance id<br /><pre>$form0_name <br /> $form1_name <br /> $form2_name <br /> $form3_name <br /> $form4_name</pre> are the form names<br />");
+        $attachment0 = new SendGrid\Attachment();
+        $attachment0->setType("application/pdf");
+        $attachment0->setDisposition("attachment");
+        $attachment0->setFilename($target_file0);
+        $attachment0->setContent($file0_encoded);
+        $attachment1 = new SendGrid\Attachment();
+        $attachment1->setType("application/pdf");
+        $attachment1->setDisposition("attachment");
+        $attachment1->setFilename($target_file1);
+        $attachment1->setContent($file1_encoded);
         $attachment2 = new SendGrid\Attachment();
         $attachment2->setType("application/pdf");
         $attachment2->setDisposition("attachment");
@@ -172,10 +243,17 @@
         $attachment3->setDisposition("attachment");
         $attachment3->setFilename($target_file3);
         $attachment3->setContent($file3_encoded);
+        $attachment4 = new SendGrid\Attachment();
+        $attachment4->setType("application/pdf");
+        $attachment4->setDisposition("attachment");
+        $attachment4->setFilename($target_file4);
+        $attachment4->setContent($file4_encoded);
         $email = new SendGrid\Mail($from, $subject, $to, $content);
-        $email->addAttachment($attachment);
+        $email->addAttachment($attachment0);
+        $email->addAttachment($attachment1);
         $email->addAttachment($attachment2);
         $email->addAttachment($attachment3);
+        $email->addAttachment($attachment4);
 
         $sg = new \SendGrid($sendgrid_api_key);
         $response = $sg->client->mail()->send()->post($email);
