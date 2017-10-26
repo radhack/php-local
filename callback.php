@@ -32,6 +32,10 @@
         $form4_name = $json->forms[4]->name;
         $form4_url = $json->forms[4]->document->url;
         
+        foreach($json as $obj) {
+            
+        }
+        
        // GET the JWT
         $curl = curl_init();
         

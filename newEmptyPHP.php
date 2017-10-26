@@ -83,10 +83,18 @@
 //}
 
 require_once 'vendor/autoload.php';
-$hfapi == 1;
-include('auth.php');
 
-$client = new HelloSign\Client($api_key);
-$file_object = $client->getFiles("cea70a8b83ecb68036da084bd275876dd2ca389a");
-$file_url = $file_object->file_url;
-print_r($file_url);
+$client = new HelloSign\Client("");
+
+$signature_request_id = "9eab1549a21ddd7a4f9ecedb58a320d120225ba0";
+
+//$full_filename = '/home/p26h9st4/docs/tam/'.strtolower($co)."/$firstname $lastname $filename.zip"; 
+//$full_filename = preg_replace('/[^a-z0-9._()\/ ]+/i', '', $full_filename); 
+$sig_req_id = "downloaded_files/derp$signature_request_id.zip";
+
+$client->getFiles("9eab1549a21ddd7a4f9ecedb58a320d120225ba0", $sig_req_id, HelloSign\SignatureRequest::FILE_TYPE_ZIP);
+
+echo("<br />");
+print_r($sig_req_id);
+
+echo("<br /> success!");
