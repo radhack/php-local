@@ -336,7 +336,7 @@
 
             // Here you define where the file should download to. This should be
             // customized to your app's needs.
-            $get_file = $client->getFiles($signature_request_id, "downloaded_files/" . $signature_request_id . ".pdf", HelloSign\SignatureRequest::FILE_TYPE_PDF);
+            $client->getFiles($signature_request_id, "downloaded_files/" . $signature_request_id . ".pdf", HelloSign\SignatureRequest::FILE_TYPE_PDF);
 
             // also trigger an email 
             // right now I'm just hardcoding the receipient in the signature request,
