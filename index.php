@@ -1,3 +1,6 @@
+<?php
+include('auth.php');
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -37,7 +40,6 @@
     <body>
         <?php
         require_once 'vendor/autoload.php';
-        include('auth.php');
         if (isset($_SESSION['fromEmbeddedRequesting']) && $_SESSION['fromEmbeddedRequesting'] == true) {
             $client = new HelloSign\Client($api_key);
             $signature_request_object = $client->getSignatureRequest($_SESSION['signature_request_id']);
