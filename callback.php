@@ -31,17 +31,26 @@
         $form3_url = $json->forms[3]->document->url;
         $form4_name = $json->forms[4]->name;
         $form4_url = $json->forms[4]->document->url;
-        
-        foreach($json as $obj) {
-            
-        }
+       
+        // the foreach() thing is annoying. I'll get it later...
+//        foreach($json->forms as $forms) {
+//            print_r("<br />");
+//            $i = 0;
+//            ${"form_" . $i . "_name"} = $forms->name;
+//            ${"form_" . $i . "_url"} = $forms->document->url;
+//            echo(${"form_" . $i . "_name"} . " is the form name in position $i");
+//            echo(${"form_" . $i . "_url"} . " is the form url in position $i");
+//            echo"<br />";
+//            $i++;
+//        }
         
        // GET the JWT
         $curl = curl_init();
         
         curl_setopt_array($curl, array(
 //            CURLOPT_URL => "https://api.helloworks.com/v2/token/tdUNBn2TrWzVEoFD", //this is the Alex+Booker API key information
-            CURLOPT_URL => "https://api.helloworks.com/v2/token/jf1DnGMBBW9VOl21", //this is the Alex+viewstaging API Key information
+//            CURLOPT_URL => "https://api.helloworks.com/v2/token/jf1DnGMBBW9VOl21", //this is the Alex+viewstaging API Key information
+            CURLOPT_URL => "https://api.helloworks.com/v2/token/C51a5tENK2JflvnZ", //this is the Alex+jensteam API Key information
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -50,7 +59,8 @@
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
 //                "authorization: Bearer eW8gYCY2fz9MMnkUcKPP7VbK2GtPNkPUEOnaFqU4", //use this with Alex+Booker
-                "authorization: Bearer uxLit7EZGORNbOuLfrT3EMWOxxj4zbmNR0aLgzxf", //use this with Alex+viewstaging
+//                "authorization: Bearer uxLit7EZGORNbOuLfrT3EMWOxxj4zbmNR0aLgzxf", //use this with Alex+viewstaging
+                "authorization: Bearer 8lBn4DiMKdd7C25kjdbl1eRgbJat90ehp66JEGOC", //use this with Alex+jensteam
                 "cache-control: no-cache"
             ),
         ));
@@ -228,7 +238,7 @@
         $to = new SendGrid\Email("HelloWorks Signer", "radhack242@gmail.com");
         $from = new SendGrid\Email("HelloWorks Platform", "radhack242@gmail.com");
         $subject = "HelloWorks callback received";
-        $content = new SendGrid\Content("text/html", "<pre>$status</pre> is the status<br /><br />$identity is the email of the signer<br /><pre>$hw_id</pre> is the instance id<br /><pre>$form0_name <br /> $form1_name <br /> $form2_name <br /> $form3_name <br /> $form4_name</pre> are the form names<br />");
+        $content = new SendGrid\Content("text/html", "<pre>$status</pre> is the status<br /><br />$identity is the email of the signer<br /><pre>$hw_id</pre> is the instance id<br /><pre>$form0_name <br />$form1_name <br />$form2_name <br />$form3_name <br />$form4_name</pre> are the form names<br />");
         $attachment0 = new SendGrid\Attachment();
         $attachment0->setType("application/pdf");
         $attachment0->setDisposition("attachment");
