@@ -1,7 +1,7 @@
 <?php
-require_once ('vendor/autoload.php'); //if you’re using Composer, or
-require_once ('./vendor/hellosign/hellosign-php-sdk/HelloSign.php'); //if not using Composer and assuming the SDK is installed in the 'vendor' folder
-include("auth.php");
+require_once ('vendor/autoload.php'); //if you're using Composer, or
+//require_once ('./vendor/hellosign/hellosign-php-sdk/HelloSign.php'); //if not using Composer and assuming the SDK is installed in the 'vendor' folder
+include("auth.php"); // where $api_key and $client_id are set
 $client = new HelloSign\Client($api_key);
 $request = new HelloSign\SignatureRequest;
 $request->enableTestMode();
@@ -9,7 +9,7 @@ $request->setSubject('My First embedded signature request with a template');
 $request->setMessage('Awesome, right?');
 $request->addSigner('jack@example.com', 'Jack');
 $request->addSigner('jill@example.com', 'Jill');
-$request->addFile("./nda.pdf"); //assuming there’s a simple test file in the root of the application
+$request->addFile("./nda.pdf"); //assuming there's a simple test file in the root of the application
 
 // $client_id = 'YOUR_CLIENT_ID';
 $embedded_request = new HelloSign\EmbeddedSignatureRequest($request, $client_id);
