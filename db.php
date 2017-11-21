@@ -49,7 +49,7 @@ if (isset($signature_request_id)) {
 
     // Create connection to save to sigantureId table
     if (isset($signature_id)) {
-        
+
         $conn1 = new mysqli($servername, $dbadmin, $dbpassword, $dbname);
         // Check connection
         if ($conn1->connect_error) {
@@ -64,7 +64,6 @@ if (isset($signature_request_id)) {
             echo "<br />Error INSERTing (lol): " . $conn1->error;
         }
     }
-
 } elseif (isset($template_id)) {
 
     // Create connection
@@ -81,7 +80,6 @@ if (isset($signature_request_id)) {
     } else {
         echo "<br />Error INSERTing (lol): " . $conn->error;
     }
-
 } elseif (isset($_SESSION['fromEmbeddedRequesting']) && $_SESSION['fromEmbeddedRequesting'] == true) {
 
     // Create connection
@@ -101,7 +99,6 @@ if (isset($signature_request_id)) {
     } else {
         echo "<br />Error INSERTing (lol): " . $conn->error;
     }
-
 } elseif (isset($hw_email)) {
 
     // Create connection
@@ -120,6 +117,32 @@ if (isset($signature_request_id)) {
     }
 //    TODO - setup callback server to save state of request
 //    if same signer comes back to HelloWorks, serve same hw_sign_url
+} elseif ($is_loop_time == 1) {
+
+    // Create connection to save to sigantureRequest table
+    $conn = new mysqli($servername, $dbadmin, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $sql = "SELECT signature_request_id FROM signatureRequest";
+
+    $result = mysqli_query($conn, $sql);
+        
+    $num_rows = mysqli_num_rows($result);
+    echo "$num_rows is the number of rows <br />";
+        $client = new HelloSign\Client($api_key);
+
+    while ($signature_request_id_row = mysqli_fetch_array($result)) {
+        try {
+        $client->getFiles($signature_request_id_row['signature_request_id'], "downloaded_files/" . $signature_request_id_row['signature_request_id'] . ".pdf", HelloSign\SignatureRequest::FILE_TYPE_PDF);
+        } catch (HelloSign\Error $e) {
+            print_r($e);
+            echo "<br />";
+        }
+    }
+    echo "done with while loop";
 }
 
 //$conn->close();
