@@ -55,28 +55,28 @@ include('auth.php');
 //        $user = new LaunchDarkly\LDUser("herp@derping.com");
 //        if ($ld_client->variation("show-name-and-email", $user)) {
         
-        if (1 == 1) { //invalidate if you want to remove the requirement for name and email
+        if (1 == 0) { //invalidate if you want to remove the requirement for name and email
             ?>
             <div class="entry-content">
                 <h1>HelloWorks is here at last!</h1>
                 <!-- this is creating an embedded signature request using text tags -->
                 <form action="/helloworks.php" method="post" enctype="multipart/form-data">
                     <fieldset>
-                        <p>Enter your name and email address here to try out the W-9 flow</p>
+                        <p>Enter your name and email address here to try out the OneLogic Test flow</p>
                         <p><small>Please use false information - this is for demo purposes only</small></p>
                         <input type="text" name="hw_name" id="hw_name" placeholder="First and Last Name" required/>
                         <br />
                         <input type="email" name="hw_email" id="hw_email" placeholder="Email Address" required/>
-                        <br />
-                        Choose either to receive a link, or a code, in the verification email from HelloWorks
-                        <br />
-                        <input type="checkbox" value="1" name="checkbox[1][]" id="hw_send_link" checked/> Link (default for now)
-                        <br />
+                        <!--<br />-->
+                        <!--Choose either to receive a link, or a code, in the verification email from HelloWorks-->
+                        <!--<br />-->
+                        <!--<input type="checkbox" value="1" name="checkbox[1][]" id="hw_send_link" checked/> Link (default for now)-->
+                        <!--<br />-->
                         <!--<input type="checkbox" value="1" name="checkbox[1][]" id="hw_send_code"/> Code-->
                         <br />
                         <input type="submit" value="Fill out a W-9"/>
-                        <br />
-                        <script>
+                        <!--<br />-->
+<!--                        <script>
                             $("input:checkbox").on('click', function () {
                                 // in the handler, 'this' refers to the box clicked on
                                 var $box = $(this);
@@ -91,7 +91,7 @@ include('auth.php');
                                 } else {
                                     $box.prop("checked", false);
                                 }
-                            });</script>
+                            });</script>-->
                     </fieldset>
                 </form>
                 <br />
