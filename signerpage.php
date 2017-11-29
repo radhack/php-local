@@ -4,6 +4,9 @@
             <script>
 //                console.log("waiting three seconds");
 //                setTimeout(function(){
+//                    var parent_url = document.referrer;
+//                    console.log(parent_url + " THIS IS THE PARENT_URL");
+//                    console.log(window.parent.location + " is the parent.location");
                     HelloSign.init("<?php echo $client_id ?>");
                     HelloSign.open({
                         url: "<?php echo $sign_url ?>",
@@ -14,7 +17,7 @@
 //                        skipDomainVerification: true,
                         uxVersion: 2,
     //                    container: document.getElementById('hsembedded'),
-    //                    debug: true,
+                        debug: true,
                         messageListener: function (eventData) {
                             (console.log(">-*>-*>-*> Got message data: " + JSON.stringify(eventData)));
                             if (eventData.event == HelloSign.EVENT_SIGNED) {
