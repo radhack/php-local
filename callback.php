@@ -49,8 +49,8 @@
         
         curl_setopt_array($curl, array(
 //            CURLOPT_URL => "https://api.helloworks.com/v2/token/tdUNBn2TrWzVEoFD", //this is the Alex+Booker API key information
-//            CURLOPT_URL => "https://api.helloworks.com/v2/token/jf1DnGMBBW9VOl21", //this is the Alex+viewstaging API Key information
-            CURLOPT_URL => "https://api.helloworks.com/v2/token/C51a5tENK2JflvnZ", //this is the Alex+jensteam API Key information
+            CURLOPT_URL => "https://api.helloworks.com/v2/token/jf1DnGMBBW9VOl21", //this is the Alex+viewstaging API Key information
+//            CURLOPT_URL => "https://api.helloworks.com/v2/token/C51a5tENK2JflvnZ", //this is the Alex+jensteam API Key information
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -59,8 +59,8 @@
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
 //                "authorization: Bearer eW8gYCY2fz9MMnkUcKPP7VbK2GtPNkPUEOnaFqU4", //use this with Alex+Booker
-//                "authorization: Bearer uxLit7EZGORNbOuLfrT3EMWOxxj4zbmNR0aLgzxf", //use this with Alex+viewstaging
-                "authorization: Bearer 8lBn4DiMKdd7C25kjdbl1eRgbJat90ehp66JEGOC", //use this with Alex+jensteam
+                "authorization: Bearer uxLit7EZGORNbOuLfrT3EMWOxxj4zbmNR0aLgzxf", //use this with Alex+viewstaging
+//                "authorization: Bearer 8lBn4DiMKdd7C25kjdbl1eRgbJat90ehp66JEGOC", //use this with Alex+jensteam
                 "cache-control: no-cache"
             ),
         ));
