@@ -20,7 +20,7 @@
 
         $client = new HelloSign\Client($api_key);
         $template_id = $_POST['templateID'];
-        $response = $client->getEmbeddedEditUrl("$template_id");
+        $response = $client->getEmbeddedEditUrl("$template_id?test_mode=1");
         $createdHow = "editEmbeddedTemplate";
         include ('db.php');
         $sign_url = $response->edit_url;
