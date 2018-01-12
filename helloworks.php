@@ -9,7 +9,7 @@
         <?php
         include_once "auth.php";
         
-        $hw_email = $_POST['hw_email'];
+        $hw_email = urlencode($_POST['hw_email']);
         $hw_name = $_POST['hw_name'];
         echo("<br /> $hw_email <br />");
         echo("$hw_name <br />");
@@ -68,7 +68,7 @@
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "identity%5Btype%5D=email&identity%5Bvalue%5D=$hw_email&identity%5Bfull_name%5D=$hw_name&settings%5Bcallback_url%5D=https%3A%2F%2Fhstests.ngrok.io%2Fcallback.php&identity%5Bverification%5D=link&settings%5Bredirect_url%5D=https%3A%2F%2Fhstests.ngrok.io",
+            CURLOPT_POSTFIELDS => "identity%5Btype%5D=email&identity%5Bvalue%5D=$hw_email&identity%5Bfull_name%5D=$hw_name&settings%5Bcallback_url%5D=https%3A%2F%2Fhstests.ngrok.io%2Fcallback.php&identity%5Bverification%5D=code&settings%5Bredirect_url%5D=https%3A%2F%2Fhstests.ngrok.io",
             CURLOPT_HTTPHEADER => array(
                 "authorization: $bearer",
                 "cache-control: no-cache",
@@ -103,6 +103,6 @@
         <script type="text/javascript">
             var hwurl = "<?php echo $hw_sign_url?>";
             window.location.href = hwurl;
-            </script>
+        </script>
     </body>
 </html>
