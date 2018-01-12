@@ -55,7 +55,6 @@
         $request->setMessage('Awesome, right?');
 //        $request->addSigner($_POST['signeremail'], $_POST['signername']);
         $request->addSigner("testing@testing.com", "Something Name");
-        // $request->setAllowDecline(true); // uncomment this when allowDecline is built into the PHP SDK
         $request->addFile("$target_file");
 //        $request->addFile("./nda.pdf");
         rename($target_file, "$target_file.embSigReq");
@@ -83,18 +82,17 @@
         echo "<br />";
         include('signerpage.php');
         ?>
-<!--        <div id='loadingmessage' style='display:none'>
-            <img src='triangle.gif' alt="loading"/>
-        </div>
-         add these to ajax call:
-        <script>
-            $('#loadingmessage').show();  // show the loading message.
-            // 
-            // $('#loadingmessage').hide(); // hide the loading message
-        </script>-->
+        <!--        <div id='loadingmessage' style='display:none'>
+                    <img src='triangle.gif' alt="loading"/>
+                </div>
+                 add these to ajax call:
+                <script>
+                    $('#loadingmessage').show();  // show the loading message.
+                    // 
+                    // $('#loadingmessage').hide(); // hide the loading message
+                </script>-->
         <?php
         // check for the callback
-
 //        function eventSentYet($signature_id) {
 //            include('db.php');
 //            // Create connection
@@ -122,26 +120,24 @@
 //                include('signerpage.php');
 //            }
 //        }
-
         ?>
-<!--        <script>
-            function sleep(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
-
-            async function demo() {
-                console.log('Taking a break...');
-                sleep(5000);
-                console.log('five seconds later');
-                <?php eventSentYet($signature_id); ?>
-            }
-
-            demo();
-
-
-        </script>-->
-        <?php
-
+        <!--        <script>
+                    function sleep(ms) {
+                        return new Promise(resolve => setTimeout(resolve, ms));
+                    }
+        
+                    async function demo() {
+                        console.log('Taking a break...');
+                        sleep(5000);
+                        console.log('five seconds later');
+<?php eventSentYet($signature_id); ?>
+                    }
+        
+                    demo();
+        
+        
+                </script>-->
+<?php
 skip:
 // skip loop so this doesn't run when skip isn't used
 if ($uploadOk === 0) {
