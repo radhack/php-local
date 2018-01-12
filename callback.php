@@ -22,6 +22,7 @@
         $identity = $json->identity;
         $hw_id = $json->id;
         $form0_name = $json->forms[0]->name;
+        echo("$form0_name <br />");
         $form0_url = $json->forms[0]->document->url;
         $form1_name = $json->forms[1]->name;
         $form1_url = $json->forms[1]->document->url;
@@ -337,7 +338,7 @@
     // request is completely signed by all signees, HelloSign has processed
     // the document and has it available for download.
     // if ($reported_app === 'afedad951b68dc42bfbd930e81d97175') {
-    if ($reported_app === '3e3f283135002d1993a92124341193df') {
+//    if ($reported_app === '3e3f283135002d1993a92124341193df') {
 //    if ($reported_app === 'xxx') { //stop processing callbacks for now
         if ($event_type === 'signature_request_all_signed') {
             $client = new HelloSign\Client($api_key);
@@ -697,6 +698,7 @@
             // unset($signer_data);
         } else {
             $signature_request_id = $data->signature_request->signature_request_id;
+            $template_id = $data->template->template_id;
             $event_time = $data->event->event_time;
             $sendgrid = new SendGrid($sendgrid_api_key);
             $url = 'https://api.sendgrid.com/';
@@ -708,7 +710,7 @@
                 'from' => "radhack242@gmail.com",
                 'fromname' => "Simple PHP",
                 'subject' => "$event_type received",
-                'html' => "<strong>$signature_request_id</strong><br />Is the signature_request_id<br />$event_type was received at $event_time<br />",
+                'html' => "<strong>$signature_request_id$template_id</strong><br />Is the id in the request<br />$event_type was received at $event_time<br />",
             );
 
             $request = $url . 'api/mail.send.json';
@@ -733,7 +735,7 @@
 // print everything out
             print_r($response);
         }
-    }
+//    }
     invalid_hash:
     if ($hash_check_failed == 1 & $event_type != "transmission_received") {
 
