@@ -55,7 +55,11 @@
 //        $request->addSigner("alex+signer1@hellosign.com", "Alex Signer 1", 0);
 //        $request->addSigner("alex+signer2@hellosign.com", "Alex Signer 2", 1);
         // $request->setAllowDecline(true); //uncomment this when allowDecline is built into the PHP SDK
+        try {
         $draft_request = new HelloSign\UnclaimedDraft($request, $client_id);
+        } catch (HelloSignError $e) {
+            print_r($e);
+        }
         $response = $client->createUnclaimedDraft($draft_request);
 
         $signature_request_id = $response->signature_request_id;
