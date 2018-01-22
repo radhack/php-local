@@ -17,7 +17,7 @@
         require_once 'vendor/autoload.php';
         $hfapi = 0; //set to zero for standard, 1 for hfapi subscription
         include('auth.php');
-        $client_id = '3e3f283135002d1993a92124341193df';
+//        $client_id = '3e3f283135002d1993a92124341193df';
         if (isset($_SESSION['signature_id'])) {
             try {
             $client = new HelloSign\Client($api_key);
