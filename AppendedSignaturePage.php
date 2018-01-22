@@ -81,63 +81,6 @@
         $sign_url = $response->getSignUrl();
         echo "<br />";
         include('signerpage.php');
-        ?>
-        <!--        <div id='loadingmessage' style='display:none'>
-                    <img src='triangle.gif' alt="loading"/>
-                </div>
-                 add these to ajax call:
-                <script>
-                    $('#loadingmessage').show();  // show the loading message.
-                    // 
-                    // $('#loadingmessage').hide(); // hide the loading message
-                </script>-->
-        <?php
-        // check for the callback
-//        function eventSentYet($signature_id) {
-//            include('db.php');
-//            // Create connection
-//            $conn = new mysqli($servername, $dbadmin, $dbpassword, $dbname);
-//            // Check connection
-//            if ($conn->connect_error) {
-//                die("Connection failed: " . $conn->connect_error);
-//            }
-////            echo "$signature_id is the signature id<br />";
-//
-//            $query = mysqli_query($conn, "SELECT event_sent_bool FROM signatureId WHERE signature_id = '723da26f51fcf0d4594834ad339e62cd'");
-////            print_r ($query);
-////            echo " that's the query <br />";
-//            $sent_event_received = json_encode(mysqli_fetch_row($query));
-////            if ($sent_event_received[0] == 1){
-//////            print_r($sent_event_received);
-//////            echo "that's the sent_event_recieved<br />";
-////            }
-//            $row = mysqli_fetch_assoc($query);
-////            print_r($row["event_sent_bool"]);
-////            echo " row zero<br />";
-//
-////            print_r($sent_event_received);
-//            if ($row["event_sent_bool"] == 1) {
-//                include('signerpage.php');
-//            }
-//        }
-        ?>
-        <!--        <script>
-                    function sleep(ms) {
-                        return new Promise(resolve => setTimeout(resolve, ms));
-                    }
-        
-                    async function demo() {
-                        console.log('Taking a break...');
-                        sleep(5000);
-                        console.log('five seconds later');
-<?php eventSentYet($signature_id); ?>
-                    }
-        
-                    demo();
-        
-        
-                </script>-->
-<?php
 skip:
 // skip loop so this doesn't run when skip isn't used
 if ($uploadOk === 0) {
