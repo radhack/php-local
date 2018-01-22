@@ -185,6 +185,18 @@ include('auth.php');
                     </fieldset>
                 </form>
 
+                <!-- this is an edit template files page -->
+                <form action="/updateTemplateFiles.php" method="post" enctype="multipart/form-data">        
+                    <fieldset>
+                        <br />
+                        <input type="text" name="template_id" id="template_id"/>
+                        <br />
+                        <input type="file" name="uploadedTemplateFile" id="uploadedTemplateFile"/>
+                        <input type="submit" value="Update Template Files"/>
+                        <p>Update Template Files</p>
+                    </fieldset>
+                </form>
+                
                 <!-- this is an edit embedded template page -->
                 <form action="/editEmbeddedTemplate.php" method="post" enctype="multipart/form-data">        
                     <fieldset>
@@ -325,12 +337,25 @@ include('auth.php');
                 <p>Create a template</p>
             </fieldset>
         </form>
+        
+        <!-- this is an edit template files page -->
+                <form action="/updateTemplateFiles.php" method="post" enctype="multipart/form-data">        
+                    <fieldset>
+                        <br />
+                        <input type="text" name="template_id" id="template_id" placeholder="Template ID" required="true"/>
+                        <br />
+                        <input type="file" name="newTemplateFile" id="newTemplateFile" required="true"/>
+                        <br />
+                        <input type="submit" value="Update Template Files"/>
+                        <p>Update Template Files</p>
+                    </fieldset>
+                </form>
 
         <!-- this is an edit embedded template page -->
         <form action="/editEmbeddedTemplate.php" method="post" enctype="multipart/form-data">        
             <fieldset>
                 <br />
-                <input type="text" name="templateID" id="templateID"/>
+                <input type="text" name="templateID" id="templateID" placeholder="Template ID" required="true"/>
                 <br />
                 <input type="submit" value="Edit An Embedded Template"/>
                 <p>Edit an embedded template</p>
@@ -343,7 +368,7 @@ include('auth.php');
                 <br />
                 <input type="submit" value="Requesting"/>
                 <br />
-                <input type="file" name="requestingFile" id="requestingFile"/>
+                <input type="file" name="requestingFile" id="requestingFile" required="true"/>
             </fieldset>
             <p>Create a signature request that will send a HelloSign email to the signer(s)</p>
         </form>
