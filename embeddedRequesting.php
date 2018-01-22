@@ -47,7 +47,7 @@
 
         $request = new HelloSign\SignatureRequest;
         $request->enableTestMode();
-        $request->setRequesterEmail('alex@hellosign.com');
+        $request->setRequesterEmail('alex+requester@hellosign.com');
         //$request->setHideTextTags(true);
         $request->setUseTextTags(FALSE);
         $request->addFile("$target_file");
