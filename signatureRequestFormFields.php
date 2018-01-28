@@ -16,18 +16,18 @@
         <?php
         require_once 'vendor/autoload.php';
         include('auth.php');
-        
+
         if (isset($_SESSION['signature_id'])) {
             try {// Instance of a client for you to use for calls
-            $client = new HelloSign\Client($api_key);
-            // Retrieve the URL to sign the document
-            $embedded_response = $client->getEmbeddedSignUrl($_SESSION['sign_id']);
+                $client = new HelloSign\Client($api_key);
+                // Retrieve the URL to sign the document
+                $embedded_response = $client->getEmbeddedSignUrl($_SESSION['sign_id']);
 
-            // Store it to use with the embedded.js HelloSign.open() call
-            $sign_url = $embedded_response->getSignUrl();
-            include('signerpage.php');
+                // Store it to use with the embedded.js HelloSign.open() call
+                $sign_url = $embedded_response->getSignUrl();
+                include('signerpage.php');
             } catch (Exception $e) {
-                echo "$e is the error - you'll have to go <a href=\"index.php\">here</a> to get home and try again";  
+                echo "$e is the error - you'll have to go <a href=\"index.php\">here</a> to get home and try again";
             }
         } else {
             // Instance of a client for you to use for calls
@@ -40,44 +40,44 @@
             $request->setMessage('Awesome, right?');
             $request->addSigner('testing@testing.com', 'Signer Person, IV');
             $request->setFormFieldsPerDocument(
-                    array(//everything
-                        array(//document 1
-                            array(//component 1
-                                "api_id" => "things_1",
-                                "name" => "Name Here",
-                                "type" => "text",
-                                "x" => 220,
-                                "y" => 85,
-                                "width" => 253,
-                                "height" => 16,
-                                "required" => true,
-                                "signer" => 0
-                            ),
-                            array(//component 2
-                                "api_id" => "things_2",
-                                "name" => "Address Here",
-                                "type" => "text",
-                                "x" => 530,
-                                "y" => 85,
-                                "width" => 152,
-                                "height" => 16,
-                                "required" => true,
-                                "signer" => 0
-                            ),
-                            array(//component 3
-                                "api_id" => "lotsof_2",
-                                "name" => "",
-                                "type" => "signature",
-                                "x" => 90,
-                                "y" => 315,
-                                "width" => 223,
-                                "height" => 30,
-                                "required" => true,
-                                "signer" => 0,
-                                "page" => 2,
-                            ),
+                array(//everything
+                    array(//document 1
+                        array(//component 1
+                            "api_id" => "things_1",
+                            "name" => "Name Here",
+                            "type" => "text",
+                            "x" => 220,
+                            "y" => 85,
+                            "width" => 253,
+                            "height" => 16,
+                            "required" => true,
+                            "signer" => 0
                         ),
-                    )
+                        array(//component 2
+                            "api_id" => "things_2",
+                            "name" => "Address Here",
+                            "type" => "text",
+                            "x" => 530,
+                            "y" => 85,
+                            "width" => 152,
+                            "height" => 16,
+                            "required" => true,
+                            "signer" => 0
+                        ),
+                        array(//component 3
+                            "api_id" => "lotsof_2",
+                            "name" => "",
+                            "type" => "signature",
+                            "x" => 90,
+                            "y" => 315,
+                            "width" => 223,
+                            "height" => 30,
+                            "required" => true,
+                            "signer" => 0,
+                            "page" => 2,
+                        ),
+                    ),
+                )
             );
             $request->addFileUrl("http://www.startupprofessionals.com/linked/non-disclosure-agreement-mutual-generic-blank.pdf");
 
