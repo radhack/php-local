@@ -16,13 +16,18 @@
     require_once 'vendor/autoload.php';
     include('auth.php');
 
+    
+    // ******************
+    // HelloWorks section
+    // ******************
+    
     if (isset($_SERVER['HTTP_X_HELLOWORKS_SIGNATURE'])) {
         $json = GuzzleHttp\json_decode(file_get_contents('php://input'));
+        $raw_json_for_sendgrid = file_get_contents('php://input');
         $status = $json->status;
         $identity = $json->identity;
         $hw_id = $json->id;
         $form0_name = $json->forms[0]->name;
-        echo("$form0_name <br />");
         $form0_url = $json->forms[0]->document->url;
         $form1_name = $json->forms[1]->name;
         $form1_url = $json->forms[1]->document->url;
@@ -50,8 +55,9 @@
         
         curl_setopt_array($curl, array(
 //            CURLOPT_URL => "https://api.helloworks.com/v2/token/tdUNBn2TrWzVEoFD", //this is the Alex+Booker API key information
-            CURLOPT_URL => "https://api.helloworks.com/v2/token/jf1DnGMBBW9VOl21", //this is the Alex+viewstaging API Key information
+//            CURLOPT_URL => "https://api.helloworks.com/v2/token/jf1DnGMBBW9VOl21", //this is the Alex+viewstaging API Key information
 //            CURLOPT_URL => "https://api.helloworks.com/v2/token/C51a5tENK2JflvnZ", //this is the Alex+jensteam API Key information
+            CURLOPT_URL => "https://api.helloworks.com/v2/token/V6NaarRh9wPweMrk", // Ram's staging
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -60,8 +66,9 @@
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
 //                "authorization: Bearer eW8gYCY2fz9MMnkUcKPP7VbK2GtPNkPUEOnaFqU4", //use this with Alex+Booker
-                "authorization: Bearer uxLit7EZGORNbOuLfrT3EMWOxxj4zbmNR0aLgzxf", //use this with Alex+viewstaging
+//                "authorization: Bearer uxLit7EZGORNbOuLfrT3EMWOxxj4zbmNR0aLgzxf", //use this with Alex+viewstaging
 //                "authorization: Bearer 8lBn4DiMKdd7C25kjdbl1eRgbJat90ehp66JEGOC", //use this with Alex+jensteam
+                "authorization: Bearer 5eETgB3CdREpgvnU1Bg55MiVzwQr8p8FJR3gXDnM", // Ram's staging
                 "cache-control: no-cache"
             ),
         ));
@@ -236,7 +243,12 @@
         $file2_encoded = base64_encode($response_pdf2);
         $file3_encoded = base64_encode($response_pdf3);
         $file4_encoded = base64_encode($response_pdf4);
+        $callback_body = base64_encode($raw_json_for_sendgrid);
+//        $callback_body = array(
+//            "content" => base64_encode($json)
+//        );
         $to = new SendGrid\Email("HelloWorks Signer", "radhack242@gmail.com");
+        $cc = new SendGrid\Email("Ram", "rammuthukrishnan7391@gmail.com");
         $from = new SendGrid\Email("HelloWorks Platform", "radhack242@gmail.com");
         $subject = "HelloWorks callback received";
         $content = new SendGrid\Content("text/html", "<pre>$status</pre> is the status<br /><br />$identity is the email of the signer<br /><pre>$hw_id</pre> is the instance id<br /><pre>$form0_name <br />$form1_name <br />$form2_name <br />$form3_name <br />$form4_name</pre> are the form names<br />");
@@ -265,17 +277,25 @@
         $attachment4->setDisposition("attachment");
         $attachment4->setFilename($target_file4);
         $attachment4->setContent($file4_encoded);
+        $attachment5 = new SendGrid\Attachment();
+        $attachment5->setType("application/json");
+        $attachment5->setDisposition("attachment");
+        $attachment5->setFilename("helloWorksCallbackBody.json");
+        $attachment5->setContent($callback_body);  
         $email = new SendGrid\Mail($from, $subject, $to, $content);
+//        $email = new SendGrid\Mail($from, $subject, $to . ", " . $cc, $content);
         $email->addAttachment($attachment0);
         $email->addAttachment($attachment1);
         $email->addAttachment($attachment2);
         $email->addAttachment($attachment3);
         $email->addAttachment($attachment4);
-
+        $email->addAttachment($attachment5);
+        $email->personalization[0]->addCC($cc);
         $sg = new \SendGrid($sendgrid_api_key);
         $response = $sg->client->mail()->send()->post($email);
 
         echo $response->statusCode();
+        echo "Here's my response!";
         print_r($response->headers());
         echo $response->body();
 
@@ -316,10 +336,14 @@
     $hash_check = hash_hmac("sha256", $event_time . $event_type, $api_key);
 //    echo ("*****HASH CHECK<br />$hash_check<br />");
 
+// test the callback hash, if failed, try my other api key
+// if that fails, skip everything
     $callback_event = new HelloSign\Event($data);
     if ($callback_event->isValid($api_key) == FALSE) {
-        $hash_check_failed = 1;
-        goto invalid_hash;
+        if ($callback_event->isValid($api_key_1) == FALSE) {
+            $hash_check_failed = 1;
+            goto invalid_hash;
+        }  
     }
 
     // check header for MD5 hash
