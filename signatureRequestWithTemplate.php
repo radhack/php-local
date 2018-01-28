@@ -41,25 +41,26 @@
                 $client = new HelloSign\Client($api_key);
                 // Example call with logging for embedded requests
                 $request = new HelloSign\TemplateSignatureRequest;
-//                $request->enableTestMode();
+                $request->enableTestMode();
                 $request->setTitle("Testing");
                 $request->setSubject('Embedded Signing With Template');
                 $request->setMessage('Awesome, right?');
-                $request->setSigner('Role1', 'jack@example.com', 'Johnny Mc.Dotty and Mc-Dashy');
+                $request->setSigner('Borrower', 'alex@testing.com', 'Tester Mc Testing');
         //        $request->setSigner('Role2', 'jack@example.com', 'and Jill');
         //        $request->setSigner('Role3', 'jack@example.com', 'Went');
         //        $request->setSigner('Role4', 'jack@example.com', 'Up The');
         //        $request->setSigner('Role5', 'jack@example.com', 'Hill');
-                $request->setCustomFieldValue('Cost', "$100,000,000 and all of the things that go along with things like this are too much for lorem ipsum to handle and all that it represents and all that accounts for all the things in Maui and Thailand.");
-                $request->setCustomFieldValue('Amount', "There's not much", "Role1");
-                $request->setCustomFieldValue("Applicant", "Bobs's the name", "Role1");
+//                $request->setCustomFieldValue('Cost', "$100,000,000 and all of the things that go along with things like this are too much for lorem ipsum to handle and all that it represents and all that accounts for all the things in Maui and Thailand.");
+//                $request->setCustomFieldValue('Amount', "There's not much", "Role1");
+//                $request->setCustomFieldValue("Applicant", "Bobs's the name", "Role1");
         //        $request->setCustomFieldValue('Test Merge', '$100,000,000');
         //        $request->setCustomFieldValue('Test Merge 1', "There's not much here because of lorum ipsum and all that it represents and all that accounts for all the things in Maui and Thailand, which are all mostly connected through wormholes and zombies.");
         //        $request->setCustomFieldValue("Test Merge 3", "Bobs's the name");
         //        $request->setCustomFieldValue("Test Merge 2", true);
-                $request->setTemplateId('5eafe0c773034d3d1e5dffda2580ae3b46014b44');
-                $request->addMetadata("herp", "derp");
-                $request->addMetadata("derp1", "herp1");
+//                $request->setTemplateId('5eafe0c773034d3d1e5dffda2580ae3b46014b44');
+                $request->setTemplateId('9eae330b806994f44652e0ebefee3a47fd4cf7b7');
+//                $request->addMetadata("herp", "derp");
+//                $request->addMetadata("derp1", "herp1");
                 
             } elseif ($hfapi == 1) {
                 $client = new HelloSign\Client($api_key);
@@ -102,6 +103,7 @@
         $event_sent_bool = 0; // set the db to false for signature_request_sent event
         include('db.php');
 
+//        $client = new HelloSign\Client($api_key);
         // Retrieve the URL to sign the document
         $embedded_response = $client->getEmbeddedSignUrl($signature_id);
 
