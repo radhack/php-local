@@ -10,7 +10,7 @@
             //                    test_mode : 1,
             //                    hideHeader: true,
             allowCancel: true,
-//                        skipDomainVerification: true,
+            skipDomainVerification: true,
             uxVersion: 2,
             //                    container: document.getElementById('hsembedded'),
             debug: true,
