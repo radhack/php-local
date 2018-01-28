@@ -218,6 +218,17 @@ include('auth.php');
                     </fieldset>
                     <p>Create a signature request that will send a HelloSign email to the signer(s)</p>
                 </form>
+                
+                        <!-- this is an unclaimed draft requesting - hellosign.com login required to "claim" -->
+                <form action="/unclaimedDraft.php" method="post" enctype="multipart/form-data">
+                    <fieldset>
+                        <br />
+                        <input type="submit" value="Unclaimed Draft Requesting"/>
+                        <br />
+                        <input type="file" name="unclaimedDraftFile" id="unclaimedDraftFile"/>
+                    </fieldset>            
+                    <p>Create a Draft to be claimed by someone with a HelloSign.com Account</p>
+                </form>
 
                 <!-- this is an embedded requesting page with embedded signing -->
                 <form action="/embeddedRequestingEmbeddedSigning.php" method="post" enctype="multipart/form-data">
@@ -382,6 +393,17 @@ include('auth.php');
                 <input type="file" name="requestingFileEmbSig" id="requestingFileEmbSig"/>
             </fieldset>            
             <p>Create a signature request that will be used for embedded signing</p>
+        </form>
+        
+        <!-- this is an unclaimed draft requesting - hellosign.com login required to "claim" -->
+        <form action="/unclaimedDraft.php" method="post" enctype="multipart/form-data">
+            <fieldset>
+                <br />
+                <input type="submit" value="Unclaimed Draft Requesting"/>
+                <br />
+                <input type="file" name="unclaimedDraftFile" id="unclaimedDraftFile"/>
+            </fieldset>            
+            <p>Create a Draft to be claimed by someone with a HelloSign.com Account</p>
         </form>
 
         <!-- this for testing bugs -->
