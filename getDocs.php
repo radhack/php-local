@@ -30,11 +30,16 @@
                 ?><script>location.reload(true);</script><?php
             }
         } elseif (isset($_GET['signature_request_id'])) {
-            $filename = "downloaded_files/".$_GET['signature_request_id'].".pdf";
-            $client = new HelloSign\Client($api_key);
+//            $filename = "downloaded_files/".$_GET['signature_request_id'].".pdf";
+            $filename = $_GET['signature_request_id'];
+            $client = new HelloSign\Client($api_key_1);
             try { 
-                $file = $client->getFiles($_GET['signature_request_id'], $filename , HelloSign\SignatureRequest::FILE_TYPE_PDF);
-                echo "<iframe src=\"$filename\" width=\"100%\" style=\"height:880px\"></iframe>";
+//                $file = $client->getFiles($_GET['signature_request_id'], $filename , HelloSign\SignatureRequest::FILE_TYPE_PDF);
+//                echo "<iframe src=\"$filename\" width=\"100%\" style=\"height:880px\"></iframe>";
+                
+                $file = $client->getFiles($filename);
+                $file_url = $file->file_url;
+                echo "<a href=$file_url>Click here for your docs</a>";
             } catch (Exception $err) {
                 if ($err->getMessage() == "Not found") {
                     echo("The signature request id that you're looking for was not found. Time to go home little buddy.");
