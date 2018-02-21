@@ -15,7 +15,7 @@
         require_once 'vendor/autoload.php';
         include('auth.php');
         $target_dir = "uploads/";
-        $target_file = $target_dir . basename($_FILES["uploadedTemplateFile"]["name"]);
+        $target_file = $target_dir . basename($_FILES["newUploadedTemplateFile"]["name"]);
         $uploadOk = 1; //this is used if the other if statements are used
         $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
         // doc, docx, pdf, ppsx, ppt, pptx, tif, jpg, jpeg, png, xls, xlsx, txt, html, gif
