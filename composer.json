@@ -1,6 +1,6 @@
 {
     "require": {
-        "hellosign/hellosign-php-sdk": "v3.x-dev",
+        "hellosign/hellosign-php-sdk": "^3.0",
         "tecnickcom/tcpdf": "dev-master",
         "sendgrid/sendgrid": "dev-master",
         "launchdarkly/launchdarkly-php": "dev-master",
