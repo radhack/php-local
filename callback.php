@@ -327,6 +327,18 @@
     //remove the below comment to test callback actions
 //    goto invalid_hash;
 
+    // this checks the MD5 header before processing the body of the POST
+    $md5_header_check = base64_encode(hash_hmac('md5', $data, $api_key));
+    
+    $md5_header = $_SERVER['Content-MD5'];
+    
+    if ($md5_header != $md5_header_check) {
+        echo 'well that didn\'t work';
+        $hash_check_failed = 1;
+        goto invalid_hash;
+    }
+    
+    // MD5 checked out, so let's proces the body and check the event_hash for super secure reasons
     $event_time = $data->event->event_time;
     $event_type = $data->event->event_type;
     $event_hash = $data->event->event_hash;
@@ -882,7 +894,7 @@
                 'toname' => "HelloFax Fax Inbound",
                 'from' => "radhack242@gmail.com",
                 'fromname' => "Simple PHP",
-                'subject' => "Hash Check Failed and Recorded",
+                'subject' => "Inbound Fax Received",
                 'html' => "<h1>You've Received A Fax!</h1><p>$event_time is the time I received the fax</p><p>$from is who it's from</p><p>$recipient is who it was sent to</p><p>$tranmission_id is the ID of the transmission</p>",
             );
 
