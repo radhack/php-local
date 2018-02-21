@@ -57,18 +57,15 @@
         $request->setTitle("Testing");
         $request->setSubject('My First embedded signature request');
         $request->setMessage('Awesome, right?');
-        $request->addSigner('hstesting123@mailinator.com', 'Something');
-        $request->addSigner('hstesting1234@mailinator.com','SomethingElse');
-        $request->addSigner('hstesting12345@mailinator.com','SomethingElseElse');
+        $request->addSigner('testing@testing.com', 'Something');
 //        $request->addSigner("testingmore@testing.com", "Something Else");
-//        $request->addFile("$target_file");
-        $request->addFileUrl("http://PropertyBoss.net/ESignDocs/Letter_0213_125033580.pdf");
+        $request->addFile("$target_file");
 
         // Turn it into an embedded request
-//        $embedded_request = new HelloSign\EmbeddedSignatureRequest($request, $client_id);
+        $embedded_request = new HelloSign\EmbeddedSignatureRequest($request, $client_id);
 
         // Send it to HelloSign
-        $response = $client->sendSignatureRequest($request);
+        $response = $client->createEmbeddedSignatureRequest($embedded_request);
 
         // wait for callback with signature_request_sent
         // 
