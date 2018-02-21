@@ -191,7 +191,7 @@ include('auth.php');
                         <br />
                         <input type="text" name="template_id" id="template_id"/>
                         <br />
-                        <input type="file" name="uploadedTemplateFile" id="uploadedTemplateFile"/>
+                        <input type="file" name="newUploadedTemplateFile" id="newUploadedTemplateFile"/>
                         <input type="submit" value="Update Template Files"/>
                         <p>Update Template Files</p>
                     </fieldset>
@@ -355,7 +355,7 @@ include('auth.php');
                         <br />
                         <input type="text" name="template_id" id="template_id" placeholder="Template ID" required="true"/>
                         <br />
-                        <input type="file" name="newTemplateFile" id="newTemplateFile" required="true"/>
+                        <input type="file" name="newUploadedTemplateFile" id="newUploadedTemplateFile" required="true"/>
                         <br />
                         <input type="submit" value="Update Template Files"/>
                         <p>Update Template Files</p>
