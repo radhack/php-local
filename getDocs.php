@@ -34,11 +34,11 @@
             $filename = $_GET['signature_request_id'];
             $client = new HelloSign\Client($api_key_1);
             try { 
-//                $file = $client->getFiles($_GET['signature_request_id'], $filename , HelloSign\SignatureRequest::FILE_TYPE_PDF);
-//                echo "<iframe src=\"$filename\" width=\"100%\" style=\"height:880px\"></iframe>";
+                $file = $client->getFiles($_GET['signature_request_id'], $filename , HelloSign\SignatureRequest::FILE_TYPE_PDF);
+                echo "<iframe src=\"$filename\" width=\"100%\" style=\"height:880px\"></iframe>";
                 
-                $file = $client->getFiles($filename);
-                $file_url = $file->file_url;
+//                $file = $client->getFiles($filename);
+//                $file_url = $file->file_url;
                 echo "<a href=$file_url>Click here for your docs</a>";
             } catch (Exception $err) {
                 if ($err->getMessage() == "Not found") {
