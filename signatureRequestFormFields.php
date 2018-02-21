@@ -39,10 +39,49 @@
             $request->setSubject('Embedded Signature Request with Form Fields');
             $request->setMessage('Awesome, right?');
             $request->addSigner('testing@testing.com', 'Signer Person, IV');
+            $request->enableAllowDecline();
             $request->setFormFieldsPerDocument(
-                array(//everything
-                    array(//document 1
-                        array(//component 1
+//                array(//everything
+//                    array(//document 1
+//                        array(//component 1
+//                            "api_id" => "things_1",
+//                            "name" => "Name Here",
+//                            "type" => "text",
+//                            "x" => 220,
+//                            "y" => 85,
+//                            "width" => 253,
+//                            "height" => 16,
+//                            "required" => true,
+//                            "signer" => 0
+//                        ),
+//                        array(//component 2
+//                            "api_id" => "things_2",
+//                            "name" => "Address Here",
+//                            "type" => "text",
+//                            "x" => 530,
+//                            "y" => 85,
+//                            "width" => 152,
+//                            "height" => 16,
+//                            "required" => true,
+//                            "signer" => 0
+//                        ),
+//                        array(//component 3
+//                            "api_id" => "lotsof_2",
+//                            "name" => "",
+//                            "type" => "signature",
+//                            "x" => 90,
+//                            "y" => 315,
+//                            "width" => 223,
+//                            "height" => 30,
+//                            "required" => true,
+//                            "signer" => 0,
+//                            "page" => 2,
+//                        ),
+//                    ),
+//                )
+                [//everything
+                    [//document 1
+                        [//component 1
                             "api_id" => "things_1",
                             "name" => "Name Here",
                             "type" => "text",
@@ -52,8 +91,8 @@
                             "height" => 16,
                             "required" => true,
                             "signer" => 0
-                        ),
-                        array(//component 2
+                        ],
+                        [//component 2
                             "api_id" => "things_2",
                             "name" => "Address Here",
                             "type" => "text",
@@ -63,8 +102,8 @@
                             "height" => 16,
                             "required" => true,
                             "signer" => 0
-                        ),
-                        array(//component 3
+                        ],
+                        [//component 3
                             "api_id" => "lotsof_2",
                             "name" => "",
                             "type" => "signature",
@@ -75,9 +114,9 @@
                             "required" => true,
                             "signer" => 0,
                             "page" => 2,
-                        ),
-                    ),
-                )
+                        ]
+                    ]
+                ]
             );
             $request->addFileUrl("http://www.startupprofessionals.com/linked/non-disclosure-agreement-mutual-generic-blank.pdf");
 
