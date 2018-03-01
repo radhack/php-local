@@ -34,7 +34,7 @@
             $client = new HelloSign\Client($api_key);
             // Example call with logging for embedded requests
             $request = new HelloSign\SignatureRequest;
-            $request->enableTestMode();
+//            $request->enableTestMode();
             $request->setTitle("Testing Form Fields Per Document - Prod");
             $request->setSubject('Embedded Signature Request with Form Fields');
             $request->setMessage('Awesome, right?');
