@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "256d81b0095d03adf3324192d9bb14a8",
+    "content-hash": "ac37909a8235a70bf32b6c1ea7daf67f",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -189,16 +189,16 @@
         },
         {
             "name": "hellosign/hellosign-php-sdk",
-            "version": "3.5.1",
+            "version": "3.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/HelloFax/hellosign-php-sdk.git",
-                "reference": "9649c0ef435310f71ac9dab79dcdfa39dfb58edf"
+                "reference": "66b1950f837f127df4b7bb7aba2f6b7c682af034"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/HelloFax/hellosign-php-sdk/zipball/9649c0ef435310f71ac9dab79dcdfa39dfb58edf",
-                "reference": "9649c0ef435310f71ac9dab79dcdfa39dfb58edf",
+                "url": "https://api.github.com/repos/HelloFax/hellosign-php-sdk/zipball/66b1950f837f127df4b7bb7aba2f6b7c682af034",
+                "reference": "66b1950f837f127df4b7bb7aba2f6b7c682af034",
                 "shasum": ""
             },
             "require": {
@@ -224,7 +224,7 @@
                 }
             ],
             "description": "This is the official PHP wrapper for HelloSign's API",
-            "time": "2018-01-04T23:03:07+00:00"
+            "time": "2018-03-01T18:47:51+00:00"
         },
         {
             "name": "kevinrob/guzzle-cache-middleware",
@@ -309,12 +309,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/launchdarkly/php-client.git",
-                "reference": "a86eb6ca35a34797b5c8a1eceb9d335885e0bac3"
+                "reference": "30f759083f03c8dadf7b296fb070dddb6d4330f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/launchdarkly/php-client/zipball/a86eb6ca35a34797b5c8a1eceb9d335885e0bac3",
-                "reference": "a86eb6ca35a34797b5c8a1eceb9d335885e0bac3",
+                "url": "https://api.github.com/repos/launchdarkly/php-client/zipball/30f759083f03c8dadf7b296fb070dddb6d4330f5",
+                "reference": "30f759083f03c8dadf7b296fb070dddb6d4330f5",
                 "shasum": ""
             },
             "require": {
@@ -357,7 +357,7 @@
                 "launchdarkly",
                 "launchdarkly php"
             ],
-            "time": "2018-02-13 20:00:24"
+            "time": "2018-02-21 22:04:42"
         },
         {
             "name": "monolog/monolog",
@@ -638,12 +638,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "3527098537e6061b752fc261a44563489c927889"
+                "reference": "64fc19439863e1b1314487a72a74d9bfd0b55a53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/3527098537e6061b752fc261a44563489c927889",
-                "reference": "3527098537e6061b752fc261a44563489c927889",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/64fc19439863e1b1314487a72a74d9bfd0b55a53",
+                "reference": "64fc19439863e1b1314487a72a74d9bfd0b55a53",
                 "shasum": ""
             },
             "require": {
@@ -692,7 +692,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2018-02-19 15:01:27"
+            "time": "2018-02-24 11:48:20"
         }
     ],
     "packages-dev": [
