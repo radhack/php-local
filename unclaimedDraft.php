@@ -16,6 +16,7 @@
     <body>
         <?php
         require_once 'vendor/autoload.php';
+        $freeapi = 1; // set to zero or comment out to use production
         include('auth.php');
         
         $target_dir = "uploads/";
@@ -43,12 +44,12 @@
         }
 
         // Instance of a client for you to use for calls
-        $client = new HelloSign\Client($api_key_1);
+        $client = new HelloSign\Client($api_key);
 
         $request = new HelloSign\SignatureRequest;
-        $request->enableTestMode();
+//        $request->enableTestMode();
         $request->addFile("$target_file");
-        $request->addSigner("radhack242@gmail.com", "Alex");
+        $request->addSigner("radhack242+allthesigners@gmail.com", "Alex");
         $request->setFormFieldsPerDocument(
             array(//everything
                 array(//document 1
