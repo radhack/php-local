@@ -28,37 +28,37 @@
         if ($uploadOk == 0) {
             echo "Sorry, your file was not uploaded.";
             goto skip;
-        // if everything is ok, try to upload file
+            // if everything is ok, try to upload file
         } else {
-            if (move_uploaded_file($_FILES["uploadedTemplateFile"]["tmp_name"], $target_file)) {
-                echo "The file " . basename($_FILES["uploadedTemplateFile"]["name"]) . " has been uploaded.";
-        } else {
-            echo "Sorry, there was an error uploading your file. <br />";
-            $uploadOk = 0;
-            goto skip;
+            if (move_uploaded_file($_FILES["newUploadedTemplateFile"]["tmp_name"], $target_file)) {
+                echo "The file " . basename($_FILES["newUploadedTemplateFile"]["name"]) . " has been uploaded.";
+            } else {
+                echo "Sorry, there was an error uploading your file. <br />";
+                $uploadOk = 0;
+                goto skip;
             }
         }
-
-        $template_id = $params['template_id'];
-        $tmp_file_path = $params['tmp_file_path'];
-        $url = static::TEMPLATE_PATH . '/update_files/' . $template_id;
-        $update_files_params = array(
-            'template_id' => $template_id,
-            'file' => array(
-                "@" . $tmp_file_path
-            )
-        );
+        $client = new HelloSign\Client("$api_key");
+//        echo("$api_key");
+        $request = new HelloSign\Template;
+        $template_id = $_POST['template_id'];
+        echo"$template_id";
+        $request->addFile($target_file);
 
         try {
-            $response = $this->rest->post($url, $update_files_params);
+            $response = $client->updateTemplateFiles($template_id, $request);
         } catch (Exception $e) {
-            dump("HS:Client:updateTemplateFiles: Exception caught when POST to HS", $e->getMessage());
+            $error = $e->getMessage();
+            echo("$error");
         }
-            dump("HS:Client:updateTemplateFiles:", "url=$url", "params=", $update_files_params, "response=", $response);
+//        dump("HS:Client:updateTemplateFiles:", "url=$url", "params=", $update_files_params, "response=", $response);
+        print_r($response);
+        $new_template_id = $response->template_id;
+        echo("<br />$new_template_id is the new template_id");
+//        return($new_template_id);
 
-        $this->checkResponse($response);
-
-        $new_template_id = $response->template->template_id;
-
-        return($new_template_id);
-
+        skip:
+            if ($uploadOk == 0){
+        echo("$uploadOk says something broke");
+            }
+        
