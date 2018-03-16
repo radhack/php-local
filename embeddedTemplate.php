@@ -59,9 +59,9 @@
 //$request->addSignerRole('Role2', 2);
 //$request->addSignerRole('Role3', 3);
         $request->addSignerRole('Role0');
-//        $request->addSignerRole('Role1');
-//        $request->addSignerRole('Role2');
-//        $request->addSignerRole('Role3');
+        $request->addSignerRole('Role1');
+        $request->addSignerRole('Role2');
+        $request->addSignerRole('Role3');
 //$request->addCCRole('Test CC Role');
         $request->addMergeField('Test Merge', 'text');
         $request->addMergeField('Test Merge 1', 'text');
