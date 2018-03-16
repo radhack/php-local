@@ -46,8 +46,8 @@
         $client = new HelloSign\Client($api_key);
 
         $request = new HelloSign\SignatureRequest;
-        $request->enableTestMode();
-        $request->setRequesterEmail('alex+requester@hellosign.com');
+//        $request->enableTestMode();
+        $request->setRequesterEmail('alex+embeddedrequesting@hellosign.com');
         //$request->setHideTextTags(true);
 //        $request->setUseTextTags(FALSE);
         $request->addFile("$target_file");
@@ -61,7 +61,7 @@
         } catch (HelloSignError $e) {
             print_r($e);
         }
-        $draft_request->setType("send_document");
+//        $draft_request->setType("send_document");
         $response = $client->createUnclaimedDraft($draft_request);
 
         $signature_request_id = $response->signature_request_id;
