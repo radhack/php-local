@@ -325,18 +325,18 @@
     }
 
     //remove the below comment to test callback actions
-//    goto invalid_hash;
+    goto invalid_hash;
 
     // this checks the MD5 header before processing the body of the POST
-    $md5_header_check = base64_encode(hash_hmac('md5', $data, $api_key));
-    
-    $md5_header = $_SERVER['Content-MD5'];
-    
-    if ($md5_header != $md5_header_check) {
-        echo 'well that didn\'t work';
-        $hash_check_failed = 1;
-        goto invalid_hash;
-    }
+//    $md5_header_check = base64_encode(hash_hmac('md5', $data, $api_key));
+//    
+//    $md5_header = $_SERVER['Content-MD5'];
+//    
+//    if ($md5_header != $md5_header_check) {
+//        echo 'well that didn\'t work';
+//        $hash_check_failed = 1;
+//        goto invalid_hash;
+//    }
     
     // MD5 checked out, so let's proces the body and check the event_hash for super secure reasons
     $event_time = $data->event->event_time;
@@ -808,37 +808,37 @@
 //        $sql = $conn-> real_escape_string($sql);
 
         if ($conn->query($sql) === TRUE) {
-            echo "INSERT INTO callback testdb successfull";
-            $params = array(
-                'to' => "radhack242@gmail.com",
-                'toname' => "Hash Failed Recorded",
-                'from' => "radhack242@gmail.com",
-                'fromname' => "Simple PHP",
-                'subject' => "Hash Check Failed and Recorded",
-                'html' => "$hash_check is the value from my calculation, but $event_hash is hash in the object.<br />$event_time is the event time, and<br />$event_type is the event type.",
-            );
-
-            $request = $url . 'api/mail.send.json';
-
-            // Generate curl request
-            $session = curl_init($request);
-            // Tell PHP not to use SSLv3 (instead opting for TLS)
-            curl_setopt($session, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
-            curl_setopt($session, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $sendgrid_api_key));
-            // Tell curl to use HTTP POST
-            curl_setopt($session, CURLOPT_POST, true);
-            // Tell curl that this is the body of the POST
-            curl_setopt($session, CURLOPT_POSTFIELDS, $params);
-            // Tell curl not to return headers, but do return the response
-            curl_setopt($session, CURLOPT_HEADER, false);
-            curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
-
-            // obtain response
-            $response = curl_exec($session);
-            curl_close($session);
-
-            // print everything out
-            print_r($response);
+//            echo "INSERT INTO callback testdb successfull";
+//            $params = array(
+//                'to' => "radhack242@gmail.com",
+//                'toname' => "Hash Failed Recorded",
+//                'from' => "radhack242@gmail.com",
+//                'fromname' => "Simple PHP",
+//                'subject' => "Hash Check Failed and Recorded",
+//                'html' => "$hash_check is the value from my calculation, but $event_hash is hash in the object.<br />$event_time is the event time, and<br />$event_type is the event type.",
+//            );
+//
+//            $request = $url . 'api/mail.send.json';
+//
+//            // Generate curl request
+//            $session = curl_init($request);
+//            // Tell PHP not to use SSLv3 (instead opting for TLS)
+//            curl_setopt($session, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
+//            curl_setopt($session, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $sendgrid_api_key));
+//            // Tell curl to use HTTP POST
+//            curl_setopt($session, CURLOPT_POST, true);
+//            // Tell curl that this is the body of the POST
+//            curl_setopt($session, CURLOPT_POSTFIELDS, $params);
+//            // Tell curl not to return headers, but do return the response
+//            curl_setopt($session, CURLOPT_HEADER, false);
+//            curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+//
+//            // obtain response
+//            $response = curl_exec($session);
+//            curl_close($session);
+//
+//            // print everything out
+//            print_r($response);
         } else {
 //            $error = "<br />Error INSERTing (lol): " . $conn->error;
             echo "<br />Error INSERTing (lol): " . $conn->error;
