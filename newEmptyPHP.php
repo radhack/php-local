@@ -14,8 +14,52 @@
         <link rel="mask-icon" href="/safari-pinned-tab.svg"/>
     </head>
     <body>
+        <script>
+            function reverse(s){
+                return s.split("").reverse().join("");
+            }
+            var string = reverse("all the things");
+            console.log(string);
+        </script>
         <?php
-
-        ?>
+//        require_once 'vendor/autoload.php';
+//        $freeapi = 1;
+//        include('auth.php');
+//        $client = new HelloSign\Client("$api_key");
+//        $i = 0;
+//        while ($i < 1000) {
+//            echo("$i is the number of this request <br />");
+//            $i++;
+//            try {
+//                $request = new HelloSign\TemplateSignatureRequest;
+////                $request->enableTestMode();
+//                $request->setTitle("$i");
+//                $request->setSubject("$i signature request");
+//                $request->setMessage('Awesome, right?');
+//                $request->setSigner('Role1', "alex+$i@hellosign.com", 'Johnny Mc.Dotty and Mc-Dashy');
+//                $request->setSigner('Role2', "alex+$i.more@hellosign.com", 'and Jill');
+////                $request->setSigner('Role3', 'jack@example.com', 'Went');
+////                $request->setSigner('Role4', 'jack@example.com', 'Up The');
+////                $request->setSigner('Role5', 'jack@example.com', 'Hill');
+////                $request->setCustomFieldValue('Cost', "$100,000,000 and all of the things that go along with things like this are too much for lorem ipsum to handle and all that it represents and all that accounts for all the things in Maui and Thailand.");
+////                $request->setCustomFieldValue('Amount', "There's not much", "Role1");
+////                $request->setCustomFieldValue("Applicant", "Bobs's the name", "Role1");
+//                //        $request->setCustomFieldValue('Test Merge', '$100,000,000');
+//                //        $request->setCustomFieldValue('Test Merge 1', "There's not much here because of lorum ipsum and all that it represents and all that accounts for all the things in Maui and Thailand, which are all mostly connected through wormholes and zombies.");
+//                //        $request->setCustomFieldValue("Test Merge 3", "Bobs's the name");
+//                //        $request->setCustomFieldValue("Test Merge 2", true);            
+//                $request->setTemplateId('cd5cbe6b2a8fe3ea4a67e621256eaf9f47a4560d');
+//
+//                // Send it to HelloSign
+//                $response = $client->sendTemplateSignatureRequest($request, $client_id);
+////                $response = $client->createEmbeddedSignatureRequest($embedded_request);
+//                // Grab the signature ID for the signature page that will be embedded in the page             
+//            } catch (Exception $err) {
+//                $err_message = $err->getMessage();
+//                echo("$err_message");
+//                echo("<br />");
+//            }
+//        }
+       ?>
     </body>
 </html>
