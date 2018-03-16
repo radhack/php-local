@@ -9,6 +9,9 @@ if (empty($a)) {
 if ($hfapi == 1) {
     $api_key = getenv('HFAPI_HS_APIKEY') ? getenv('HFAPI_HS_APIKEY') : '';
     $client_id = getenv('HFAPI_HS_CLIENT_ID') ? getenv('HFAPI_HS_CLIENT_ID') : '';
+} elseif ($freeapi == 1) {
+    $api_key = getenv('HS_FREE_APIKEY') ? getenv('HS_FREE_APIKEY') : '';
+    $client_id = getenv('HS_FREE_CLIENT_ID') ? getenv('HS_FREE_CLIENT_ID') : '';
 } else {
     $api_key = getenv('HS_APIKEY_PROD') ? getenv('HS_APIKEY_PROD') : '';
     $api_key_1 = getenv('HS_APIKEY_MY_PROD') ? getenv('HS_APIKEY_MY_PROD') : '';
