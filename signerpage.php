@@ -24,8 +24,9 @@
                     HelloSign.close();
                     console.log(eventData);
                 } else if (eventData.event == HelloSign.EVENT_ERROR) {
-                    HelloSign.close();
-                    alert("There Was An Error And Stuff!");
+//                    HelloSign.close();
+                    var error = eventData.description;
+                    alert(error);
                     console.log(eventData);
                 } else if (eventData.event == HelloSign.EVENT_SENT) {
                     if (eventData.signature_request_id == null) {
