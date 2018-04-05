@@ -49,9 +49,9 @@
         $request->enableTestMode();
         $request->setRequesterEmail('alex+testingapi@hellosign.com');
 //        $request->setTitle("title here");
-//        $request->setSubject("subject here");
-//        $request->setMessage("message here");
-//        $request->addSigner("radhack242@gmail.com", "alex");
+        $request->setSubject("subject here");
+        $request->setMessage("message here");
+        $request->addSigner("radhack242@gmail.com", "alex");
 //        $request->addSigner("alex+testingapi@hellosign.com", "Me");
         //$request->setHideTextTags(true);
         //$request->setUseTextTags(true);
