@@ -52,16 +52,18 @@
         $request->setSubject('My First embedded signature request');
         $request->setMessage('Awesome, right?');
         $request->addSigner("$signer_email", 'Testing Signer');
+        $request->addSigner("alex+signer1@hellosign.com", "Alex");
         // $request->setAllowDecline(true); // uncomment this when allowDecline is built into the PHP SDK
         $request->addFile("$target_file");
 
         rename($target_file, "$target_file.embSigReq");
         // Turn it into an embedded request
-        $embedded_request = new HelloSign\EmbeddedSignatureRequest($request, $client_id);
+//        $embedded_request = new HelloSign\EmbeddedSignatureRequest($request, $client_id);
 
         // Send it to HelloSign
-        $response = $client->createEmbeddedSignatureRequest($embedded_request);
-
+//        $response = $client->createEmbeddedSignatureRequest($embedded_request);
+        $response = $client->sendSignatureRequest($request, $client_id);
+goto skip;
         // Grab the signature ID for the signature page that will be embedded in the page
         $signature_request_id = $response->signature_request_id;
         $signatures = $response->getSignatures();
