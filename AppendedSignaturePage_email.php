@@ -61,9 +61,9 @@
 //        $embedded_request = new HelloSign\EmbeddedSignatureRequest($request, $client_id);
 
         // Send it to HelloSign
-//        $response = $client->createEmbeddedSignatureRequest($embedded_request);
-        $response = $client->sendSignatureRequest($request, $client_id);
-goto skip;
+        $response = $client->createEmbeddedSignatureRequest($embedded_request);
+//        $response = $client->sendSignatureRequest($request, $client_id);
+//goto skip;
         // Grab the signature ID for the signature page that will be embedded in the page
         $signature_request_id = $response->signature_request_id;
         $signatures = $response->getSignatures();
