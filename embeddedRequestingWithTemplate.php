@@ -18,7 +18,7 @@
         include('auth.php');
 
         // Instance of a client for you to use for calls
-        $client = new HelloSign\Client($api_key);
+        $client = new HelloSign\Client($api_key_1);
 //
 //        $request = new HelloSign\SignatureRequest;
 //        $request->enableTestMode();
@@ -74,11 +74,13 @@
         $baseReq->setCustomFieldValue('Cost', '$100,000,000                                             ', "Role1");
         $baseReq->setCustomFieldValue('Amount', "There's not much", "Role1");
         $baseReq->setCustomFieldValue("Applicant", "Bobs's the name", "Role1");
-        $baseReq->setCustomFieldValue('Cost', '$100,000,000');
-        $baseReq->setCustomFieldValue('Amount', "There's not much");
-        $baseReq->setCustomFieldValue("Applicant", "Bobs's the name");
+//        $baseReq->setCustomFieldValue('Cost', '$100,000,000');
+//        $baseReq->setCustomFieldValue('Amount', "There's not much");
+//        $baseReq->setCustomFieldValue("Applicant", "Bobs's the name");
         $baseReq->setRequesterEmailAddress('alex@hellosign.com');
         $baseReq->addMetadata('custom_id', '1234');
+        $baseReq->setUseTextTags(true);
+        $baseReq->addFile("./ndatag_1.pdf");
         
 
         $request = new HelloSign\EmbeddedSignatureRequest($baseReq);
