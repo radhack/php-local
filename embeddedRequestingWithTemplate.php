@@ -14,12 +14,14 @@
     </head>
     <body>
         <?php
+        $hfapi = null;
+        $freeapi = null;
         require_once 'vendor/autoload.php';
         include('auth.php');
-
+//        echo"$api_key";
         // Instance of a client for you to use for calls
-        $client = new HelloSign\Client($api_key_1);
-//
+        $client = new HelloSign\Client("$api_key");
+        $client_id = "267431772ba7afa16741529839d5f7c0";
 //        $request = new HelloSign\SignatureRequest;
 //        $request->enableTestMode();
 //        $request->setRequesterEmail('phpexample@example.com');
@@ -62,29 +64,29 @@
 
 //        $response = $client->createUnclaimedDraftEmbeddedWithTemplate($request);
         
-        $templateId = "5f5650f1cbfd497393cfa426d7d8d81e2a62a1f4";
+        $templateId = "8b52650dbde7846df1287de6617803cca7eb6bde";
 
         $baseReq = new HelloSign\TemplateSignatureRequest();
-        $baseReq->setTemplateId($templateId);
+        $baseReq->setTemplateId("8b52650dbde7846df1287de6617803cca7eb6bde");
         $baseReq->setSigner('Role1', 'radhack242@gmail.com', 'Jack');
         $baseReq->setSigner('Role2', 'jack@example.com', 'and Jill');
         $baseReq->setSigner('Role3', 'jack@example.com', 'Went');
         $baseReq->setSigner('Role4', 'jack@example.com', 'Up The');
         $baseReq->setSigner('Role5', 'jack@example.com', 'Hill');
-        $baseReq->setCustomFieldValue('Cost', '$100,000,000                                             ', "Role1");
-        $baseReq->setCustomFieldValue('Amount', "There's not much", "Role1");
-        $baseReq->setCustomFieldValue("Applicant", "Bobs's the name", "Role1");
+//        $baseReq->setCustomFieldValue('Cost', '$100,000,000                                             ', "Role1");
+//        $baseReq->setCustomFieldValue('Amount', "There's not much", "Role1");
+//        $baseReq->setCustomFieldValue("Applicant", "Bobs's the name", "Role1");
 //        $baseReq->setCustomFieldValue('Cost', '$100,000,000');
 //        $baseReq->setCustomFieldValue('Amount', "There's not much");
 //        $baseReq->setCustomFieldValue("Applicant", "Bobs's the name");
         $baseReq->setRequesterEmailAddress('alex@hellosign.com');
         $baseReq->addMetadata('custom_id', '1234');
-        $baseReq->setUseTextTags(true);
+//        $baseReq->setUseTextTags(true);
         $baseReq->addFile("./ndatag_1.pdf");
         
 
         $request = new HelloSign\EmbeddedSignatureRequest($baseReq);
-        $request->setClientId($client_id);
+        $request->setClientId("267431772ba7afa16741529839d5f7c0");
 //        $request->enableTestMode();
         $request->setEmbeddedSigning();
 

@@ -10,7 +10,6 @@ $request->setMessage('Awesome, right?');
 $request->addSigner('jack@example.com', 'Jack');
 $request->addSigner('jill@example.com', 'Jill');
 $request->addFile("./nda.pdf"); //assuming there's a simple test file in the root of the application
-
 // $client_id = 'YOUR_CLIENT_ID';
 $embedded_request = new HelloSign\EmbeddedSignatureRequest($request, $client_id);
 $response = $client->createEmbeddedSignatureRequest($embedded_request);
@@ -21,49 +20,60 @@ $response = $client->getEmbeddedSignUrl($signature_id);
 
 // Store it to use with the embedded.js HelloSign.open() call
 $sign_url = $response->getSignUrl();
-
 ?>
 <!DOCTYPE html>
 <html>
-<head>
+    <head>
         <title>Embedded Signing Hardcoded</title>
         <script type="text/javascript" src="//s3.amazonaws.com/cdn.hellosign.com/public/js/hellosign-embedded.LATEST.min.js"></script>
-</head>
-<body>
-<script>
-HelloSign.init("<?php echo $client_id ?>");
-HelloSign.open({
-    url: "<?php echo $sign_url ?>",
-    allowCancel: true,
-    skipDomainVerification: true,
-    uxVersion: 2,
-    messageListener: function (eventData) {
-        (console.log(">-*>-*>-*> Got message data: " + JSON.stringify(eventData)));
+    </head>
+    <body>
+        <script>
+            HelloSign.init("<?php echo $client_id ?>");
+            HelloSign.open({
+                url: "<?php echo $sign_url ?>",
+                allowCancel: true,
+                skipDomainVerification: true,
+                uxVersion: 2,
+                whiteLabelingOptions: {
+                    "header_background_color": "#00adbb",
+                    "primary_button_color": "#43454d",
+                    "primary_button_text_color": "#ffffff",
+                    "primary_button_color_hover": "#43454d",
+                    "primary_button_text_color_hover": "#ffffff",
+                    "link_color": "#00adbb",
+                    "page_background_color": "#f4f7f9",
+                    "secondary_button_color": "#43454d",
+                    "secondary_button_text_color": "#ffffff",
+                    "legal_version": "terms2"
+                },
+                messageListener: function (eventData) {
+                    (console.log(">-*>-*>-*> Got message data: " + JSON.stringify(eventData)));
 
-        if (eventData.event == HelloSign.EVENT_SIGNED) {
-            HelloSign.close();
-            console.log(eventData.signature_id) + "this is the signature_id";
-        } else if (eventData.event == HelloSign.EVENT_CANCELED) {
-            HelloSign.close();
-            console.log(eventData);
-        } else if (eventData.event == HelloSign.EVENT_ERROR) {
-            HelloSign.close();
-            alert("There Was An Error And Stuff!");
-            console.log(eventData);
-        } else if (eventData.event == HelloSign.EVENT_SENT) {
-            HelloSign.close();
-            console.log(eventData);
-            console.log(eventData.signature_request_id);
-        } else if (eventData.event == HelloSign.EVENT_TEMPLATE_CREATED) {
-            HelloSign.close();
-            console.log(eventData);
-        } else if (eventData.event == HelloSign.EVENT_DECLINED) {
-            HelloSign.close();
-            console.log(eventData);
-        }
-    }
-});
-</script>
+                    if (eventData.event == HelloSign.EVENT_SIGNED) {
+                        HelloSign.close();
+                        console.log(eventData.signature_id) + "this is the signature_id";
+                    } else if (eventData.event == HelloSign.EVENT_CANCELED) {
+                        HelloSign.close();
+                        console.log(eventData);
+                    } else if (eventData.event == HelloSign.EVENT_ERROR) {
+                        HelloSign.close();
+                        alert("There Was An Error And Stuff!");
+                        console.log(eventData);
+                    } else if (eventData.event == HelloSign.EVENT_SENT) {
+                        HelloSign.close();
+                        console.log(eventData);
+                        console.log(eventData.signature_request_id);
+                    } else if (eventData.event == HelloSign.EVENT_TEMPLATE_CREATED) {
+                        HelloSign.close();
+                        console.log(eventData);
+                    } else if (eventData.event == HelloSign.EVENT_DECLINED) {
+                        HelloSign.close();
+                        console.log(eventData);
+                    }
+                }
+            });
+        </script>
 
-</body>
+    </body>
 </html>

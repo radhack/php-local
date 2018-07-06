@@ -22,8 +22,8 @@
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-//            CURLOPT_URL => "https://api.helloworks.com/v2/token/tdUNBn2TrWzVEoFD", //this is the Alex+Booker API key information
-            CURLOPT_URL => "https://api.helloworks.com/v2/token/jf1DnGMBBW9VOl21",
+            CURLOPT_URL => "https://api.helloworks.com/v3/token/tdUNBn2TrWzVEoFD", //this is the Alex+Booker API key information
+//            CURLOPT_URL => "https://api.helloworks.com/v3/token/rIlk5pIBAmRStex9", // this is the June12thKey information
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -31,8 +31,9 @@
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
-//                "authorization: Bearer eW8gYCY2fz9MMnkUcKPP7VbK2GtPNkPUEOnaFqU4",
-                "authorization: Bearer uxLit7EZGORNbOuLfrT3EMWOxxj4zbmNR0aLgzxf", //use this with Alex+viewstaging
+                "authorization: Bearer eW8gYCY2fz9MMnkUcKPP7VbK2GtPNkPUEOnaFqU4",
+//                "authorization: Bearer uxLit7EZGORNbOuLfrT3EMWOxxj4zbmNR0aLgzxf", //use this with Alex+viewstaging
+//                "authorization: Bearer $hw_apikey_test",
                 "cache-control: no-cache"
             ),
         ));
@@ -61,15 +62,40 @@
         $curl_post = curl_init();
 
         curl_setopt_array($curl_post, array(
-//            CURLOPT_URL => "https://api.helloworks.com/v2/view/usxOXbrZ9BhZ2Bzg/instance",
-            CURLOPT_URL => "https://api.helloworks.com/v2/view/1fLQvaAFk4zlM0P5/instance",
+            CURLOPT_URL => "https://api.helloworks.com/v2/view/usxOXbrZ9BhZ2Bzg/instance",
+//            CURLOPT_URL => "https://api.helloworks.com/v2/view/1fLQvaAFk4zlM0P5/instance", // update to v3/workflow/1fLQvaAFk4zlM0P5
+//            CURLOPT_URL => "https://api.helloworks.com/v2/view/1fLQvaAFk4zlM0P5/instance",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "identity%5Btype%5D=email&identity%5Bvalue%5D=$hw_email&identity%5Bfull_name%5D=$hw_name&settings%5Bcallback_url%5D=https%3A%2F%2Fhstests.ngrok.io%2Fcallback.php&identity%5Bverification%5D=code&settings%5Bredirect_url%5D=https%3A%2F%2Fhstests.ngrok.io",
+//            CURLOPT_POSTFIELDS => "identity%5Btype%5D=email&identity%5Bvalue%5D=$hw_email&identity%5Bfull_name%5D=$hw_name&settings%5Bcallback_url%5D=https%3A%2F%2Fhstests.ngrok.io%2Fcallback.php&identity%5Bverification%5D=code&settings%5Bredirect_url%5D=https%3A%2F%2Fhstests.ngrok.io",
+            CURLOPT_POSTFIELDS => "identity%5B"
+            . "type%5D=email"
+            . "&"
+            . "identity%5B"
+            . "value%5D=$hw_email"
+                . "&"
+            . "identity%5B"
+            . "full_name%5D=$hw_name"
+                . "&"
+            . "settings%5B"
+            . "callback_url%5D=https%3A%2F%2Fhstests.ngrok.io%2Fcallback.php"
+            . "&"
+            . "identity%5Bverification%5D=code"
+            . "&settings%5B"
+            . "redirect_url%5D=https%3A%2F%2Fhstests.ngrok.io",
+//            CURLOPT_POSTFIELDS => "participants%5Bsigner%5D%5Btype%5D=email"
+//            . "&"
+//            . "participants%5Bsigner%5D%5Bvalue%5D=$hw_email"
+//                . "&"
+//            . "participants%5Bsigner%5D%5Bfull_name%5D=$hw_name"
+//                . "&"
+//            . "settings%5Bglobal%5D%5Bcallback_url%5D=https%3A%2F%2Fhstests.ngrok.io%2Fcallback.php"
+//            . "&"
+//            . "settings%5Bstep1%5D%5Bredirect_url%5D=https%3A%2F%2Fhstests.ngrok.io",
             CURLOPT_HTTPHEADER => array(
                 "authorization: $bearer",
                 "cache-control: no-cache",
@@ -93,17 +119,17 @@
         echo "<br />";
 //        print_r($parsed_post);
         echo "<br />";
-        $hw_sign_url = $parsed_post->object->url;
+//        $hw_sign_url = $parsed_post->object->url; // no more url
         $hw_instance_id = $parsed_post->object->id;
 //        include('db.php');
 
-        echo "<h1>The process has started!</h1><br />";
+        echo "<h1>The process has started! Please check your phone or email.</h1><br />";
 //        echo "$hw_sign_url <br />";
 //        echo "Click <a href=$hw_sign_url target=\"_blank\">this link</a> if you're not automatically redirected.";
         ?>
-        <script type="text/javascript">
-            var hwurl = "<?php echo $hw_sign_url?>";
+<!--        <script type="text/javascript">
+            var hwurl = "<?//php echo $hw_sign_url?>";
             window.location.href = hwurl;
-        </script>
+        </script>-->
     </body>
 </html>

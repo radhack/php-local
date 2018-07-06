@@ -50,15 +50,18 @@
 
         // Instance of a client for you to use for calls
         $client = new HelloSign\Client($api_key);
+        
         // Example call with logging for embedded requests
         $request = new HelloSign\SignatureRequest;
         $request->enableTestMode();
         $request->setUseTextTags(TRUE);
+        $request->setCustomFieldValue("signer_name", "Alex GRIFFEN");
         $request->setTitle("Testing");
         $request->setSubject('My First embedded signature request');
         $request->setMessage('Awesome, right?');
         $request->addSigner('testing@testing.com', 'Something');
 //        $request->addSigner("testingmore@testing.com", "Something Else");
+        $request->addFile("./nda.pdf");
         $request->addFile("$target_file");
 
         // Turn it into an embedded request
