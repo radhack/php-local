@@ -8,7 +8,16 @@
 //            skipDomainVerification: true,
             uxVersion: 2,
             debug: true,
-//            userCulture: HelloSign.CULTURES.ES_MX,
+//            userCulture: HelloSign.CULTURES.ES_MX, // Spanish Mexico
+//            userCulture: HelloSign.CULTURES.FR_FR, // French
+//            userCulture: HelloSign.CULTURES.SV_SE, // Swedish
+//            userCulture: HelloSign.CULTURES.DE_DE, // German
+//            userCulture: HelloSign.CULTURES.ZH_CN, // Chinese - NOTE: THIS DOES NOT YET SUPPORT RIGHT TO LEFT; ONLY CHARACTERS
+//            userCulture: HelloSign.CULTURES.DA_DK, // Danish
+//            userCulture: HelloSign.CULTURES.NL_NL, // Dutch
+//            userCulture: HelloSign.CULTURES.ES_ES, // Spainsh Spain
+//            userCulture: HelloSign.CULTURES.PT_BR, // Portuguese (Brazil)
+//            userCulture: HelloSign.CULTURES.PL_PL, // Polish
             messageListener: function (eventData) {
                 (console.log(">-*>-*>-*> Got message data: " + JSON.stringify(eventData)));
                 if (eventData.event == HelloSign.EVENT_SIGNED) {
