@@ -69,46 +69,46 @@
         $request->addMergeField('Test Merge 4', 'text');
         $request->addMergeField('Test Merge 5', 'text');
         $request->addMergeField('Test Merge 2', 'checkbox');
-        $request->setFormFieldsPerDocument(
-                [//everything
-                    [//document 1
-                        [//component 1
-                            "api_id" => "things_1",
-                            "name" => "Test Merge",
-                            "type" => "text",
-                            "x" => 220,
-                            "y" => 85,
-                            "width" => 253,
-                            "height" => 16,
-                            "required" => true,
-                            "signer" => 0
-                        ],
-                        [//component 2
-                            "api_id" => "things_2",
-                            "name" => "Test Merge 1",
-                            "type" => "text",
-                            "x" => 530,
-                            "y" => 85,
-                            "width" => 152,
-                            "height" => 16,
-                            "required" => true,
-                            "signer" => 0
-                        ],
-                        [//component 3
-                            "api_id" => "lotsof_2",
-                            "name" => "Test Merge 3",
-                            "type" => "signature",
-                            "x" => 90,
-                            "y" => 315,
-                            "width" => 223,
-                            "height" => 30,
-                            "required" => true,
-                            "signer" => 0,
-                            "page" => 2,
-                        ]
-                    ]
-                ]
-            );
+//        $request->setFormFieldsPerDocument(
+//                [//everything
+//                    [//document 1
+//                        [//component 1
+//                            "api_id" => "things_1",
+//                            "name" => "Test Merge",
+//                            "type" => "text",
+//                            "x" => 220,
+//                            "y" => 85,
+//                            "width" => 253,
+//                            "height" => 16,
+//                            "required" => true,
+//                            "signer" => 0
+//                        ],
+//                        [//component 2
+//                            "api_id" => "things_2",
+//                            "name" => "Test Merge 1",
+//                            "type" => "text",
+//                            "x" => 530,
+//                            "y" => 85,
+//                            "width" => 152,
+//                            "height" => 16,
+//                            "required" => true,
+//                            "signer" => 0
+//                        ],
+//                        [//component 3
+//                            "api_id" => "lotsof_2",
+//                            "name" => "Test Merge 3",
+//                            "type" => "signature",
+//                            "x" => 90,
+//                            "y" => 315,
+//                            "width" => 223,
+//                            "height" => 30,
+//                            "required" => true,
+//                            "signer" => 0,
+//                            "page" => 2,
+//                        ]
+//                    ]
+//                ]
+//            );
 
         $response = $client->createEmbeddedDraft($request);
 

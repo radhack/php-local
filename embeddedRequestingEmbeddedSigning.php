@@ -56,6 +56,7 @@
         //$request->setHideTextTags(true);
         //$request->setUseTextTags(true);
         $request->addFile("$target_file");
+        $request->
         $draft_request = new HelloSign\UnclaimedDraft($request, $client_id);
         $draft_request->setIsForEmbeddedSigning(true);
         $response = $client->createUnclaimedDraft($draft_request);

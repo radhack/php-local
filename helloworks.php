@@ -11,8 +11,8 @@
         
         $hw_email = urlencode($_POST['hw_email']);
         $hw_name = $_POST['hw_name'];
-        echo("<br /> $hw_email <br />");
-        echo("$hw_name <br />");
+//        echo("<br /> $hw_email <br />");
+//        echo("$hw_name <br />");
         
 //        $verification_type = "link";
 //        if (isset($_POST['hw_send_code'])) {
@@ -22,8 +22,9 @@
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api.helloworks.com/v3/token/tdUNBn2TrWzVEoFD", //this is the Alex+Booker API key information
+//            CURLOPT_URL => "https://api.helloworks.com/v3/token/tdUNBn2TrWzVEoFD", //this is the Alex+Booker API key information
 //            CURLOPT_URL => "https://api.helloworks.com/v3/token/rIlk5pIBAmRStex9", // this is the June12thKey information
+            CURLOPT_URL => "https://api.helloworks.com/v2/token/DB6LbyftGsu63VBW", // this is hstests
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -31,9 +32,10 @@
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
-                "authorization: Bearer eW8gYCY2fz9MMnkUcKPP7VbK2GtPNkPUEOnaFqU4",
+//                "authorization: Bearer eW8gYCY2fz9MMnkUcKPP7VbK2GtPNkPUEOnaFqU4",
 //                "authorization: Bearer uxLit7EZGORNbOuLfrT3EMWOxxj4zbmNR0aLgzxf", //use this with Alex+viewstaging
 //                "authorization: Bearer $hw_apikey_test",
+                "authorization: Bearer aLAUJFBMdMkiBYmDHQN1VOeovFkTXdBjyaNabPiM", // this is hstests
                 "cache-control: no-cache"
             ),
         ));
@@ -62,7 +64,7 @@
         $curl_post = curl_init();
 
         curl_setopt_array($curl_post, array(
-            CURLOPT_URL => "https://api.helloworks.com/v2/view/usxOXbrZ9BhZ2Bzg/instance",
+            CURLOPT_URL => "https://api.helloworks.com/v2/view/KF9FBIAnAfnzmq3Y/instance", // this is hstest
 //            CURLOPT_URL => "https://api.helloworks.com/v2/view/1fLQvaAFk4zlM0P5/instance", // update to v3/workflow/1fLQvaAFk4zlM0P5
 //            CURLOPT_URL => "https://api.helloworks.com/v2/view/1fLQvaAFk4zlM0P5/instance",
             CURLOPT_RETURNTRANSFER => true,

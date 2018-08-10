@@ -25,6 +25,7 @@
                         alert("SIGNATURE_ID MISSING");
                     }
                     HelloSign.close();
+                    window.location.href = 'http://www.google.com';
                     alert("Give me a few seconds to get the documents");
                     console.log(eventData.signature_id + " here's some information that's useful...*&^^&**&^^&**&^^&**&^^&*");
 //                  console.log("This is the signature_request_id...");

@@ -39,6 +39,30 @@
             $request->setSubject('Embedded Signature Request with Form Fields');
             $request->setMessage('Awesome, right?');
             $request->addSigner('testing@testing.com', 'Signer Person, IV');
+//            $request->addCC("alex+1@hellosign.com");
+//            $request->addCC("alex+2@hellosign.com");
+//            $request->addCC("alex+3@hellosign.com");
+//            $request->addCC("alex+4@hellosign.com");
+//            $request->addCC("alex+5@hellosign.com");
+//            $request->addCC("alex+6@hellosign.com");
+//            $request->addCC("alex+7@hellosign.com");
+//            $request->addCC("alex+8@hellosign.com");
+//            $request->addCC("alex+9@hellosign.com");
+//            $request->addCC("alex+10@hellosign.com");
+//            $request->addCC("alex+11@hellosign.com");
+//            $request->addCC("alex+12@hellosign.com");
+//            $request->addCC("alex+13@hellosign.com");
+//            $request->addCC("alex+14@hellosign.com");
+//            $request->addCC("alex+15@hellosign.com");
+//            $request->addCC("alex+16@hellosign.com");
+//            $request->addCC("alex+17@hellosign.com");
+//            $request->addCC("alex+18@hellosign.com");
+//            $request->addCC("alex+19@hellosign.com");
+//            $request->addCC("alex+20@hellosign.com");
+//            $request->addCC("alex+21@hellosign.com");
+//            $request->addCC("alex+22@hellosign.com");
+//            $request->addCC("alex+23@hellosign.com");
+//            $request->addCC("alex+24@hellosign.com");
             $request->enableAllowDecline();
             $request->setFormFieldsPerDocument(
 //                array(//everything
@@ -82,30 +106,30 @@
                 [//everything
                     [//document 1
                         [//component 1
-                            "api_id" => "things_1",
-                            "name" => "Name Here",
-                            "type" => "text",
+                            "api_id" => "checkbox0",
+                            "name" => "Check Box 1",
+                            "type" => "checkbox",
                             "x" => 220,
                             "y" => 85,
-                            "width" => 253,
+                            "width" => 10,
                             "height" => 16,
-                            "required" => true,
+                            "required" => FALSE,
                             "signer" => 0
                         ],
                         [//component 2
-                            "api_id" => "things_2",
-                            "name" => "Address Here",
-                            "type" => "text",
+                            "api_id" => "signature0",
+                            "name" => "Signature 1",
+                            "type" => "signature",
                             "x" => 530,
                             "y" => 85,
                             "width" => 152,
                             "height" => 16,
-                            "required" => true,
+                            "required" => FALSE,
                             "signer" => 0
                         ],
                         [//component 3
-                            "api_id" => "lotsof_2",
-                            "name" => "",
+                            "api_id" => "signature1",
+                            "name" => "Signature 2",
                             "type" => "signature",
                             "x" => 90,
                             "y" => 315,
